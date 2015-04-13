@@ -4,7 +4,9 @@
   "description": "Membership management for Friends of Chichester Harbour",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/tape/bin/tape ./test/*.test.js | ./node_modules/.bin/tap-spec",
+    "jshint": "jshint -c .jshintrc",
+    "coverage": "./node_modules/.bin/istanbul cover ./node_modules/tape/bin/tape ./test/*.test.js && ./node_modules/.bin/istanbul check-coverage --statements 95 --functions 95 --lines 95 --branches 95"
   },
   "repository": {
     "type": "git",
@@ -15,5 +17,16 @@
   "bugs": {
     "url": "https://github.com/foundersandcoders/clerk/issues"
   },
-  "homepage": "https://github.com/foundersandcoders/clerk"
+  "homepage": "https://github.com/foundersandcoders/clerk",
+  "devDependencies": {
+    "istanbul": "^0.3.13",
+    "jshint": "^2.7.0",
+    "pre-commit": "^1.0.6",
+    "tap-spec": "^3.0.0",
+    "tape": "^4.0.0"
+  },
+  "pre-commit": [
+    "jshint",
+    "coverage"
+  ]
 }
