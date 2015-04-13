@@ -1,0 +1,19 @@
+{
+  "name": "clerk",
+  "version": "1.0.0",
+  "description": "Membership management for Friends of Chichester Harbour",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/foundersandcoders/clerk.git"
+  },
+  "author": "William Fisher, Naomi Gaynor",
+  "license": "GPL",
+  "bugs": {
+    "url": "https://github.com/foundersandcoders/clerk/issues"
+  },
+  "homepage": "https://github.com/foundersandcoders/clerk"
+}
