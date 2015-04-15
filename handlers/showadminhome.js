@@ -2,7 +2,11 @@
 
 function showAdminHome (req, res) {
 
-  res.view("adminhome");
+  if (req.auth.credentials.rights === "admin") {
+    return res.view("adminhome");
+  } else {
+    return res.redirect("/");
+  }
 }
 
 module.exports = showAdminHome;
