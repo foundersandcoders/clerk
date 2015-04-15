@@ -2,7 +2,10 @@
 
 function showLogin (req, res) {
 
-  res.view("login");
+  if (req.auth.isAuthenticated) {
+    return res.redirect("/");
+  }
+  return res.view("login");
 }
 
 module.exports = showLogin;
