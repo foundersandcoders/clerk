@@ -1,4 +1,4 @@
-"use strict";
+/*"use strict";
 
 var request = require("request");
 
@@ -17,4 +17,4 @@ function signup (req, res) {
   });
 }
 
-module.exports = signup;
+module.exports = signup;*/
