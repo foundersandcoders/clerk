@@ -1,4 +1,4 @@
-"use strict";
+"use strict"; 
 
 var test = require("tape");
 var server = require("../lib/server.js");
@@ -13,23 +13,22 @@ test("Teardown", function(t) {
   }).end();
 });
 
-test("POST /signup should create account and return cookie with 302", function (t) {
+test("POST /login should return 401 when account does not exist", function (t) {
 
   var payload = {
-    email: "wil",
+    email: "naomi",
     password: "hello"
   };
   var request = {
     method: "POST",
-    url: "/signup",
+    url: "/login",
     payload: payload
   };
 
   server.inject(request, function (res) {
 
-    t.equals(res.statusCode, 302, "302 returned");
-    t.ok(res.headers["set-cookie"], "cookie returned");
-    t.end();  
+    t.equals(res.statusCode, 401, "401 returned");
+    t.end();
   });
 });
 
@@ -47,16 +46,30 @@ test("GET /admin should respond with 302 if not logged in", function (t) {
   });
 });
 
+test("GET /signup should return 200 and signup form if not logged in", function (t) {
 
-test("POST /login should return cookie", function (t) {
+  var request = {
+    method: "GET",
+    url: "/signup"
+  };
 
-  var payload = {
-    email: "wil",
+  server.inject(request, function (res) {
+
+    t.equals(res.statusCode, 200, "200 returned");
+    t.ok(/form/.test(res.payload), "signup page contains form");
+    t.end();
+  });
+});
+
+test("POST /signup should create account and return cookie with 302", function (t) {
+
+	var payload = {
+    email: "naomi",
     password: "hello"
   };
   var request = {
     method: "POST",
-    url: "/login",
+    url: "/signup",
     payload: payload
   };
 
@@ -65,9 +78,8 @@ test("POST /login should return cookie", function (t) {
     t.equals(res.statusCode, 302, "302 returned");
     t.ok(res.headers["set-cookie"], "cookie returned");
     biscuit = res.headers["set-cookie"][0].split(";")[0];
-    t.end();
+    t.end();	
   });
-
 });
 
 test("GET /admin should respond with 200 if logged in as admin", function (t) {
@@ -104,7 +116,43 @@ test("GET /logout should respod with 302 if logged in", function (t) {
   });
 });
 
-test("GET /admin should response with 302 if session has ended", function (t) {
+test("GET /admin should respond with 302 if not logged in", function (t) {
+
+  var request = {
+    method: "GET",
+    url: "/admin"
+  };
+
+  server.inject(request, function (res) {
+
+    t.equals(res.statusCode, 302, "302 received");
+    t.end();
+  });
+});
+
+test("POST /login should return cookie", function (t) {
+
+  var payload = {
+    email: "naomi",
+    password: "hello"
+  };
+  var request = {
+    method: "POST",
+    url: "/login",
+    payload: payload
+  };
+
+  server.inject(request, function (res) {
+
+    t.equals(res.statusCode, 302, "302 returned");
+    t.ok(res.headers["set-cookie"], "cookie returned");
+    biscuit = res.headers["set-cookie"][0].split(";")[0];
+    t.end();
+  });
+
+});
+
+test("GET /admin should respond with 200 if logged in as admin", function (t) {
 
   var request = {
     method: "GET",
@@ -116,24 +164,14 @@ test("GET /admin should response with 302 if session has ended", function (t) {
 
   server.inject(request, function (res) {
 
-    t.equals(res.statusCode, 302, "302 received");
+    t.equals(res.statusCode, 200, "200 received");
     t.end();
   });
 });
 
-test("GET /admin should response with 302 if not logged in as admin", function (t) {
-
-  var request = {
-    method: "GET",
-    url: "/admin",
-    credentials: {
-      rights: "user"
-    }
-  };
-
-  server.inject(request, function (res) {
-
-    t.equals(res.statusCode, 302, "302 received");
+test("Teardown", function(t) {
+  drop(function(res){
+    t.equal(res.acknowledged, true, "ALL Records DELETED!");
     t.end();
-  });
+  }).end();
 });

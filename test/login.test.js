@@ -2,8 +2,16 @@
 
 var test = require("tape");
 var server = require("../lib/server.js");
+var drop = require("./z_drop");
 
 var biscuit;
+
+test("Teardown", function(t) {
+  drop(function(res){
+    t.equal(res.acknowledged, true, "ALL Records DELETED!");
+    t.end();
+  }).end();
+});
 
 test("GET /login should return 200 and login form if not logged in", function (t) {
 
@@ -20,6 +28,25 @@ test("GET /login should return 200 and login form if not logged in", function (t
   });
 });
 
+test("POST /signup should create account and return cookie with 302", function (t) {
+
+  var payload = {
+    email: "wil",
+    password: "hello"
+  };
+  var request = {
+    method: "POST",
+    url: "/signup",
+    payload: payload
+  };
+
+  server.inject(request, function (res) {
+
+    t.equals(res.statusCode, 302, "302 returned");
+    t.ok(res.headers["set-cookie"], "cookie returned");
+    t.end();  
+  });
+});
 
 test("POST /login should return 302 and session if details are correct", function (t) {
 
