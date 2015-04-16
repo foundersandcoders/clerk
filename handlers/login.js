@@ -9,7 +9,7 @@ function login (req, res) {
   url += "@" + authUrl + "/login";
   request(url, function (e, h) {
 
-    if (!h.headers.authorization) {
+    if (!h.headers.authorization || e) {
       return res({ statusCode: 401, status: "Unauthorized", message: "Invalid credentials" }).code(401);
     } else {
       req.auth.session.set({
