@@ -1,4 +1,4 @@
-"use strict"; 
+"use strict";
 
 var test = require("tape");
 var server = require("../lib/server.js");
@@ -12,6 +12,21 @@ test("Teardown", function(t) {
     t.end();
   }).end();
 });
+
+test("GET /signup should return 200 if not logged in", function (t) {
+
+  var request = {
+    method: "GET",
+    url: "/signup"
+  };
+
+  server.inject(request, function (res) {
+
+    t.equals(res.statusCode, 200, "200 received");
+    t.end();
+  });
+});
+
 
 test("POST /login should return 401 when account does not exist", function (t) {
 
@@ -78,7 +93,7 @@ test("POST /signup should create account and return cookie with 302", function (
     t.equals(res.statusCode, 302, "302 returned");
     t.ok(res.headers["set-cookie"], "cookie returned");
     biscuit = res.headers["set-cookie"][0].split(";")[0];
-    t.end();	
+    t.end();
   });
 });
 
@@ -165,6 +180,23 @@ test("GET /admin should respond with 200 if logged in as admin", function (t) {
   server.inject(request, function (res) {
 
     t.equals(res.statusCode, 200, "200 received");
+    t.end();
+  });
+});
+
+test("GET /signup should return 302 if logged in", function (t) {
+
+  var request = {
+    method: "GET",
+    url: "/signup",
+    headers: {
+      cookie: biscuit
+    }
+  };
+
+  server.inject(request, function (res) {
+
+    t.equals(res.statusCode, 302, "302 received");
     t.end();
   });
 });

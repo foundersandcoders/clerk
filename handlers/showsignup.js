@@ -2,7 +2,10 @@
 
 function showSignup (req, res) {
 
-  res.view("signup");
+  if (req.auth.isAuthenticated) {
+    return res.redirect("/");
+  }
+  return res.view("signup");
 }
 
 module.exports = showSignup;
