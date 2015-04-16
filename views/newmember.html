@@ -1,29 +1,42 @@
-<form action="/newmember" method="post">
-	<p>New Member Form</p>
-	<input type="text" name="title" value="title">
-	<inpout type="text" name="initials" value="initials">
-	<inpout type="text" name="firstname" value="First name">
-	<inpout type="text" name="surname" value="Last name">
-	<inpout type="text" name="Addressline1" value="Address line 1">
-	<inpout type="text" name="addressline2" value="Address line 2">
-	<inpout type="text" name="postcode" value="Postcode">
-	<inpout type="text" name="homephone" value="Home phone">
-	<inpout type="text" name="mobilephone" value="Mobile phone">
-	<inpout type="text" name="workphone" value="Work phone">
-	<inpout type="text" name="" value="dd">
-	/
-	<inpout type="text" name="" value="mm">
-	/
-	<input type="text" name="" value"yyyy">
-	<input type="text" name="emailaddress" value= "Email address">
-	<select name="membershiptype" value="Membership Type">
-		<option value=""></option>
-		<option value=""></option>
-		<option value=""></option>
-		<option value=""></option>
-		<option value=""></option>
-		<option value=""></option>
-		<option value=""></option>
-	</select>
-	<input type="submit" >
-</form>
+<a href="/admin">BACK</a>
+
+<div class="new-member-container frame">
+
+    <h1>New Member Form</h1>
+
+    <form action="/addmember" method="post" class="bit75 frame new-member-form">
+
+
+
+
+        <input type="text" name="title" placeholder="title">
+        <input type="text" name="initials" placeholder="initials">
+
+        <div class="frame bit1">
+            <input type="text" name="firstname" placeholder="First name" class="bit2">
+            <input type="text" name="surname" placeholder="Last name" class="bit2">
+        </div>
+
+        <input type="text" name="addressline" placeholder="Address line 1">
+        <input type="text" name="addressline" placeholder="Address line 2">
+        <input type="text" name="postcode" placeholder="Postcode">
+        <input type="text" name="homephone" placeholder="Home phone">
+        <input type="text" name="mobilephone" placeholder="Mobile phone">
+        <input type="text" name="workphone" placeholder="Work phone">
+        <input type="text" name="day" placeholder="dd" class="bit3">
+        <input type="text" name="month" placeholder="mm" class="bit3">
+        <input type="text" name="year" placeholder="yyyy" class="bit3">
+        <input type="text" name="email" placeholder="Email address">
+        <select name="membershiptype" value="Membership Type">
+            <option value=""></option>
+            <option value=""></option>
+            <option value=""></option>
+            <option value=""></option>
+            <option value=""></option>
+            <option value=""></option>
+            <option value=""></option>
+        </select>
+        <input type="submit">
+    </form>
+
+</div>

@@ -12,8 +12,8 @@ function signup (req, res) {
     body: req.payload,
     json: true
   }, function (e, h) {
-  	
-  	if (!h.headers.authorization || e) {
+
+    if (!h.headers.authorization || e) {
       return res({ statusCode: 400, status: "Bad request", message: "Incorrect credentials" }).code(401);
     } else {
       req.auth.session.set({
@@ -21,7 +21,7 @@ function signup (req, res) {
       });
       return res.redirect("/");
     }
-   
+
   });
 }
 

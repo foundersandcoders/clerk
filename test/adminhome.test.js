@@ -29,7 +29,7 @@ test("POST /signup should create account and return cookie with 302", function (
 
     t.equals(res.statusCode, 302, "302 returned");
     t.ok(res.headers["set-cookie"], "cookie returned");
-    t.end();  
+    t.end();
   });
 });
 
