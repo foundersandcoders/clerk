@@ -1,0 +1,63 @@
+
+<div class="new-member-container">
+
+    <div class="new-member-head">
+        <a href="/admin">BACK</a>
+        <h1>New Member Form</h1>
+    </div>
+
+    <div class="new-member-form bit50 frame">
+
+
+        <form action="/addmember" method="post">
+
+            <div class="frame bit3 form-short">
+                <input type="text" name="title" placeholder="title">
+                <input type="text" name="initials" placeholder="initials">
+            </div>
+
+            <div class="frame form-two">
+                <input type="text" name="firstname" placeholder="First name">
+                <input type="text" name="surname" placeholder="Last name">
+            </div>
+
+            <div class="frame">
+                <input type="text" name="addressline" placeholder="Address line 1" class="bit1">
+                <input type="text" name="addressline" placeholder="Address line 2" class="bit1">
+            </div>
+
+            <div class="frame">
+                <input type="text" name="postcode" placeholder="Postcode">
+            </div>
+
+            <div class="frame form-three">
+                <input type="text" name="homephone" placeholder="Home phone">
+                <input type="text" name="mobilephone" placeholder="Mobile phone">
+                <input type="text" name="workphone" placeholder="Work phone">
+            </div>
+
+            <div class="frame bit2 form-birthday">
+                <input type="date" name="birthday">
+            </div>
+
+            <div class="frame">
+                <input type="text" name="email" placeholder="Email address">
+                <select name="membershiptype" value="Membership Type">
+                    <option value=""></option>
+                    <option value=""></option>
+                    <option value=""></option>
+                    <option value=""></option>
+                    <option value=""></option>
+                    <option value=""></option>
+                    <option value=""></option>
+                </select>
+            </div>
+
+            <div class="frame form-submit">
+                <input type="submit">
+            </div>
+        </form>
+
+    </div>
+
+</div>
