@@ -14,14 +14,15 @@ test("Teardown", function(t) {
 });
 
 test("GET /addmember should respond with 302 if not logged in", function (t) {
-	var request = {
+
+  var request = {
 		method: "GET",
 		url: "/addmember"
 	};
 
-	server.inject(request, function (res) {
+  server.inject(request, function (res) {
 
-		t.equals(res.statusCode, 302, "302 received");
+    t.equals(res.statusCode, 302, "302 received");
 		t.end();
 	});
 });

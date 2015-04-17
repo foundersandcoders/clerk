@@ -2,11 +2,11 @@
 
 function showNewMember (req, res) {
 
-  if (req.auth.credentials.rights === "admin") {
+//  if (req.auth.credentials.rights === "admin") {
     return res.view("newmember");
-  } else {
+/*  } else {
     return res.redirect("/");
-  }
+  }*/
 }
 
 module.exports = showNewMember;
