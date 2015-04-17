@@ -1,4 +1,4 @@
-"use strict"; 
+"use strict";
 
 var test = require("tape");
 var server = require("../lib/server.js");
@@ -78,7 +78,26 @@ test("POST /signup should create account and return cookie with 302", function (
     t.equals(res.statusCode, 302, "302 returned");
     t.ok(res.headers["set-cookie"], "cookie returned");
     biscuit = res.headers["set-cookie"][0].split(";")[0];
-    t.end();	
+    t.end();
+  });
+});
+
+test("POST /signup should return with 400 if credentials already registered", function (t) {
+
+	var payload = {
+    email: "naomi",
+    password: "hello"
+  };
+  var request = {
+    method: "POST",
+    url: "/signup",
+    payload: payload
+  };
+
+  server.inject(request, function (res) {
+
+    t.equals(res.statusCode, 400, "400 returned");
+    t.end();
   });
 });
 

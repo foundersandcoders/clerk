@@ -12,43 +12,79 @@ button.circle {
   font-weight: light;
   background-color: #8e8; }
 
-input[type=text], input[type=password] {
+input {
   display: block;
   font-size: 1.2em;
   padding: 0.5em;
   box-sizing: border-box;
-  background-color: #fff;
-  color: #222;
-  cursor: text;
-  border: 1px solid #ccc;
-  border-radius: 2px; }
-  input[type=text]:focus, input[type=password]:focus {
-    background-color: #efe;
-    outline: 0; }
-
-input[type=submit] {
   height: 3em;
   width: 9em;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  outline: 0; }
+
+input[type=text], input[type=password] {
+  background-color: #fff;
+  color: #222;
+  cursor: text; }
+  input[type=text]:focus, input[type=password]:focus {
+    background-color: #efe; }
+
+input[type=submit] {
   text-align: center;
-  font-size: 15px;
-  outline: 0;
   background: #6b6;
   border: 1px solid #6b6;
   color: #fff;
   border-radius: 2px; }
 
+select {
+  height: 3em;
+  width: 9em;
+  padding: 0.5em; }
+
 .new-member-container {
+  overflow: auto;
+  background-color: #fdfdfd;
+  padding: 2em 1em; }
+
+.new-member-head {
   text-align: center; }
-  .new-member-container h1 {
-    margin: 1em 0em; }
+  .new-member-head a {
+    float: left; }
 
 .new-member-form {
-  padding-left: 20%; }
-  .new-member-form input {
-    margin-right: 0.25em; }
+  text-align: center;
+  margin-top: 4em;
+  margin-left: 25%; }
+  .new-member-form input[type=text], .new-member-form select {
+    float: left; }
+  .new-member-form select {
+    margin-left: 2em; }
+  .new-member-form h1 {
+    margin: 1em 0em; }
+  .new-member-form .form-submit input {
+    width: 7em;
+    margin-right: auto;
+    margin-left: auto; }
+  .new-member-form .form-birthday {
+    margin-right: 50%; }
+  .new-member-form .form-two input[type=text] {
+    width: 45%;
+    margin-right: 5%; }
+  .new-member-form .form-three input[type=text] {
+    width: 30%;
+    margin-right: 3.3%; }
+  .new-member-form .form-short {
+    margin-right: 66.6666%; }
+    .new-member-form .form-short input[type=text] {
+      width: 25%;
+      margin-right: 12.5%; }
+  .new-member-form .frame {
+    margin-bottom: 1em; }
+    .new-member-form .frame input[type=text] {
+      margin-bottom: 1em; }
 
 .frame {
-  margin: 0 auto;
   max-width: 100%; }
   .frame:after {
     content: "";

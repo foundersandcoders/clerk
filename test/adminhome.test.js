@@ -87,7 +87,7 @@ test("GET /admin should respond with 200 if logged in as admin", function (t) {
   });
 });
 
-test("GET /logout should respod with 302 if logged in", function (t) {
+test("GET /logout should respond with 302 if logged in", function (t) {
 
   var request = {
     method: "GET",

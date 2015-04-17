@@ -12,9 +12,9 @@ function signup (req, res) {
     body: req.payload,
     json: true
   }, function (e, h) {
-
+    console.log(e, h);
     if (!h.headers.authorization || e) {
-      return res({ statusCode: 400, status: "Bad request", message: "Incorrect credentials" }).code(401);
+      return res({ statusCode: 400, status: "Bad request", message: "Incorrect credentials" }).code(400);
     } else {
       req.auth.session.set({
         token: h.headers.authorization
