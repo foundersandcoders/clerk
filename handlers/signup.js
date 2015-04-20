@@ -6,6 +6,11 @@ function signup (req, res) {
 
   var url = "http://0.0.0.0:8000/register";
 
+
+  if (req.payload.password !== req.payload.cpassword) {
+    return res.redirect("/signup");
+  }
+
   request.post({
     url: url,
     body: req.payload,

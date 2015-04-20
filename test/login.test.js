@@ -32,7 +32,8 @@ test("POST /signup should create account and return cookie with 302", function (
 
   var payload = {
     email: "wil",
-    password: "hello"
+    password: "hello",
+    cpassword: "hello"
   };
   var request = {
     method: "POST",
@@ -44,7 +45,7 @@ test("POST /signup should create account and return cookie with 302", function (
 
     t.equals(res.statusCode, 302, "302 returned");
     t.ok(res.headers["set-cookie"], "cookie returned");
-    t.end();  
+    t.end();
   });
 });
 

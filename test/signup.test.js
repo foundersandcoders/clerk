@@ -65,7 +65,8 @@ test("POST /signup should create account and return cookie with 302", function (
 
 	var payload = {
     email: "naomi",
-    password: "hello"
+    password: "hello",
+    cpassword: "hello"
   };
   var request = {
     method: "POST",
@@ -86,7 +87,8 @@ test("POST /signup should return with 400 if credentials already registered", fu
 
 	var payload = {
     email: "naomi",
-    password: "hello"
+    password: "hello",
+    cpassword: "hello"
   };
   var request = {
     method: "POST",
