@@ -24,6 +24,7 @@ input[type=submit] {
   background: #6b6;
   border: 1px solid #6b6;
   color: #fff;
+  cursor: pointer;
   border-radius: 2px; }
 
 select {
@@ -77,3 +78,13 @@ select {
       input[type=text] {
         margin-bottom: 1em;
       }}}
+
+.login-form {
+  margin-top: 15em;
+  margin-left: 37.5%;
+  input[type=text], input[type=password] {
+    margin-bottom: 0.5em;}
+  input[type=submit] {
+    float: right;
+    margin-right: 33.333%;}
+}

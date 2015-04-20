@@ -1,24 +1,21 @@
 <div class="admin-home">
 
     <div class="header">
-        <a href="/">HOME</a>
-        <h1>ADMIN HOME</h1>
+        <h1>Administration</h1>
     </div>
 
 
     <div class="frame bit50 admin-controls">
 
-        <div class="frame">
-            <a href="/addmember"><button class="circle left">+</button>Add Member</a>
-        </div>
+        <a href="/addmember"><input type="button" value="Add Member" class="bit1"></a>
 
-        <div class="bit1 frame">
+        <div class="frame bit1">
             <form action="/search" method="POST">
-                <input type="text" placeholder="enter member number or name here" class="bit75">
-                <input type="submit" value="search" class="bit25">
+                <input type="text" placeholder="enter member number or name here">
+                <input type="submit" value="search">
             </form>
-        </div>
 
+        </div>
     </div>
 
 </div>
