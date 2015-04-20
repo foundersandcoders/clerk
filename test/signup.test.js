@@ -80,7 +80,8 @@ test("POST /signup should create account and return cookie with 302", function (
 
 	var payload = {
     email: "naomi",
-    password: "hello"
+    password: "hello",
+    cpassword: "hello"
   };
   var request = {
     method: "POST",
@@ -93,6 +94,26 @@ test("POST /signup should create account and return cookie with 302", function (
     t.equals(res.statusCode, 302, "302 returned");
     t.ok(res.headers["set-cookie"], "cookie returned");
     biscuit = res.headers["set-cookie"][0].split(";")[0];
+    t.end();
+  });
+});
+
+test("POST /signup should return with 400 if credentials already registered", function (t) {
+
+	var payload = {
+    email: "naomi",
+    password: "hello",
+    cpassword: "hello"
+  };
+  var request = {
+    method: "POST",
+    url: "/signup",
+    payload: payload
+  };
+
+  server.inject(request, function (res) {
+
+    t.equals(res.statusCode, 400, "400 returned");
     t.end();
   });
 });
