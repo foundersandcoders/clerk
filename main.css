@@ -1,14 +1,16 @@
-div, body {
-  background-color: #fcfcfc; }
-
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box; }
 
-input[type=button] {
-  background-color: #8d8;
-  cursor: pointer; }
+button.circle {
+  height: 50px;
+  width: 50px;
+  border-radius: 100%;
+  border: 0;
+  font-size: 1.5em;
+  font-weight: light;
+  background-color: #8e8; }
 
 input {
   display: block;
@@ -33,7 +35,6 @@ input[type=submit] {
   background: #6b6;
   border: 1px solid #6b6;
   color: #fff;
-  cursor: pointer;
   border-radius: 2px; }
 
 select {
@@ -91,43 +92,6 @@ select {
   .login-form input[type=submit] {
     float: right;
     margin-right: 33.333%; }
-
-.admin-home .header {
-  text-align: center;
-  margin-top: 4.5em; }
-.admin-home .admin-controls {
-  margin-top: 4em;
-  margin-left: 25%; }
-  .admin-home .admin-controls input[type=text] {
-    float: left;
-    width: 80%; }
-  .admin-home .admin-controls input[type=submit] {
-    float: left;
-    width: 20%; }
-  .admin-home .admin-controls input {
-    margin-bottom: 0.5em; }
-
-.navigation {
-  width: 100%;
-  overflow: auto;
-  padding: 0.75em;
-  margin-top: 0.5em; }
-  .navigation a {
-    background-color: #d88;
-    text-decoration: none;
-    color: #000;
-    padding: 0.5em 1.5em;
-    border-radius: 2px;
-    border: 1px solid #d88;
-    margin: 0.5em; }
-  .navigation .left {
-    float: left; }
-  .navigation .right {
-    float: right; }
-
-.header {
-  text-align: center;
-  margin-top: 4.5em; }
 
 .frame {
   max-width: 100%; }
