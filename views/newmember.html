@@ -11,9 +11,17 @@
 
         <form action="/addmember" method="post">
 
+            <div class="frame bit1 membershipid">
+                <input type="text" name="membershipId" placeholder="Membership ID">
+            </div>
+
             <div class="frame bit3 form-short">
                 <input type="text" name="title" placeholder="title">
-                <input type="text" name="initials" placeholder="initials">
+                <input type="text" name="initials" placeholder="Initials">
+            </div>
+
+            <div class="frame bit3 form-birthday">
+                <input type="date" name="birthday">
             </div>
 
             <div class="frame form-two">
@@ -21,13 +29,20 @@
                 <input type="text" name="surname" placeholder="Last name">
             </div>
 
-            <div class="frame">
-                <input type="text" name="addressline" placeholder="Address line 1" class="bit1">
-                <input type="text" name="addressline" placeholder="Address line 2" class="bit1">
+            <div class="frame form-address">
+                <input type="text" name="addressline1" placeholder="Address line 1">
+                <input type="text" name="addressline2" placeholder="Address line 2">
+                <input type="text" name="addressline3" placeholder="Address line 3">
+                <input type="text" name="addressline4" placeholder="Address line 4">
+                <input type="text" name="addressline5" placeholder="Address line 5">
             </div>
 
             <div class="frame">
                 <input type="text" name="postcode" placeholder="Postcode">
+            </div>
+
+            <div class="frame form-deliverer">
+                <input type="text" name="deliverer" placeholder="Deliverer">
             </div>
 
             <div class="frame form-three">
@@ -36,12 +51,16 @@
                 <input type="text" name="workphone" placeholder="Work phone">
             </div>
 
-            <div class="frame bit2 form-birthday">
-                <input type="date" name="birthday">
+
+            <div class="frame form-emails">
+                <input type="text" name="email1" placeholder="Email Address 1">
+                <input type="text" name="email2" placeholder="Email Address 2">
+                <div class="form-bounced">
+                    <p>Email bounced?</p><input type="checkbox" name="emailBounced">
+                </div>
             </div>
 
             <div class="frame">
-                <input type="text" name="email" placeholder="Email address">
                 <select name="membershiptype" value="Membership Type">
                     <option value=""></option>
                     <option value=""></option>

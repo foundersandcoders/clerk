@@ -61,12 +61,34 @@ select {
     margin-left: 2em; }
   .new-member-form h1 {
     margin: 1em 0em; }
+  .new-member-form .membershipid {
+    width: 100%; }
+    .new-member-form .membershipid input {
+      width: 45%;
+      margin-right: 55%; }
+  .new-member-form .form-emails input[type=text] {
+    width: 30%;
+    margin-right: 2.5%; }
+  .new-member-form .form-emails .form-bounced {
+    width: 30%;
+    margin-right: 5%;
+    height: 3em;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    float: right;
+    padding: 0.5em; }
+    .new-member-form .form-emails .form-bounced input[type=checkbox] {
+      width: 2em;
+      float: right; }
+    .new-member-form .form-emails .form-bounced p {
+      float: left; }
+  .new-member-form .form-address input[type=text] {
+    width: 95%; }
   .new-member-form .form-submit input {
     width: 7em;
     margin-right: auto;
     margin-left: auto; }
-  .new-member-form .form-birthday {
-    margin-right: 50%; }
   .new-member-form .form-two input[type=text] {
     width: 45%;
     margin-right: 5%; }
@@ -74,7 +96,7 @@ select {
     width: 30%;
     margin-right: 3.3%; }
   .new-member-form .form-short {
-    margin-right: 66.6666%; }
+    margin-right: 33.33333%; }
     .new-member-form .form-short input[type=text] {
       width: 25%;
       margin-right: 12.5%; }
