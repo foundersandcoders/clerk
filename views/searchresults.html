@@ -1,4 +1,19 @@
-{{#each results}}
-<p> {{this._source.firstname}}</p>
-<p> {{this._id}}</p>
-{{/each}}
+<div class="search-results bit50 frame">
+
+    <div class="frame bit1 search-box">
+        <form action="/members/search" method="POST">
+            <input type="text" name="query" placeholder="enter member number or name here">
+            <input type="submit" value="search">
+        </form>
+    </div>
+
+    <div class="results">
+        {{#each results}}
+        <div class="single-result frame">
+            <p> {{this._source.title}}&nbsp;{{this._source.firstname}}&nbsp;{{ this._source.surname }} </p>
+            <p> {{this._id}}</p>
+            <a href="/members/{{this._id}}">Display member</a>
+        </div>
+        {{/each}}
+    </div>
+</div>

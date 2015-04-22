@@ -38,11 +38,11 @@ test("POST /signup should create account and return cookie with 302", function (
 });
 
 
-test("POST /search should return 302 if no authentication", function (t) {
+test("POST /members/search should return 302 if no authentication", function (t) {
 
   var opts = {
     method: "POST",
-    url: "/search"
+    url: "/members/search"
   };
   server.inject(opts, function (res) {
 
@@ -51,14 +51,14 @@ test("POST /search should return 302 if no authentication", function (t) {
   });
 });
 
-test("POST /search should return 404 if authentication but no results", function (t) {
+test("POST /members/search should return 302 if authentication", function (t) {
 
   var payload = {
     query: "eeee"
   };
   var opts = {
     method: "POST",
-    url: "/search",
+    url: "/members/search",
     headers: {
       cookie: biscuit
     },
@@ -66,7 +66,8 @@ test("POST /search should return 404 if authentication but no results", function
   };
   server.inject(opts, function (res) {
 
-    t.equals(res.statusCode, 404, "404 returned");
+    t.equals(res.statusCode, 302, "302 returned");
+    t.equals(res.raw.res._headers.location, "/members/search?q=*eeee*");
     t.end();
   });
 });
@@ -83,21 +84,82 @@ test("create member", function (t) {
   });
 });
 
-test("POST /search should return 200 if authentication and results returned", function (t) {
+test("POST /members/search should return 400 if no query payload provided", function (t) {
+
+
+  var payload = {};
+  var opts = {
+    method: "POST",
+    url: "/members/search",
+    payload: payload,
+    headers: {
+      cookie: biscuit
+    }
+  };
+
+  server.inject(opts, function (res) {
+
+    t.equals(res.statusCode, 400, "400 returned");
+    t.end();
+  });
+});
+
+test("POST /members/search should return 302 if member number provided", function (t) {
+
 
   var payload = {
-    query: "william"
+    query: "14141"
   };
   var opts = {
     method: "POST",
-    url: "/search",
+    url: "/members/search",
+    payload: payload,
     headers: {
       cookie: biscuit
-    },
-    payload: payload
+    }
   };
 
-  setTimeout(function(){
+  server.inject(opts, function (res) {
+
+    t.equals(res.statusCode, 302, "302 returned");
+    t.equals(res.raw.res._headers.location, "/members/14141", "redirect url matches expected");
+    t.end();
+  });
+});
+
+test("POST /members/search should return 302 if member number provided", function (t) {
+
+
+  var payload = {
+    query: "illi"
+  };
+  var opts = {
+    method: "POST",
+    url: "/members/search",
+    payload: payload,
+    headers: {
+      cookie: biscuit
+    }
+  };
+
+  server.inject(opts, function (res) {
+
+    t.equals(res.statusCode, 302, "302 returned");
+    t.equals(res.raw.res._headers.location, "/members/search?q=*illi*");
+    t.end();
+  });
+});
+
+test("GET /members/search should return 200 if authentication and matching query", function (t) {
+
+  var opts = {
+    method: "GET",
+    url: "/members/search?q=*william*",
+    headers: {
+      cookie: biscuit
+    }
+  };
+  setTimeout(function () {
 
     server.inject(opts, function (res) {
 
@@ -107,25 +169,23 @@ test("POST /search should return 200 if authentication and results returned", fu
   }, 1000);
 });
 
-test("POST /search should return 400 if no query payload provided", function (t) {
+test("GET /members/search should return 302 if no authentication", function (t) {
 
-
-  var payload = {};
   var opts = {
-    method: "POST",
-    url: "/search",
-    headers: {
-      cookie: biscuit
-    },
-    payload: payload
+    method: "GET",
+    url: "/members/search?q=*william*"
   };
 
-  server.inject(opts, function (res) {
+  setTimeout(function(){
 
-    t.equals(res.statusCode, 400, "400 returned");
-    t.end();
-  });
+    server.inject(opts, function (res) {
+
+      t.equals(res.statusCode, 302, "302 returned");
+      t.end();
+    });
+  }, 1000);
 });
+
 
 test("Teardown", function(t) {
   drop(function(res){

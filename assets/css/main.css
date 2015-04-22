@@ -141,20 +141,20 @@ select {
     float: right;
     margin-right: 33.333%; }
 
+.search-box input {
+  float: left;
+  margin-top: 1em; }
+.search-box input[type=text] {
+  width: 80%; }
+.search-box input[type=submit] {
+  width: 20%; }
+
 .admin-home .header {
   text-align: center;
   margin-top: 4.5em; }
 .admin-home .admin-controls {
-  margin-top: 4em;
+  margin-top: 2em;
   margin-left: 25%; }
-  .admin-home .admin-controls input[type=text] {
-    float: left;
-    width: 80%; }
-  .admin-home .admin-controls input[type=submit] {
-    float: left;
-    width: 20%; }
-  .admin-home .admin-controls input {
-    margin-bottom: 0.5em; }
 
 .navigation {
   width: 100%;
@@ -177,6 +177,26 @@ select {
 .header {
   text-align: center;
   margin-top: 4.5em; }
+
+.search-results {
+  margin-left: 25%;
+  margin-top: 2em; }
+
+.single-result {
+  padding: 2em 0em;
+  clear: both;
+  width: 90%;
+  margin-left: 5%;
+  border-bottom: 1px solid #ccc; }
+  .single-result * {
+    display: inline-block; }
+  .single-result a {
+    float: right;
+    text-decoration: none;
+    color: #000; }
+  .single-result p {
+    float: left;
+    margin-right: 2em; }
 
 .frame {
   max-width: 100%; }

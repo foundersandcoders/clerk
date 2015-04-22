@@ -141,3 +141,12 @@ select {
     float: right;
     margin-right: 33.333%;}
 }
+
+.search-box {
+  input {
+    float: left;
+    margin-top: 1em; }
+  input[type=text] {
+    width: 80%; }
+  input[type=submit] {
+    width: 20%; }}

@@ -9,10 +9,10 @@
 
         <a href="/addmember"><input type="button" value="Add Member" class="bit1"></a>
 
-        <div class="frame bit1">
-            <form action="/search" method="POST">
-                <input type="text" name="query" placeholder="enter member number or name here">
-                <input type="submit" value="search">
+        <div class="frame bit1 search-box">
+            <form action="/members/search" method="POST">
+                <input type="text" name="query" placeholder="Enter member number or name here" id="search-field">
+                <input type="submit" value="search" id="search-button">
             </form>
 
         </div>
