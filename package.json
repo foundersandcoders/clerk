@@ -25,6 +25,7 @@
     "jshint": "^2.7.0",
     "node-sass": "^2.1.1",
     "pre-commit": "^1.0.6",
+    "rubberbands": "^1.0.1",
     "tap-spec": "^3.0.0",
     "tape": "^4.0.0"
   },
