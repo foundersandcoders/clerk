@@ -11,7 +11,7 @@
         {{#each results}}
         <div class="single-result frame">
             <p> {{this._source.title}}&nbsp;{{this._source.firstname}}&nbsp;{{ this._source.surname }} </p>
-            <p> {{this._id}}</p>
+            <p> {{this._source.membershipType }} </p>
             <a href="/members/{{this._id}}">Display member</a>
         </div>
         {{/each}}
