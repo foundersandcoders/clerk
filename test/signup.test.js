@@ -76,6 +76,28 @@ test("GET /signup should return 200 and signup form if not logged in", function 
   });
 });
 
+test("POST /signup should return 302 if password !== cpassword", function (t) {
+
+	var payload = {
+    email: "naomi",
+    password: "hello",
+    cpassword: "ho"
+  };
+  var request = {
+    method: "POST",
+    url: "/signup",
+    payload: payload
+  };
+
+  server.inject(request, function (res) {
+
+    t.equals(res.statusCode, 302, "302 returned");
+    t.notOk(res.headers["set-cookie"], "cookie not returned");
+    t.equals(res.raw.res._headers.location, "/signup", "redirect url matches expected");
+    t.end();
+  });
+});
+
 test("POST /signup should create account and return cookie with 302", function (t) {
 
 	var payload = {
