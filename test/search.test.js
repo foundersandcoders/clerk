@@ -176,14 +176,28 @@ test("GET /members/search should return 302 if no authentication", function (t) 
     url: "/members/search?q=*william*"
   };
 
-  setTimeout(function(){
+  server.inject(opts, function (res) {
 
-    server.inject(opts, function (res) {
+    t.equals(res.statusCode, 302, "302 returned");
+    t.end();
+  });
+});
 
-      t.equals(res.statusCode, 302, "302 returned");
-      t.end();
-    });
-  }, 1000);
+test("GET /members/search should return 404 if authentication but no matches", function (t) {
+
+  var opts = {
+    method: "GET",
+    url: "/members/search?q=*illia*",
+    headers: {
+      cookie: biscuit
+    }
+  };
+
+  server.inject(opts, function (res) {
+
+    t.equals(res.statusCode, 200, "200 returned");
+    t.end();
+  });
 });
 
 
