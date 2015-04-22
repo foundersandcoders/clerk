@@ -187,7 +187,7 @@ test("GET /members/search should return 404 if authentication but no matches", f
 
   var opts = {
     method: "GET",
-    url: "/members/search?q=*illia*",
+    url: "/members/search?q=*illiuaoeuauea*",
     headers: {
       cookie: biscuit
     }
@@ -195,7 +195,7 @@ test("GET /members/search should return 404 if authentication but no matches", f
 
   server.inject(opts, function (res) {
 
-    t.equals(res.statusCode, 200, "200 returned");
+    t.equals(res.statusCode, 404, "404 returned");
     t.end();
   });
 });
