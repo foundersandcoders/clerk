@@ -34,10 +34,12 @@
     "coverage"
   ],
   "dependencies": {
+    "async": "^0.9.0",
     "d-bap": "^1.0.0",
     "handlebars": "^3.0.1",
     "hapi": "^8.4.0",
     "hapi-auth-cookie": "^2.0.0",
-    "request": "^2.55.0"
+    "request": "^2.55.0",
+    "torf": "^1.0.3"
   }
 }
