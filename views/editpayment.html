@@ -71,7 +71,7 @@
                     <select style="float: right; margin-right: 5%; width: 95%; margin-bottom: 1em; height: 4em;" name="typeCode">
                         <option value="" disabled selected>Payment Types</option>
                         {{#each types}}
-                            <option value="{{this}}" {{#if (this == ../payment.typeCode) }} selected {{/if}}>{{this}}</option>
+                            {{{option this ../payment.typeCode}}}
                         {{/each}}
                     </select>
                 </div>
@@ -87,7 +87,7 @@
                     <input type="number" name="subscription" placeholder="Enter amount" value="{{payment.subscription}}">
                 </div>
             </div>
-            
+
             <div class="frame form-address">
                 <div class="amount-description">
                     <h2>Donation:</h1>

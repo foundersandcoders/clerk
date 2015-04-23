@@ -4,6 +4,7 @@ var test = require("tape");
 var server = require("../lib/server.js");
 var drop = require("./z_drop.js");
 var members = require("rubberbands")("clerk", "members");
+var payments = require("rubberbands")("clerk", "payments");
 
 var cookie;
 
@@ -81,7 +82,7 @@ test("GET /members/1234 should return 200 if correct member id and valid session
 });
 
 
-test("GET /members/1234 should return 404 if correct member id but non existing payment", function (t) {
+test("GET /members/{id}/payments/{id} should return 404 if correct member id but non existing payment", function (t) {
 
   var opts = {
     method: "GET",
@@ -98,6 +99,40 @@ test("GET /members/1234 should return 404 if correct member id but non existing 
   });
 });
 
+test("create payment", function (t) {
+
+  payments.create({
+    memberId: 1234,
+    id: 4444,
+    typeCode: "HO",
+    datePaid: new Date().toISOString(),
+    subscription: 1234,
+    donation: 1234,
+    events: 1234,
+    listReference: "oeua"
+  }, function (res) {
+     t.ok(res.created, "payment created");
+     t.end();
+  });
+});
+
+
+test("GET /members/{id}/payments/{id} should return 404 if correct member id but non existing payment", function (t) {
+
+  var opts = {
+    method: "GET",
+    url: "/members/1234/payments/4444",
+    headers: {
+      cookie: cookie
+    }
+  };
+
+  server.inject(opts, function (res) {
+
+    t.equals(res.statusCode, 200, "200 returned");
+    t.end();
+  });
+});
 
 test("Delete records", function(t) {
   drop(function(res){

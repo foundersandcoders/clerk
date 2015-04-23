@@ -22,7 +22,7 @@ function showEditPayment (req, res) {
         } else {
             var obj = r._source;
             obj.id  = r._id;
-            return res.view("editpayment", {payment:obj});
+          return res.view("editpayment", {payment:obj, types: require("./helpers.js")});
         }
     });
 }
