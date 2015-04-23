@@ -1,5 +1,10 @@
 <div class="show-member bit50">
 
+    <div class="controls">
+        <a class="button" href="/members/{{ member.id }}/edit">Edit member</a>
+        <a class="button" href="#payments">Payment Record</a>
+    </div>
+
     {{#member}}
         <div class="member-field">
             <p>Membership ID</p>
@@ -65,5 +70,9 @@
             <p>{{membershipNotes}}</p>
         </div>
     {{/member}}
-    <a class="button" href="/edit/member/{{ member.id }}">Edit member</a>
+
+    <div id="payments">
+        I am a payment
+    </div>
+
 </div>
