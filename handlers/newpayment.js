@@ -2,6 +2,7 @@
 
 var request = require("request");
 var membersUrl = process.env.MEMBERS_URL || "http://0.0.0.0:8010";
+var clean = require("d-bap");
 
 function newPayment (req, res) {
 
@@ -11,11 +12,14 @@ function newPayment (req, res) {
     headers: {
       authorization: req.auth.credentials.token
     },
-    body: req.payload,
+    body: clean.object(req.payload),
     json: true
   };
 
+
   request(opts, function (e, h, r) {
+
+    console.log(r);
 
     if (e || !r || !r.created) {
       return res({ statusCode: 400, status: "Not found", message: "Payment could not be created" }).code(400);

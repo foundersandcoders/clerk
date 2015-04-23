@@ -6,6 +6,18 @@ div, body {
   padding: 0;
   box-sizing: border-box; }
 
+.no-margin {
+  margin: 0; }
+
+.margin-right {
+  max-width: 700px; }
+
+.left {
+  float: left; }
+
+.right {
+  float: right; }
+
 input[type=button] {
   background-color: #8d8;
   cursor: pointer; }
@@ -158,6 +170,9 @@ select {
 .search-box input[type=submit] {
   width: 20%; }
 
+.default-form {
+  max-width: 700px; }
+
 .admin-home .header {
   text-align: center;
   margin-top: 4.5em; }
@@ -256,23 +271,23 @@ select {
   float: left; }
 
 @media (max-width: 30em) {
-  .bit-1 {
+  .bit1 {
     width: 100%; }
-  .bit-2 {
+  .bit2 {
     width: 100%; }
-  .bit-3 {
+  .bit3 {
     width: 100%; }
-  .bit-4 {
+  .bit4 {
     width: 100%; } }
 
 @media (min-width: 30em) and (max-width: 50em) {
-  .bit-4, .bit-6, .bit-8, .bit-10, .bit-12 {
+  .bit4 {
     width: 50%; }
-  .bit-1, .bit-2, .bit-3, .bit-5, .bit-7, .bit-9, .bit-11 {
+  .bit1, .bit2, .bit3 {
     width: 100%; } }
 
 @media (min-width: 50em) and (max-width: 68.75em) {
-  .bit-2, .bit-7 {
+  .bit2 {
     width: 100%; }
-  .bit-4, .bit-8, .bit-10, .bit-12 {
+  .bit4 {
     width: 50%; } }
