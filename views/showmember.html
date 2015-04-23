@@ -1,41 +1,69 @@
 <div class="show-member bit50">
 
-<!--    {{#each member}}
-    <div class="member-field">
-        <p>{{@key}}</p>
-        <p>{{this}}</p>
-    </div>
-    {{/each}}-->
     {{#member}}
-    <div class="member-field">
-        <p>Membership ID</p>
-        <p>{{id}}</p>
-    </div>
+        <div class="member-field">
+            <p>Membership ID</p>
+            <p>{{id}}</p>
+            <br>
+            <p>Membership Type</p>
+            <p>{{membershipType}}</p>
+            <br>
+            <p>Date Membership Type Changed</p>
+            <p>{{dateMembershipTypeChanged}}</p>
+            <br>
+            <p>Date Life Membership Paid</p>
+            <p>{{dateLifeMembershipPaid}}</p>
+        </div>
 
-    <div class="member-field">
-        <p>Name</p>
-        <p>{{title}}&nbsp;{{firstname}}&nbsp;{{initials}}&nbsp;{{surname}}</p>
-    </div>
-    <div class="member-field">
-        <p>Date of Birth</p>
-        <p>{{member.birthday}}</p>
-    </div>
-    <div class="member-field">
-        <p>Address</p>
-        <p>{{member}}</p>
-        <p>{{this}}</p>
-        <p>{{this}}</p>
-        <p>{{this}}</p>
-        <p>{{this}}</p>
-    </div>
-    <div class="member-field">
-        <p>{{@key}}</p>
-        <p>{{this}}</p>
-    </div>
-    <div class="member-field">
-        <p>{{@key}}</p>
-        <p>{{this}}</p>
-    </div>
+        <div class="member-field">
+            <p>Name</p>
+            <p>{{title}}&nbsp;{{firstname}}&nbsp;{{initials}}&nbsp;{{surname}}</p>
+        </div>
+        <div class="member-field">
+            <p>Date of Birth</p>
+            <p>{{birthday}}</p>
+        </div>
+        <div class="member-field">
+            <p>Contact</p>
+            <p>{{addressLine1}}</p>
+            <p>{{addressLine2}}</p>
+            <p>{{addressLine3}}</p>
+            <p>{{addressLine4}}</p>
+            <p>{{addressLine5}}</p>
+            <p>{{postcode}}</p>
+            <br>
+            <p>{{homePhone}}</p>
+            <p>{{mobilePhone}}</p>
+            <p>{{workPhone}}</p>
+            <br>
+            <p>{{email1}}</p>
+            <p>{{email2}}</p>
+            <p>Bounced? {{emailBounced}}</p>
+        </div>
+        <div class="member-field">
+            <p>Deliverer</p>
+            <p>{{deliverer}}</p>
+        </div>
+        <div class="member-field">
+            <p>GAD</p>
+            <p>{{gad}}</p>
+            {{#if dateGadCancelled}}
+                <p>Date GAD Cancelled</p>
+                <p>{{dateGadCancelled}}</p>
+            {{/if}}
+            {{#if dateGadSigned}}
+                <p>Date GAD Signed</p>
+                <p>{{dateGadSigned}}</p>
+            {{/if}}
+        </div>
+        <div class="member-field">
+            <p>Pays by Standing Order</p>
+            <p>{{paysByStandingOrder}}</p>
+            <p>Online Member</p>
+            <p>{{onlineMember}}</p>
+            <p>Membership Notes</p>
+            <p>{{membershipNotes}}</p>
+        </div>
     {{/member}}
     <a class="button" href="/edit/member/{{ member.id }}">Edit member</a>
 </div>
