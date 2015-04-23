@@ -1,0 +1,147 @@
+<style type="text/css">
+
+    .amount-description {
+        text-align: left;
+        /*width: 35%;*/
+        margin: 0;
+        float: left;
+        margin-top: 9px;
+    }
+
+    .amount {
+        width: 65%;
+        margin: 0;
+        float: right;
+        margin-right: 5%;
+    }
+
+    .note-payment {
+        width: 95%;
+        height: 150px;
+        float: right;
+        margin-right: 5%;
+        font-size: 1em;
+        padding-left: 5px;
+        padding-top: 5px;
+        resize: none;
+        border-color: #ccc;
+    }
+
+    .amount-date {
+        float: right; margin-right: 5%; width: 95%;
+    }
+</style>
+
+<div class="new-member-container">
+
+    <div class="new-member-head">
+        <a href="/admin">BACK</a>
+        <h1>New Member Payment</h1>
+    </div>
+
+    <div class="new-member-form bit50 frame">
+
+
+        <form action="/payments" method="post">
+
+            <div class="frame form-address">
+                <div class="amount-description">
+                    <h2>Member id:</h1>
+                </div>
+                <div class="amount">
+                    <input type="text" name="memberId" placeholder="Membership ID" value="{{ memberId }}">
+                </div>
+            </div>
+            <hr>
+
+            <div class="frame form-address">
+                <div class="amount-description">
+                    <h2>Date:</h1>
+                </div>
+                <div class="amount">
+                    <input style="float: right; margin-right: 5%; width: 95%; margin-bottom: 1em; height: 4em;" type="date" name="datePaid" placeholder="12/12/2014 12:00">
+                </div>
+            </div>
+
+            <div class="frame form-address">
+                <div class="amount-description">
+                    <h2>Payment Type:</h1>
+                </div>
+                <div class="amount">
+                    <select style="float: right; margin-right: 5%; width: 95%; margin-bottom: 1em; height: 4em;" name="typeCode">
+                        <option value="" disabled selected>Payment Types</option>
+                        {{#each types}}
+                            <option value="{{this}}">{{this}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="frame form-address">
+                <div class="amount-description">
+                    <h2>Subscription:</h1>
+                </div>
+                <div class="amount">
+                    <input type="number" name="subscription" placeholder="Enter amount">
+                </div>
+            </div>
+            
+            <div class="frame form-address">
+                <div class="amount-description">
+                    <h2>Donation:</h1>
+                </div>
+                <div class="amount">
+                    <input type="number" name="donation" placeholder="Enter amount">
+                </div>
+            </div>
+
+            <div class="frame form-address">
+                <div class="amount-description">
+                    <h2>Events:</h1>
+                </div>
+                <div class="amount">
+                    <input type="number" name="events" placeholder="Enter amount">
+                </div>
+            </div>
+
+            <hr>
+
+            <!-- <div class="frame form-address">
+                <div class="amount-description">
+                    <h2>Total:</h1>
+                </div>
+                <div class="amount">
+                    <input type="text" name="subscription" placeholder="Enter amount">
+                </div>
+            </div> -->
+
+            <div class="frame form-address">
+                <div class="amount-description">
+                    <h2>List reference:</h1>
+                </div>
+                <div class="amount">
+                    <input type="text" name="listReference" placeholder="Enter amount">
+                </div>
+            </div>
+
+            <div class="frame form-emails">
+                <div class="amount-description">
+                    <h2>Notes:</h1>
+                </div>
+                <div class="amount">
+                    <textarea class="note-payment" name="notes"></textarea>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="frame form-submit">
+                <input type="submit">
+            </div>
+        </form>
+
+    </div>
+
+</div>
