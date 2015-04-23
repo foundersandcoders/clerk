@@ -27,6 +27,48 @@
         height: 100px;
         overflow-y: auto;
     }
+
+    .delete {
+        background-color: #c9302c;
+        text-align: center;
+        width: 60px;
+    }
+
+    .edit {
+        background-color: #f0ad4e;
+        text-align: center;
+        width: 60px;
+    }
+
+    .view {
+        background-color: #6b6;
+        text-align: center;
+        width: 60px;
+    }
+
+    .delete a {
+        text-decoration: none;
+        color: #333;
+        width: 100%;
+        height: 100%;
+        display: block;
+    }
+
+    .edit a {
+        text-decoration: none;
+        color: #333;
+        width: 100%;
+        height: 100%;
+        display: block;
+    }
+
+    .view a {
+        text-decoration: none;
+        color: #333;
+        width: 100%;
+        height: 100%;
+        display: block;
+    }
 </style>
 
 
@@ -223,9 +265,9 @@
                 <td>Payment type</td>
                 <td>Ref</td>
                 <td>Subscription</td>
-                <td>Donation</td>
-                <td>Events</td>
-                <td>Notes</td>
+                <td style="width: 60px;text-align: center;"></td>
+                <td style="width: 60px;text-align: center;"></td>
+                <td style="width: 60px;text-align: center;"></td>
             </tr>
         </table>
         <div class="inner_table">
@@ -236,9 +278,9 @@
                         <td>{{this._source.typeCode}}</td>
                         <td>{{this._source.listReference}}</td>
                         <td>{{this._source.subscription}}</td>
-                        <td>{{this._source.donation}}</td>
-                        <td>{{this._source.events}}</td>
-                        <td>{{this._source.notes}}</td>
+                        <td class="view"><a href="/members/{{../member.id}}/payments/{{this._id}}">View</a></td>
+                        <td class="edit"><a href="/members/{{../member.id}}/payments/{{this._id}}">Edit</a></td>
+                        <td class="delete"><a href="/{{this._source.notes}}">Delete</a></td>
                     </tr>
                 {{/each}}
             </table>
