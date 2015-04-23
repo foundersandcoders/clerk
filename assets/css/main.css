@@ -33,7 +33,7 @@ a.button {
 
 input {
   display: block;
-  font-size: 1em;
+  font-size: 1.0em;
   padding: 0.5em;
   box-sizing: border-box;
   width: 9em;
@@ -141,7 +141,7 @@ select {
     width: 30%;
     margin-right: 3.3%; }
   .new-member-form .form-short {
-    margin-right: 33.33333%; }
+    margin-right: 33.333333%; }
     .new-member-form .form-short input[type=text] {
       width: 30%;
       margin-right: 12.5%; }
@@ -169,9 +169,6 @@ select {
   width: 80%; }
 .search-box input[type=submit] {
   width: 20%; }
-
-.default-form {
-  max-width: 700px; }
 
 .admin-home .header {
   text-align: center;
@@ -273,21 +270,26 @@ select {
 @media (max-width: 30em) {
   .bit1 {
     width: 100%; }
+
   .bit2 {
     width: 100%; }
+
   .bit3 {
     width: 100%; }
+
   .bit4 {
     width: 100%; } }
-
 @media (min-width: 30em) and (max-width: 50em) {
   .bit4 {
     width: 50%; }
+
   .bit1, .bit2, .bit3 {
     width: 100%; } }
-
 @media (min-width: 50em) and (max-width: 68.75em) {
   .bit2 {
     width: 100%; }
+
   .bit4 {
     width: 50%; } }
+
+/*# sourceMappingURL=main.css.map */

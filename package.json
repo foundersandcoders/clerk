@@ -7,8 +7,9 @@
     "test": "tape ./test/*.test.js | tap-spec",
     "jshint": "jshint -c ./.jshintrc --exclude-path .gitignore .",
     "coverage": "istanbul cover tape ./test/*.test.js && istanbul check-coverage --statements 95 --functions 95 --lines 95 --branches 95",
-    "sass": "node-sass ./assets/css/main.scss ./assets/css/main.css",
-    "start": "node index.js"
+    "sass": "sass --watch ./assets/css/main.scss:./assets/css/main.css",
+    "start": "node index.js",
+    "faster": "faster"
   },
   "repository": {
     "type": "git",
@@ -21,6 +22,7 @@
   },
   "homepage": "https://github.com/foundersandcoders/clerk",
   "devDependencies": {
+    "faster": "^3.4.6",
     "istanbul": "^0.3.13",
     "jshint": "^2.7.0",
     "node-sass": "^2.1.1",
