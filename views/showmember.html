@@ -1,3 +1,41 @@
-{{#each member}}
-<p>{{this}}</p>
-{{/each}}
+<div class="show-member bit50">
+
+<!--    {{#each member}}
+    <div class="member-field">
+        <p>{{@key}}</p>
+        <p>{{this}}</p>
+    </div>
+    {{/each}}-->
+    {{#member}}
+    <div class="member-field">
+        <p>Membership ID</p>
+        <p>{{id}}</p>
+    </div>
+
+    <div class="member-field">
+        <p>Name</p>
+        <p>{{title}}&nbsp;{{firstname}}&nbsp;{{initials}}&nbsp;{{surname}}</p>
+    </div>
+    <div class="member-field">
+        <p>Date of Birth</p>
+        <p>{{member.birthday}}</p>
+    </div>
+    <div class="member-field">
+        <p>Address</p>
+        <p>{{member}}</p>
+        <p>{{this}}</p>
+        <p>{{this}}</p>
+        <p>{{this}}</p>
+        <p>{{this}}</p>
+    </div>
+    <div class="member-field">
+        <p>{{@key}}</p>
+        <p>{{this}}</p>
+    </div>
+    <div class="member-field">
+        <p>{{@key}}</p>
+        <p>{{this}}</p>
+    </div>
+    {{/member}}
+    <a class="button" href="/edit/member/{{ member.id }}">Edit member</a>
+</div>

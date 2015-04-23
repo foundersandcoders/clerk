@@ -2,3 +2,13 @@ input[type=button] {
     background-color: #8d8;
     cursor: pointer;
 }
+
+
+a.button {
+  background-color: #8d8;
+  border: 1px solid #8d8;
+  text-decoration: none;
+  color: #000;
+  padding: 0.5em 1.5em;
+  border-radius: 2px;
+  margin: 0.5em; }

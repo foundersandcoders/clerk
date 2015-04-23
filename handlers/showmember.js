@@ -2,6 +2,7 @@
 
 var request = require("request");
 var membersUrl = process.env.MEMBERS_URL || "http://0.0.0.0:8010";
+var clean = require("d-bap");
 
 function showMember (req, res) {
 
@@ -22,7 +23,7 @@ function showMember (req, res) {
     } else {
       member = r._source;
       member.id = r._id;
-      return res.view("showmember", { member: member });
+      return res.view("showmember", { member: clean.object(member) });
     }
   });
 }
