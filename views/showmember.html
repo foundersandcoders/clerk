@@ -69,6 +69,12 @@
             <p>Membership Notes</p>
             <p>{{membershipNotes}}</p>
         </div>
+        {{#if deleted}}
+
+        <form action="/members/{{id}}/reactivate" method="POST">
+            <input type="submit" value="Reactivate Member">
+        </form>
+        {{else}}
         <form action="/members/{{id}}/delete" method="POST">
             <select name="deletionReason">
                 <option value="" disabled selected>Reason for Deletion</option>
@@ -83,6 +89,7 @@
             </select>
             <input type="submit" value="Delete Member">
         </form>
+        {{/if}}
     {{/member}}
 
     <div id="payments">

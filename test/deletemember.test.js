@@ -116,6 +116,69 @@ test("member should hae deleted set to true if member found", function (t) {
   });
 });
 
+test("POST /members/{id}/reactivate should return 302 if not logged in", function (t) {
+
+  var opts = {
+    method: "POST",
+    url: "/members/1234/reactivate"
+  };
+
+  server.inject(opts, function (res) {
+
+    t.equals(res.statusCode, 302, "302 returned");
+    t.end();
+  });
+});
+
+test("POST /members/{id}/reactivate should return 404 if member not found", function (t) {
+
+  var opts = {
+    method: "POST",
+    url: "/members/4321/reactivate",
+    headers: {
+      cookie: cookie
+    }
+  };
+
+  server.inject(opts, function (res) {
+
+    t.equals(res.statusCode, 404, "404 returned");
+    t.end();
+  });
+});
+
+test("POST /members/{id}/reactivate should return 302 if member found", function (t) {
+
+ var opts = {
+    method: "POST",
+    url: "/members/1234/reactivate",
+    headers: {
+      cookie: cookie
+    }
+  };
+
+  server.inject(opts, function (res) {
+
+    t.equals(res.statusCode, 302, "302 returned");
+    t.equals(res.raw.res._headers.location, "/members/1234", "redirect url matches expected");
+    t.end();
+  });
+});
+
+test("member should be reactivated", function (t) {
+
+  members.read(1234, function (res) {
+
+    t.ok(res.found, "member found");
+    t.equals(res._source.deleted, false, "member reactivated");
+    t.notOk(res._source.hasOwnProperty("deletionReason"), "deletionReason property deleted");
+    t.notOk(res._source.hasOwnProperty("deletionDate"), "deletionDate property deleted");
+    t.equals(res._source.message, "test", "original properties unchanged");
+    t.equals(res._source.name, "wil", "original properties unchanged");
+    t.end();
+  });
+});
+
 test("Teardown", function(t) {
   drop(function(res){
     t.equal(res.acknowledged, true, "ALL Records DELETED!");
