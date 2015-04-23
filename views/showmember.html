@@ -3,6 +3,7 @@
         width: 100%;
         height: 300px;
         border: 1px solid #ccc;
+        margin-top: 1em;
         margin-bottom: 1em;
     }
 
@@ -13,13 +14,13 @@
 
     table tr td {
         padding: 5px;
-        border: 1px solid #eee;
+        border: 1px solid #ccc;
         width: 100px;
         word-wrap: break-word;
     }
 
     table.head tr td {
-        background: #eee;
+        background: #ccc;
     }
 
     .inner_table {
@@ -101,53 +102,55 @@
             <p>{{membershipNotes}}</p>
         </div>
 
-        <div class="wrap">
-            <table class="head">
-                <tr>
-                    <td>Date</td>
-                    <td>Payment type</td>
-                    <td>Ref</td>
-                    <td>Subscription</td>
-                    <td>Donation</td>
-                    <td>Events</td>
-                    <td>Notes</td>
-                </tr>
-            </table>
-            <div class="inner_table">
-                <table>
-                    {{#each ../payments}}
-                        <tr>
-                            <td>{{this._source.datePaid}}</td>
-                            <td>{{this._source.typeCode}}</td>
-                            <td>{{this._source.listReference}}</td>
-                            <td>{{this._source.subscription}}</td>
-                            <td>{{this._source.donation}}</td>
-                            <td>{{this._source.events}}</td>
-                            <td>{{this._source.notes}}</td>
-                        </tr>
-                    {{/each}}
-                </table>
-            </div>
-        </div>
-
-        <form action="/members/{{id}}/delete" method="POST">
-            <select name="deletionReason">
-                <option value="" disabled selected>Reason for Deletion</option>
-                <option value="deceased">Deceased</option>
-                <option value="notResponding">Did not respond to reminders</option>
-                <option value="duplicate">Duplicate</option>
-                <option value="dissatisfied">Expressed dissatisfaction</option>
-                <option value="mailReturned">Mail returned to us</option>
-                <option value="moved">Moved away</option>
-                <option value="notifiedTermination">Notified termination</option>
-                <option value="other">Other</option>
-            </select>
-            <input type="submit" value="Delete Member">
-        </form>
+        {{#if deleted}}
+            <form action="/members/{{id}}/reactivate" method="POST">
+                <input type="submit" value="Reactivate Member">
+            </form>
+        {{else}}
+            <form action="/members/{{id}}/delete" method="POST">
+                <select name="deletionReason">
+                    <option value="" disabled selected>Reason for Deletion</option>
+                    <option value="deceased">Deceased</option>
+                    <option value="notResponding">Did not respond to reminders</option>
+                    <option value="duplicate">Duplicate</option>
+                    <option value="dissatisfied">Expressed dissatisfaction</option>
+                    <option value="mailReturned">Mail returned to us</option>
+                    <option value="moved">Moved away</option>
+                    <option value="notifiedTermination">Notified termination</option>
+                    <option value="other">Other</option>
+                </select>
+                <input type="submit" value="Delete Member">
+            </form>
+        {{/if}}
     {{/member}}
 
-    <div id="payments">
-        I am a payment
+    <div class="wrap">
+        <table class="head">
+            <tr>
+                <td>Date</td>
+                <td>Payment type</td>
+                <td>Ref</td>
+                <td>Subscription</td>
+                <td>Donation</td>
+                <td>Events</td>
+                <td>Notes</td>
+            </tr>
+        </table>
+        <div class="inner_table">
+            <table>
+                {{#each payments}}
+                    <tr>
+                        <td>{{this._source.datePaid}}</td>
+                        <td>{{this._source.typeCode}}</td>
+                        <td>{{this._source.listReference}}</td>
+                        <td>{{this._source.subscription}}</td>
+                        <td>{{this._source.donation}}</td>
+                        <td>{{this._source.events}}</td>
+                        <td>{{this._source.notes}}</td>
+                    </tr>
+                {{/each}}
+            </table>
+        </div>
     </div>
 
 </div>
