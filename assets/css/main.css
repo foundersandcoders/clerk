@@ -210,6 +210,11 @@ select {
 .show-member {
   margin-top: 3em;
   margin-left: 25%; }
+  .show-member .controls {
+    height: 3em;
+    width: 100%;
+    margin-bottom: 2em;
+    border-bottom: 1px solid #aaa; }
 
 .member-field {
   width: 100%;
