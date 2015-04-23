@@ -32,77 +32,12 @@
 
 <div class="show-member bit50">
 
+    {{#member}}
+
     <div class="controls">
         <a class="button" href="/members/{{ member.id }}/edit">Edit member</a>
         <a class="button" href="/members/{{ member.id }}/payments">Payment Record</a>
-    </div>
-
-    {{#member}}
-        <div class="member-field">
-            <p>AOEUAOU</p>
-            <p>Membership ID</p>
-            <p>{{id}}</p>
-            <br>
-            <p>Membership Type</p>
-            <p>{{membershipType}}</p>
-            <br>
-            <p>Date Membership Type Changed</p>
-            <p>{{dateMembershipTypeChanged}}</p>
-            <br>
-            <p>Date Life Membership Paid</p>
-            <p>{{dateLifeMembershipPaid}}</p>
-        </div>
-
-        <div class="member-field">
-            <p>Name</p>
-            <p>{{title}}&nbsp;{{firstname}}&nbsp;{{initials}}&nbsp;{{surname}}</p>
-        </div>
-        <div class="member-field">
-            <p>Date of Birth</p>
-            <p>{{birthday}}</p>
-        </div>
-        <div class="member-field">
-            <p>Contact</p>
-            <p>{{addressLine1}}</p>
-            <p>{{addressLine2}}</p>
-            <p>{{addressLine3}}</p>
-            <p>{{addressLine4}}</p>
-            <p>{{addressLine5}}</p>
-            <p>{{postcode}}</p>
-            <br>
-            <p>{{homePhone}}</p>
-            <p>{{mobilePhone}}</p>
-            <p>{{workPhone}}</p>
-            <br>
-            <p>{{email1}}</p>
-            <p>{{email2}}</p>
-            <p>Bounced? {{emailBounced}}</p>
-        </div>
-        <div class="member-field">
-            <p>Deliverer</p>
-            <p>{{deliverer}}</p>
-        </div>
-        <div class="member-field">
-            <p>GAD</p>
-            <p>{{gad}}</p>
-            {{#if dateGadCancelled}}
-                <p>Date GAD Cancelled</p>
-                <p>{{dateGadCancelled}}</p>
-            {{/if}}
-            {{#if dateGadSigned}}
-                <p>Date GAD Signed</p>
-                <p>{{dateGadSigned}}</p>
-            {{/if}}
-        </div>
-        <div class="member-field">
-            <p>Pays by Standing Order</p>
-            <p>{{paysByStandingOrder}}</p>
-            <p>Online Member</p>
-            <p>{{onlineMember}}</p>
-            <p>Membership Notes</p>
-            <p>{{membershipNotes}}</p>
-        </div>
-
+    <!--
         {{#if deleted}}
             <form action="/members/{{id}}/reactivate" method="POST">
                 <input type="submit" value="Reactivate Member">
@@ -123,6 +58,163 @@
                 <input type="submit" value="Delete Member">
             </form>
         {{/if}}
+    -->
+    </div>
+
+        <div class="member-field">
+
+            <div class="field">
+                <p>Membership ID</p>
+            </div>
+            <div class="value">
+                <p>{{id}}</p>
+            </div>
+        </div>
+
+            <br>
+
+        <div class="member-field">
+            <div class="field">
+                <p>Membership Type</p>
+            </div>
+            <div class="value">
+                <p>{{membershipType}}</p>
+            </div>
+        </div>
+            <br>
+
+        <div class="member-field">
+            <div class="field">
+                <p>Date Membership Type Changed</p>
+            </div>
+            <div class="value">
+                <p>{{dateMembershipTypeChanged}}</p>
+            </div>
+        </div>
+            <br>
+
+        <div class="member-field">
+            <div class="field">
+                <p>Date Life Membership Paid</p>
+            </div>
+            <div class="value">
+                <p>{{dateLifeMembershipPaid}}</p>
+            </div>
+        </div>
+
+        <div class="member-field">
+
+            <div class="field">
+                <p>Name</p>
+            </div>
+            <div class="value">
+                <p>{{title}}&nbsp;{{firstname}}&nbsp;{{initials}}&nbsp;{{surname}}</p>
+            </div>
+        </div>
+
+
+        <div class="member-field">
+            <div class="field">
+                <p>Date of Birth</p>
+            </div>
+            <div class="value">
+                <p>{{birthday}}</p>
+            </div>
+        </div>
+
+        <div class="member-field">
+
+            <div class="field">
+                <p>Contact</p>
+            </div>
+
+            <div class="value">
+                <p>{{addressLine1}}</p>
+                <p>{{addressLine2}}</p>
+                <p>{{addressLine3}}</p>
+                <p>{{addressLine4}}</p>
+                <p>{{addressLine5}}</p>
+                <p>{{postcode}}</p>
+                <br>
+                <p>{{homePhone}}</p>
+                <p>{{mobilePhone}}</p>
+                <p>{{workPhone}}</p>
+                <br>
+                <p>{{email1}}</p>
+                <p>{{email2}}</p>
+                <p>Bounced? {{emailBounced}}</p>
+            </div>
+        </div>
+
+        <div class="member-field">
+            <div class="field">
+                <p>Deliverer</p>
+            </div>
+            <div class="value">
+                <p>{{deliverer}}</p>
+            </div>
+        </div>
+
+        <div class="member-field">
+
+            <div class="field">
+                <p>GAD</p>
+            </div>
+            <div class="value">
+                <p>{{gad}}</p>
+            </div>
+        </div>
+            {{#if dateGadCancelled}}
+
+        <div class="member-field">
+            <div class="field">
+                <p>Date GAD Cancelled</p>
+            </div>
+            <div class="value">
+                <p>{{dateGadCancelled}}</p>
+            </div>
+        </div>
+            {{/if}}
+            {{#if dateGadSigned}}
+
+        <div class="member-field">
+            <div class="field">
+                <p>Date GAD Signed</p>
+            </div>
+            <div class="value">
+                <p>{{dateGadSigned}}</p>
+            </div>
+        </div>
+            {{/if}}
+
+        <div class="member-field">
+
+            <div class="field">
+                <p>Pays by Standing Order</p>
+            </div>
+            <div class="value">
+                <p>{{paysByStandingOrder}}</p>
+            </div>
+        </div>
+
+        <div class="member-field">
+            <div class="field">
+                <p>Online Member</p>
+            </div>
+            <div class="value">
+                <p>{{onlineMember}}</p>
+            </div>
+        </div>
+
+        <div class="member-field">
+            <div class="field">
+                <p>Membership Notes</p>
+            </div>
+            <div class="value">
+                <p>{{membershipNotes}}</p>
+            </div>
+        </div>
+
     {{/member}}
 
     <div class="wrap">
