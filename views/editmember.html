@@ -10,7 +10,6 @@
 
         {{#member}}
         <form action="/members/{{id}}/edit" method="post">
-
             <div class="frame bit1 membershipid">
                 <input type="text" name="id" placeholder="Membership ID" value="{{id}}">
             </div>
@@ -65,7 +64,7 @@
                 <input type="text" name="email1" value="{{email1}}" placeholder="Email Address 1">
                 <input type="text" name="email2" value="{{email2}}" placeholder="Email Address 2">
                 <div class="input-with-label">
-                    <input type="checkbox" name="emailBounced" value="{{emailBounced}}"><span id="label">Email bounced?</span>
+                    <input type="checkbox" name="emailBounced" value="true" {{checked emailBounced}}><span id="label">Email bounced?</span>
                 </div>
             </div>
 
@@ -76,15 +75,15 @@
                     <input type="date" name="dateJoined" value="{{dateJoined}}"><span id="label">Date joined</span>
                 </div>
                 <div class="frame">
-                    <select name="membershipType" value="{{membershipType}}">
+                    <select name="membershipType">
                         <option value="" disabled>Membership Type</option>
-                        <option value="Annual Single">Annual Single</option>
-                        <option value="Annual Double">Annual Double</option>
-                        <option value="Annual Family">Annual Family</option>
-                        <option value="Life Single">Life Single</option>
-                        <option value="Life Double">Life Double</option>
-                        <option value="Group Annual">Group Annual</option>
-                        <option value="Corporate Annual">Corporate Annual</option>
+                        <option value="Annual Single" {{selected membershipType "Annual Single"}}>Annual Single</option>
+                        <option value="Annual Double" {{selected membershipType "Annual Double"}}>Annual Double</option>
+                        <option value="Annual Family" {{selected membershipType "Annual Family"}}>Annual Family</option>
+                        <option value="Life Single" {{selected membershipType "Life Single"}}>Life Single</option>
+                        <option value="Life Double" {{selected membershipType "Life Double"}}>Life Double</option>
+                        <option value="Group Annual" {{selected membershipType "Group Annual"}}>Group Annual</option>
+                        <option value="Corporate Annual" {{selected membershipType "Corporate Annual"}}>Corporate Annual</option>
                     </select>
                     <span id="label">Membership Type</span>
                </div>
@@ -101,7 +100,7 @@
             <div class="frame form-gad">
 
                 <div class="input-with-label">
-                    <input type="checkbox" value="{{gad}}" name="gad"><span id="label">GAD</span>
+                    <input type="checkbox" name="gad" value="true" {{checked gad}}><span id="label">GAD</span>
                 </div>
 
                 <div class="input-with-label">
@@ -117,10 +116,10 @@
 
             <div class="frame">
                 <div class="input-with-label">
-                    <input type="checkbox" name="paysByStandingOrder" value="{{paysByStandingOrder}}" ><span id="label">Pays by standing order</span>
+                    <input type="checkbox" name="paysByStandingOrder" value="true" {{checked paysByStandingOrder}}><span id="label">Pays by standing order</span>
                 </div>
                 <div class="input-with-label">
-                    <input type="checkbox" name="onlineMember" value="{{onlineMember}}"><span id="label">Online Member?</span>
+                    <input type="checkbox" name="onlineMember" value="true" {{checked onlineMember}}><span id="label">Online Member?</span>
                 </div>
                 <input type="textbox" name="membershipNotes" value="{{membershipNotes}}" placeholder="Notes on member">
             </div>

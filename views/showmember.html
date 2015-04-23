@@ -69,6 +69,20 @@
             <p>Membership Notes</p>
             <p>{{membershipNotes}}</p>
         </div>
+        <form action="/members/{{id}}/delete" method="POST">
+            <select name="deletionReason">
+                <option value="" disabled selected>Reason for Deletion</option>
+                <option value="deceased">Deceased</option>
+                <option value="notResponding">Did not respond to reminders</option>
+                <option value="duplicate">Duplicate</option>
+                <option value="dissatisfied">Expressed dissatisfaction</option>
+                <option value="mailReturned">Mail returned to us</option>
+                <option value="moved">Moved away</option>
+                <option value="notifiedTermination">Notified termination</option>
+                <option value="other">Other</option>
+            </select>
+            <input type="submit" value="Delete Member">
+        </form>
     {{/member}}
 
     <div id="payments">
