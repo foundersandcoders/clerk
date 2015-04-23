@@ -14,7 +14,7 @@ function showMember (req, res) {
     },
     json: true
   };
-  console.log(opts.url);
+
   request(opts, function (e, h, r) {
 
     var member;
