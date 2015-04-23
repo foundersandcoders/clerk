@@ -1,3 +1,5 @@
+"use strict";
+
 var paymentTypes =  {
     CHQ:   "cheque",
     CASH:  "cash",
