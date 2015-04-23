@@ -55,7 +55,9 @@ test("create member", function (t) {
   members.create({
     id: 1234,
     name: "wil",
-    message: "test"
+    message: "test",
+    paysByStandingOrder: true,
+    membershipType: "Annual Single"
   }, function (res) {
 
     t.ok(res.created, "member created");
