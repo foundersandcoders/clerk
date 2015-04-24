@@ -69,38 +69,93 @@
         height: 100%;
         display: block;
     }
+
+    .delete-member {
+        float: right;
+        background-color: #c9302c;
+        text-align: center;
+        border: 1px solid #c9302c;
+        text-decoration: none;
+        color: #000;
+        padding: 0.5em 1.5em;
+        border-radius: 2px;
+        margin: 0.5em;
+        height: 3em;
+        margin-top: 0px;
+        color: #333;
+    }
+
+    .activate-member {
+        float: right;
+        background-color: #6b6;
+        border: 1px solid #6b6;
+        text-align: center;
+        text-decoration: none;
+        color: #000;
+        padding: 0.5em 1.5em;
+        border-radius: 2px;
+        margin: 0.5em;
+        height: 3em;
+        margin-top: 0px;
+        color: #333;
+    }
+
+    .left {
+        float: left;
+    }
+
+    .right {
+        float: right;
+    }
+
+    .width {
+        width: 150px;
+    }
+
+    .amount-description {
+        text-align: left;
+        /*width: 35%;*/
+        margin: 0;
+        float: left;
+        margin-top: 9px;
+    }
+
+    .amount {
+        width: 65%;
+        margin: 0;
+        float: right;
+        margin-right: 5%;
+    }
 </style>
 
 
 <div class="show-member bit50">
 
     {{#member}}
+        <div class="controls" style="margin-bottom:0px;">
+            <a class="button" style="display:block;float:left;margin:0px;color:#333;" href="/members/{{ id }}/edit">Edit member</a>
 
-    <div class="controls">
-        <a class="button" href="/members/{{ id }}/edit">Edit member</a>
-        <a class="button" href="/members/{{ id }}/payments">Payment Record</a>
-
-        {{#if deleted}}
-            <form action="/members/{{id}}/reactivate" method="POST">
-                <input type="submit" value="Reactivate Member">
-            </form>
-        {{else}}
-            <form action="/members/{{id}}/delete" method="POST">
-                <select name="deletionReason">
-                    <option value="" disabled selected>Reason for Deletion</option>
-                    <option value="deceased">Deceased</option>
-                    <option value="notResponding">Did not respond to reminders</option>
-                    <option value="duplicate">Duplicate</option>
-                    <option value="dissatisfied">Expressed dissatisfaction</option>
-                    <option value="mailReturned">Mail returned to us</option>
-                    <option value="moved">Moved away</option>
-                    <option value="notifiedTermination">Notified termination</option>
-                    <option value="other">Other</option>
-                </select>
-                <input type="submit" value="Delete Member">
-            </form>
-        {{/if}}
-    </div>
+            {{#if deleted}}
+                <form class="button" action="/members/{{id}}/reactivate" method="POST">
+                    <button class="activate-member" type="submit">Reactivate Member</button>
+                </form>
+            {{else}}
+                <form class="button right" action="/members/{{id}}/delete" method="POST">
+                    <select class="left width" name="deletionReason">
+                        <option value="" disabled selected>Reason for Deletion</option>
+                        <option value="deceased">Deceased</option>
+                        <option value="notResponding">Did not respond to reminders</option>
+                        <option value="duplicate">Duplicate</option>
+                        <option value="dissatisfied">Expressed dissatisfaction</option>
+                        <option value="mailReturned">Mail returned to us</option>
+                        <option value="moved">Moved away</option>
+                        <option value="notifiedTermination">Notified termination</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <button class="delete-member" type="submit">Delete Member</button>
+                </form>
+            {{/if}}
+        </div>
 
         <div class="member-field">
 
@@ -112,8 +167,6 @@
             </div>
         </div>
 
-            <br>
-
         <div class="member-field">
             <div class="field">
                 <p>Membership Type</p>
@@ -122,7 +175,6 @@
                 <p>{{membershipType}}</p>
             </div>
         </div>
-            <br>
 
         <div class="member-field">
             <div class="field">
@@ -132,7 +184,6 @@
                 <p>{{dateMembershipTypeChanged}}</p>
             </div>
         </div>
-            <br>
 
         <div class="member-field">
             <div class="field">
@@ -152,7 +203,6 @@
                 <p>{{title}}&nbsp;{{firstname}}&nbsp;{{initials}}&nbsp;{{surname}}</p>
             </div>
         </div>
-
 
         <div class="member-field">
             <div class="field">
@@ -255,8 +305,16 @@
                 <p>{{membershipNotes}}</p>
             </div>
         </div>
-
     {{/member}}
+
+    <div class="frame form-address" style="margin-top:10px;">
+        <div class="amount-description">
+            <h2>Payment history:</h1>
+        </div>
+        <div class="amount" style="margin:0px;">
+            <a class="button" style="display:block;float:right;margin:0px;color:#333;margin-top:10px;" href="/members/{{ member.id }}/payments">Add payment</a>
+        </div>
+    </div>
 
     <div class="wrap">
         <table class="head">
