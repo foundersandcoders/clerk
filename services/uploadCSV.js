@@ -1,6 +1,5 @@
 "use strict";
 
-
 var parseCSV = require("./csvparser");
 
 var bluprintPayments = {
