@@ -178,10 +178,3 @@ test("member should be reactivated", function (t) {
     t.end();
   });
 });
-
-test("Teardown", function(t) {
-  drop(function(res){
-    t.equal(res.acknowledged, true, "ALL Records DELETED!");
-    t.end();
-  }).end();
-});

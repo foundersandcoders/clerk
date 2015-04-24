@@ -231,11 +231,3 @@ test("PUT /payments/{id} should return 400 if payments is IVALID", function (t) 
     t.end();
   });
 });
-
-
-test("Teardown", function(t) {
-  drop(function(res){
-    t.equal(res.acknowledged, true, "ALL Records DELETED!");
-    t.end();
-  }).end();
-});

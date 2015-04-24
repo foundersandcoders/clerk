@@ -6,11 +6,15 @@ var drop = require("./z_drop");
 
 var biscuit;
 
-test("Teardown", function(t) {
-  drop(function(res){
-    t.equal(res.acknowledged, true, "ALL Records DELETED!");
+test("wipe user database", function (t) {
+
+  drop(function (res) {
+
+    console.log(res);
+    t.ok(res.acknowledged, true, "all users deleted");
     t.end();
-  }).end();
+
+  });
 });
 
 test("POST /signup should create account and return cookie with 302", function (t) {
@@ -27,7 +31,7 @@ test("POST /signup should create account and return cookie with 302", function (
   };
 
   server.inject(request, function (res) {
-
+    console.log(res);
     t.equals(res.statusCode, 302, "302 returned");
     t.ok(res.headers["set-cookie"], "cookie returned");
     t.end();

@@ -167,10 +167,3 @@ test("POST /members/{id}/edit should return 404 if logged in and member not foun
 		t.end();
 	});
 });
-
-test("Teardown", function(t) {
-  drop(function(res){
-    t.equal(res.acknowledged, true, "ALL Records DELETED!");
-    t.end();
-  }).end();
-});

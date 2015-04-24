@@ -222,11 +222,3 @@ test("GET /addmember should respond with 302 if session has ended", function (t)
 		t.end();
 	});
 });
-
-
-test("Teardown", function(t) {
-  drop(function(res){
-    t.equal(res.acknowledged, true, "ALL Records DELETED!");
-    t.end();
-  }).end();
-});

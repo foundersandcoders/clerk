@@ -96,11 +96,3 @@ test("GET /members/1234 should return 404 if incorrect member id and valid sessi
     t.end();
   });
 });
-
-
-test("Delete records", function(t) {
-  drop(function(res){
-    t.equal(res.acknowledged, true, "ALL Records DELETED!");
-    t.end();
-  }).end();
-});

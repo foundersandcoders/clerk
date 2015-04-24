@@ -199,11 +199,3 @@ test("GET /members/search should return 404 if authentication but no matches", f
     t.end();
   });
 });
-
-
-test("Teardown", function(t) {
-  drop(function(res){
-    t.equal(res.acknowledged, true, "ALL Records DELETED!");
-    t.end();
-  }).end();
-});

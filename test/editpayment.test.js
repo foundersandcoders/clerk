@@ -133,10 +133,3 @@ test("GET /members/{id}/payments/{id} should return 404 if correct member id but
     t.end();
   });
 });
-
-test("Delete records", function(t) {
-  drop(function(res){
-    t.equal(res.acknowledged, true, "ALL Records DELETED!");
-    t.end();
-  }).end();
-});
