@@ -107,7 +107,7 @@ test("member should hae deleted set to true if member found", function (t) {
   members.read(1234, function (res) {
 
     t.ok(res.found, "member found");
-    t.equals(res._source.deleted, true, "deleted set to true");
+    t.equals(res._source.status, "deleted", "status set to deleted");
     t.equals(res._source.deletionReason, "deceased", "deletionReason set");
     t.equals(res._source.deletionDate, new Date().toISOString().split("T")[0], "deletionDate set");
     t.equals(res._source.message, "test", "original properties unchanged");
@@ -170,7 +170,7 @@ test("member should be reactivated", function (t) {
   members.read(1234, function (res) {
 
     t.ok(res.found, "member found");
-    t.equals(res._source.deleted, false, "member reactivated");
+    t.equals(res._source.status, "active", "member reactivated");
     t.notOk(res._source.hasOwnProperty("deletionReason"), "deletionReason property deleted");
     t.notOk(res._source.hasOwnProperty("deletionDate"), "deletionDate property deleted");
     t.equals(res._source.message, "test", "original properties unchanged");

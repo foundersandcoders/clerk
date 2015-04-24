@@ -7,6 +7,8 @@ var clean = require("d-bap");
 function newMember (req, res) {
 
   var member = clean.object(req.payload);
+  member.status = "active";
+
   var opts = {
     method: "POST",
     url: membersUrl + "/members",

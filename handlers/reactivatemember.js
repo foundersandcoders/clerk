@@ -23,7 +23,7 @@ function reactivateMember (req, res) {
     } else {
       member = r._source;
       member.id = r._id;
-      member.deleted = false;
+      member.status = "active";
       delete member.deletionReason;
       delete member.deletionDate;
 

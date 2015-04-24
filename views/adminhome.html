@@ -11,6 +11,10 @@
 
         <div class="frame bit1 search-box">
             <form action="/members/search" method="POST">
+                <select name="status">
+                    <option value="active" selected>Active</option>
+                    <option value="deleted">Deleted</option>
+                </select>
                 <input type="text" name="query" placeholder="Enter member number or name here" id="search-field">
                 <input type="submit" value="search" id="search-button">
             </form>

@@ -54,7 +54,8 @@ test("POST /members/search should return 302 if no authentication", function (t)
 test("POST /members/search should return 302 if authentication", function (t) {
 
   var payload = {
-    query: "eeee"
+    query: "eeee",
+    status: "deleted"
   };
   var opts = {
     method: "POST",
@@ -67,7 +68,7 @@ test("POST /members/search should return 302 if authentication", function (t) {
   server.inject(opts, function (res) {
 
     t.equals(res.statusCode, 302, "302 returned");
-    t.equals(res.raw.res._headers.location, "/members/search?q=*eeee*");
+    t.equals(res.raw.res._headers.location, "/members/search?q=*eeee* AND status:deleted");
     t.end();
   });
 });
@@ -76,7 +77,8 @@ test("create member", function (t) {
 
   members.create({
     id: 14141,
-    firstname: "william"
+    firstname: "william",
+    status: "active"
   }, function (res) {
 
     t.ok(res.created, "member created");
@@ -108,7 +110,8 @@ test("POST /members/search should return 302 if member number provided", functio
 
 
   var payload = {
-    query: "14141"
+    query: "14141",
+    status: "deleted"
   };
   var opts = {
     method: "POST",
@@ -131,7 +134,8 @@ test("POST /members/search should return 302 if member number provided", functio
 
 
   var payload = {
-    query: "illi"
+    query: "illi",
+    status: "active"
   };
   var opts = {
     method: "POST",
@@ -145,7 +149,7 @@ test("POST /members/search should return 302 if member number provided", functio
   server.inject(opts, function (res) {
 
     t.equals(res.statusCode, 302, "302 returned");
-    t.equals(res.raw.res._headers.location, "/members/search?q=*illi*");
+    t.equals(res.raw.res._headers.location, "/members/search?q=*illi* AND status:active");
     t.end();
   });
 });

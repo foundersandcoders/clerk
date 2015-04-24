@@ -135,7 +135,7 @@
         <div class="controls" style="margin-bottom:0px;">
             <a class="button" style="display:block;float:left;margin:0px;color:#333;" href="/members/{{ id }}/edit">Edit member</a>
 
-            {{#if deleted}}
+            {{#if deletionReason}}
                 <form class="button" action="/members/{{id}}/reactivate" method="POST">
                     <button class="activate-member" type="submit">Reactivate Member</button>
                 </form>

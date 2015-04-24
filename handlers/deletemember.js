@@ -22,7 +22,7 @@ function deleteMember (req, res) {
     } else {
       member = r._source;
       member.id = r._id;
-      member.deleted = true;
+      member.status = "deleted";
       member.deletionReason = req.payload.deletionReason;
       member.deletionDate = new Date().toISOString().split("T")[0];
 
