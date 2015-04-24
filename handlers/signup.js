@@ -4,7 +4,7 @@ var request = require("request");
 
 function signup (req, res) {
 
-  var url = "http://0.0.0.0:8000/register";
+  var authUrl = process.env.AUTH_URL || "http://0.0.0.0:8000";
 
 
   if (req.payload.password !== req.payload.cpassword) {
@@ -12,7 +12,7 @@ function signup (req, res) {
   }
 
   request.post({
-    url: url,
+    url: authUrl + "/register",
     body: req.payload,
     json: true
   }, function (e, h) {
