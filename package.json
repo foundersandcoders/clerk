@@ -37,6 +37,7 @@
   ],
   "dependencies": {
     "async": "^0.9.0",
+    "babyparse": "^0.4.3",
     "d-bap": "^1.0.0",
     "handlebars": "^3.0.1",
     "hapi": "^8.4.0",
