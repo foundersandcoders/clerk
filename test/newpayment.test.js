@@ -68,7 +68,6 @@ test("POST /signup should create account and return cookie with 302", function (
   });
 });
 
-
 test("GET /addmember should respond with 200 if logged in as admin", function (t) {
 
 	var request = {
@@ -131,6 +130,24 @@ test("POST /members should return 302 member successfully created", function (t)
 
     t.end();
 	});
+});
+
+test("GET /members/{id}/payments should return 200 if logged in", function (t) {
+
+  var opts = {
+    method: "GET",
+    url: "/members/12345/payments",
+    headers: {
+      cookie: biscuit
+    }
+  };
+
+  server.inject(opts, function (res) {
+
+    t.equals(res.statusCode, 200, "200 returned");
+    t.end();
+  });
+
 });
 
 

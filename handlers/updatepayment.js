@@ -16,8 +16,8 @@ function newPayment (req, res) {
   };
 
   request(opts, function (e, h, r) {
-
-    if (e || !r || r.created || h.statusCode !== 200) {
+    console.log(e, h, r);
+    if (e || !r || h.statusCode !== 200) {
       return res({ statusCode: 400, status: "Not found", message: "Payment could not be updated" }).code(400);
     } else {
       return res.redirect("/members/" + req.payload.memberId);

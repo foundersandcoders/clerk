@@ -30,23 +30,6 @@ test("GET /addmember should respond with 302 if not logged in", function (t) {
 	});
 });
 
-test("POST /members should return 302 if not logged in", function (t) {
-
-  var opts = {
-		method: "POST",
-		url: "/members",
-    payload: {
-      name: "HELOLOL"
-    }
-	};
-
-  server.inject(opts, function (res) {
-
-    t.equals(res.statusCode, 302, "302 received");
-		t.end();
-	});
-});
-
 test("POST /signup should create account and return cookie with 302", function (t) {
 
   var payload = {
@@ -144,7 +127,7 @@ test("member should exist in database", function (t) {
 });
 
 
-test("POST /payments should return 302 member successfully created", function (t) {
+test("POST /payments should return 302 if successfully created", function (t) {
 
   var opts = {
     method: "POST",
@@ -174,7 +157,9 @@ test("payment should exist in database", function (t) {
 
   // wait because ES not searchable within ~1000ms
   setTimeout(function () {
+
     payments.search("memberId", 12345, function (res) {
+
       // console.log(res.hits);
       t.equals(res.hits.hits.length, 1, "payment exists in database");
       paymentId = res.hits.hits[0]._id;
@@ -184,10 +169,10 @@ test("payment should exist in database", function (t) {
 });
 
 
-test("PUT /payments/{id} should return 302 if valid token and valid payment", function (t){
+test("POST /payments/{id} should return 302 if valid token and valid payment", function (t){
 
   var opts = {
-    method: "PUT",
+    method: "POST",
     url: "/payments/" + paymentId,
     headers: {
       cookie: biscuit
@@ -209,10 +194,10 @@ test("PUT /payments/{id} should return 302 if valid token and valid payment", fu
 });
 
 
-test("PUT /payments/{id} should return 400 if payments is IVALID", function (t) {
+test("POST /payments/{id} should return 400 if payments is INVALID", function (t) {
 
   var opts = {
-    method: "PUT",
+    method: "POST",
     url: "/payments/" + paymentId,
     headers: {
       cookie: biscuit
@@ -231,3 +216,42 @@ test("PUT /payments/{id} should return 400 if payments is IVALID", function (t) 
     t.end();
   });
 });
+
+test("POST /payments/{id}/delete should return 404 if payments ID is invalid", function (t) {
+
+  var opts = {
+    method: "POST",
+    url: "/payments/9999/delete",
+    headers: {
+      cookie: biscuit
+    }
+  };
+
+  server.inject(opts, function (res) {
+
+    t.equals(res.statusCode, 404, "404 received");
+    t.end();
+  });
+});
+
+test("POST /payments/{id}/delete should return 302 if payments ID is found", function (t) {
+
+  var opts = {
+    method: "POST",
+    url: "/payments/" + paymentId + "/delete",
+    headers: {
+      cookie: biscuit
+    },
+    payload: {
+      memberId: 12345
+    }
+  };
+
+  server.inject(opts, function (res) {
+
+    t.equals(res.statusCode, 302, "302 received");
+    t.equals(res.raw.res._headers.location, "/admin", "redirect url matches expected=");
+    t.end();
+  });
+});
+

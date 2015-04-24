@@ -338,7 +338,7 @@
                         <td>{{this._source.subscription}}</td>
                         <td class="view"><a href="/members/{{../member.id}}/payments/{{this._id}}">View</a></td>
                         <td class="edit"><a href="/members/{{../member.id}}/payments/{{this._id}}">Edit</a></td>
-                        <td class="delete"><a href="/{{this._source.notes}}">Delete</a></td>
+                        <td class="delete"><form action="/payments/{{this._source.notes}}/delete" method="POST"><input type="submit" value="Delete"></form>/td>
                     </tr>
                 {{/each}}
             </table>

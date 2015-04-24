@@ -1,13 +1,14 @@
 "use strict";
 
-var membersUrl = process.env.MEMBERS_URL || "http://0.0.0.0:8010";
 var request = require("request");
+var membersUrl = process.env.MEMBERS_URL || "http://0.0.0.0:8010";
 
-function deleteMember (req, res) {
+function newPayment (req, res) {
+
 
   var opts = {
     method: "GET",
-    url: membersUrl + "/members/" + req.params.id,
+    url: membersUrl + "/payments/" + req.params.id,
     json: true,
     headers: {
       authorization: req.auth.credentials.token
@@ -16,20 +17,18 @@ function deleteMember (req, res) {
 
   request(opts, function (e, h, r) {
 
-    var member;
+    var payment;
     if (e || h.statusCode === 404 || !r || !r.found) {
       return res(r).code(404);
     } else {
-      member = r._source;
-      member.id = r._id;
-      member.status = "deleted";
-      member.deletionReason = req.payload.deletionReason;
-      member.deletionDate = new Date().toISOString().split("T")[0];
+      payment = r._source;
+      payment.id = r._id;
+      payment.status = "deleted";
 
       opts = {
         method: "PUT",
-        url: membersUrl + "/members/" + req.params.id,
-        body: member,
+        url: membersUrl + "/payments/" + req.params.id,
+        body: payment,
         json: true,
         headers: {
           authorization: req.auth.credentials.token
@@ -38,15 +37,14 @@ function deleteMember (req, res) {
 
       request(opts, function (e, h, r) {
 
-        console.log(r);
         if (e || h.statusCode === 404 || !r) {
-          return res({statusCode:500,status:"Server error", message: "Member not deleted"}).code(500);
+          return res({statusCode:500,status:"Server error", message: "Payment not deleted"}).code(500);
         } else {
           return res.redirect("/admin");
         }
       });
     }
-  });
+    });
 }
 
-module.exports = deleteMember;
+module.exports = newPayment;
