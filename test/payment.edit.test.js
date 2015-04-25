@@ -9,7 +9,8 @@ var payments = require("rubberbands")("clerk", "payments");
 var cookie;
 
 test("Delete records", function(t) {
-  drop(function(res){
+  drop(function (res){
+
     t.equal(res.acknowledged, true, "ALL Records DELETED!");
     t.end();
   }).end();
@@ -111,6 +112,7 @@ test("create payment", function (t) {
     events: 1234,
     listReference: "oeua"
   }, function (res) {
+    
      t.ok(res.created, "payment created");
      t.end();
   });
