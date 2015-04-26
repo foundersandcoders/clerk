@@ -3,4 +3,4 @@
 
 Membership management for Friends of Chichester Harbour
 
-clerk currently requires [bouncer](https://github.com/foundersandcoders/) to be running.
+clerk currently requires [bouncer](https://github.com/foundersandcoders/bouncer) and [beekeeper](https://github.com/foundersandcoders/beekeeper) to be running.
