@@ -32,6 +32,9 @@ function showMember (req, res) {
                     if (e || (h.statusCode === 404) || !r) {
                         callback(arguments, null);
                     } else {
+
+                        console.log("Member: ", r);
+
                         callback(null, r);
                     }
                 });
@@ -41,12 +44,17 @@ function showMember (req, res) {
                     if (e || (h.statusCode === 404) || !r) {
                         callback(arguments, null);
                     } else {
+
+                        console.log("Payments: ", r);
+
                         callback(null, r);
                     }
                 });
             }
         ],
         function (err, results){
+
+            console.log("Results: ", results);
 
             if(err){
                 return res({ statusCode: 404, status: "Not found", message: "Member could not be found" }).code(404);

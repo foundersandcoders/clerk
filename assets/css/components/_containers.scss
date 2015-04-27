@@ -1,0 +1,20 @@
+.container-large {
+	max-width: 1050px;
+	width: 100%;
+	margin: auto;
+	overflow: hidden;
+	margin-top: 80px;
+	.section-label {
+		position: relative;
+		overflow: hidden;
+		padding-bottom: 13px;
+		border-bottom: 1px solid #eee;
+	}
+}
+
+.container-small {
+	max-width: 320px;
+	width: 100%;
+	margin: auto;
+	margin-top: 40px;
+}

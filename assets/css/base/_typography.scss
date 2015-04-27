@@ -1,0 +1,36 @@
+h1 {
+	font-size: 42px;
+	line-height: 120%;
+}
+
+h2 {
+	font-size: 28px;
+	line-height: 120%;
+}
+
+h3 {
+	font-size: 24px;
+	line-height: 120%;
+}
+
+.meta {
+	font-size: 20px;
+	line-height: 120%;
+	font-family: 'Crimson Text', Georgia, serif;
+	color: inherit;
+}
+
+.inactive {
+	color: #ccc;
+}
+
+a {
+  color: #ccc;
+  text-decoration: none;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+a:hover {
+	color: #cccc00;
+}

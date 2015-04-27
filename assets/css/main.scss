@@ -1,10 +1,14 @@
 @import
 
+  'base/variables',
 	'base/colours',
  	'base/typography',
 	'base/reset',
 
   'helpers',
+
+  'components/containers',
+  'components/footer',
 	'components/errormessages',
 	'components/buttons',
 	'components/forms',
@@ -15,5 +19,4 @@
   'components/showmember',
 
   'layout/layout'
-
 ;

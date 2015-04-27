@@ -6,13 +6,15 @@ var clean = require("d-bap");
 
 function newPayment (req, res) {
 
+  var payment = clean.object(req.payload);
+
   var opts = {
     method: "POST",
     url: membersUrl + "/payments",
     headers: {
       authorization: req.auth.credentials.token
     },
-    body: clean.object(req.payload),
+    body: payment,
     json: true
   };
 

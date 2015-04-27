@@ -21,6 +21,8 @@ function newMember (req, res) {
 
   request(opts, function (e, h, r) {
 
+    console.log(r);
+
     if (e || !r || !r.created) {
       return res({ statusCode: 400, status: "Bad request", message: "Member could not be created" }).code(400);
     } else {

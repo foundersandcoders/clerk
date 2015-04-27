@@ -172,7 +172,7 @@ test("POST /payments/{id} should return 302 if valid token and valid payment", f
 
   var opts = {
     method: "POST",
-    url: "/payments/" + paymentId,
+    url: "/payments/" + paymentId + "/edit",
     headers: {
       cookie: biscuit
     },
@@ -197,7 +197,7 @@ test("POST /payments/{id} should return 400 if payments is INVALID", function (t
 
   var opts = {
     method: "POST",
-    url: "/payments/" + paymentId,
+    url: "/payments/" + paymentId + "/edit",
     headers: {
       cookie: biscuit
     },

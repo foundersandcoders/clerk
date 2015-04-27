@@ -18,6 +18,8 @@ function search (req, res) {
 
   request(opts, function (e, h, r) {
 
+    console.log("search ", r);
+
     if (e || h.statusCode === 404 || !r) {
       return res(r).code(404);
     } else {

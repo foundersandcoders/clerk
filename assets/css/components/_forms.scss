@@ -1,14 +1,144 @@
+.topSectionDividor {
+  margin-top: 60px;
+  border-bottom: 1px solid #eee;
+  height: 44px;
+}
+
+.innerSectionContainer {
+  max-width: 780px;
+  width: 100%;
+  margin: auto;
+  overflow: hidden;
+}
+
+.inner-section-divider-micro {
+  margin-top: 15px;
+}
+
+.inner-section-divider-small {
+  margin-top: 30px;
+}
+
+.inner-section-divider-medium {
+  margin-top: 50px;
+}
+
+.couterContainer {
+  overflow: hidden;
+  margin-bottom: 7px;
+  h3 {
+    display: inline;
+  }
+}
+
+.short {
+  width: 100%;
+  max-width: 375px;
+}
+
+.short-relative {
+  width: 48%;
+}
+
+.use-max {
+  width: 100%;
+}
+
+.no-margin {
+  margin: 0px;
+}
+
+.no-padding {
+  padding: 0px;
+}
+
+select {
+  display: block;
+  font-family: 'Crimson Text', Georgia, serif;
+  font-size: 24px;
+  color: inherit;
+  display: block;
+  border: 1px solid #ccc;
+  padding-left: 15px;
+  margin-top: 7px;
+  outline: 0px;
+  -webkit-appearance: none;
+  height: 60px;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  background-color: white;
+  border-radius: 0px;
+}
+
 input {
   display: block;
-  font-size: 1.0em;
+  font-size: 24px;
   padding: 0.5em;
   box-sizing: border-box;
-  width: 9em;
+  width: 100%;
   border: 1px solid #ccc;
   border-radius: 2px;
   outline: 0;
-  height: 3em;
+  height: 60px;
 }
+
+
+textarea {
+  color: inherit;
+  font-family: 'Crimson Text', Georgia, serif;
+  font-size: 24px;
+  display: block;
+  border: 1px solid #ccc;
+  padding-left: 15px;
+  padding-top: 10px;
+  margin-top: 7px;
+  outline: 0px;
+  -webkit-appearance: none;
+  width: 100%;
+  height: 150px;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  resize: none;
+}
+
+
+.wrap {
+  width: 100%;
+  height: 500px;
+  border-bottom: 1px solid #eee;
+  border-right: 0px;
+}
+
+.wrap table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+table tr td {
+  height: 60px;
+  padding: 5px;
+  width: 100px;
+  word-wrap: break-word;
+}
+
+table.head tr td {
+  text-align: center;
+  height: 60px;
+  border-bottom: 1px solid #eee;
+}
+
+.central-text {
+  text-align: center;
+}
+
+.inner_table {
+  height: 375px;
+  overflow-y: auto;
+}
+
+
 
 input[type=text], input[type=password] {
   background-color: #fff;
@@ -30,15 +160,6 @@ input[type=submit] {
   cursor: pointer;
   border-radius: 2px; }
 
-select {
-  height: 3em;
-  width: 9em;
-  padding: 0.5em;}
-
-.new-member-container {
-  overflow: auto;
-  background-color: #fdfdfd;
-  padding: 2em 1em;}
 
 .new-member-head {
   text-align: center;
@@ -141,12 +262,3 @@ select {
     float: right;
     margin-right: 33.333%;}
 }
-
-.search-box {
-  input {
-    float: left;
-    margin-top: 1em; }
-  input[type=text] {
-    width: 80%; }
-  input[type=submit] {
-    width: 20%; }}

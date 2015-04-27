@@ -1,12 +1,23 @@
-<div class="login-form frame bit25">
+<div class="container-large">
 
-    <form action="/signup" method="post">
+	<div class="inner-section-divider-small"></div>
 
-        <input type="text" name="email" placeholder="email" tabindex=1 class="bit1">
-        <input type="password" name="password" placeholder="password" tabindex=2 class="bit1">
-        <input type="password" name="cpassword" placeholder="confirm password" tabindex=2 class="bit1">
-        <input type="submit" tabindex=3 class="bit3">
+	<div class="section-label">
+		<h1>Sign Up</h1>
+	</div>
 
-    </form>
+	<div class="inner-section-divider-medium"></div>
 
+	<div class="container-small">
+		<form action="/signup" method="post">
+
+			<input type="text" name="email" tabindex=1 placeholder="Email adress">
+			<div class="inner-section-divider-small"></div>
+			<input type="password" name="password" tabindex=2 placeholder="Password">
+			<div class="inner-section-divider-small"></div>
+			<input type="password" name="cpassword" tabindex=2 placeholder="Confirm Password">
+			<div class="inner-section-divider-small"></div>
+			<button type="submit" id="button_sign_in" class="btn-primary">Sign up</button>
+		</form>
+	</div>
 </div>
