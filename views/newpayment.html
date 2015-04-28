@@ -15,7 +15,7 @@
                 <div class="couterContainer">
                     <h3>Member id*</h3>
                 </div>
-                <input class="short" name="memberId" placeholder="Member id" value="{{ memberId }}">
+                <input id="member-id" class="short" name="memberId" placeholder="Member id" value="{{ memberId }}">
             </div>
         </div>
 
@@ -24,7 +24,7 @@
                 <div class="couterContainer">
                     <h3>Date</h3>
                 </div>
-                <input class="short" type="date" name="datePaid">
+                <input id="payment-date" class="short" type="date" name="datePaid">
             </div>
         </div>
 
@@ -39,7 +39,7 @@
                 <div class="couterContainer">
                     <h3>Payment type</h3>
                 </div>
-                <select name="typeCode" class="short" style="color:#ccc;">
+                <select id="payment-type" name="typeCode" class="short" style="color:#ccc;">
                     <option class="meta" value="" disabled="" selected="">Click to select</option>
                     {{#each types}}
                         <option value="{{this}}">{{this}}</option>
@@ -53,7 +53,7 @@
                 <div class="couterContainer">
                     <h3>Subscription</h3>
                 </div>
-                <input class="short" name="subscription" placeholder="Enter subscription amount">
+                <input id="subscription-amout" class="short" name="subscription" placeholder="Enter subscription amount">
             </div>
         </div>
 
@@ -62,7 +62,7 @@
                 <div class="couterContainer">
                     <h3>Donation</h3>
                 </div>
-                <input class="short" name="donation" placeholder="Enter donation amount">
+                <input id="subscription-donation" class="short" name="donation" placeholder="Enter donation amount">
             </div>
         </div>
 
@@ -71,7 +71,7 @@
                 <div class="couterContainer">
                     <h3>Events</h3>
                 </div>
-                <input class="short" name="events" placeholder="Enter event amount">
+                <input id="events-amount" class="short" name="events" placeholder="Enter event amount">
             </div>
         </div>
 
@@ -98,7 +98,7 @@
 
         <div class="innerSectionContainer">
             <div class="inner-section-divider-medium">
-                <button id="save_person" class="btn-primary left btn-standard-width" type="submit">Save</button>
+                <button id="create-payment-btn" class="btn-primary left btn-standard-width" type="submit">Save</button>
                 <a href="javascript:history.back();">
                     <button id="cancel_person" class="btn-secondary right btn-standard-width">Cancel</button>
                 </a>

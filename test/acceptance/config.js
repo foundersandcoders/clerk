@@ -13,6 +13,7 @@ module.exports = {
 		require("./auth/signUp.js"),
 		require("./auth/signIn.js"),
 		require("./admin/createMember.js"),
+		require("./admin/createPayment.js")
 		// require("./helpers/end.js")
 	],
 	service: {
@@ -30,7 +31,8 @@ module.exports = {
 	admin: {
 		manageMember: require("./admin/a.page.js").manageMember,
 		addMember:    require("./admin/a.page.js").addMember,
-		showMember:   require("./admin/a.page.js").showMember
+		showMember:   require("./admin/a.page.js").showMember,
+		addPayment:   require("./admin/a.page.js").addPayment
 	},
 	layout: {
 		navbar: require("./helpers/layout").Navbar

@@ -3,7 +3,8 @@
 module.exports = {
 	manageMember: manageMember,
 	addMember:    addMember,
-	showMember:   showMember
+	showMember:   showMember,
+	addPayment:   addPayment
 };
 
 function manageMember (){
@@ -40,6 +41,22 @@ function showMember (){
 	that.lastName  = "#last-name";
 	that.title     = "#title";
 	that.birthday  = "#birthday";
+
+	return that;
+}
+
+function addPayment (){
+
+	var that  = {};
+
+	that.addPaymentBtn = "#add-payment-btn";
+	that.id            = "#member-id";
+	that.date   = "#payment-date";
+	that.types   = "#payment-type";
+	that.subscription  = "#subscription-amout";
+	that.donation      = "#subscription-donation";
+	that.events        = "#events-amount";
+	that.submit     = "#create-payment-btn";
 
 	return that;
 }

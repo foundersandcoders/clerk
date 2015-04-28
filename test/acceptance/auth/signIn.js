@@ -31,7 +31,7 @@ module.exports = function (params, browser, test){
 			browser.click(signIn.signInButton);
 
 			browser.url(function (err, res){
-				st.equals(res.value, params.service.clerk + "/", "login url");
+				st.equals(res.value, params.service.clerk + "/", "admin url");
 				st.end();
 			});
 		});

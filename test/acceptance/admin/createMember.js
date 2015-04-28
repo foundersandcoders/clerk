@@ -36,9 +36,16 @@ module.exports = function (params, browser, test){
 
 		t.test("- see information of the new created member", function (st){
 
+			st.plan(3);
+
 			browser.getText(showMember.firstName, function (err, text){
 				st.equals(text, "Besart", "right first name");
-				st.end();
+			});
+			browser.getText(showMember.lastName, function (err, text){
+				st.equals(text, "Hoxhaj", "right last name");
+			});
+			browser.getText(showMember.title, function (err, text){
+				st.equals(text, "Mr.", "right title");
 			});
 		});
 	});
