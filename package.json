@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "tape ./test/*.test.js | tap-spec",
+    "end2end": "node ./test/acceptance/index.js",
     "jshint": "jshint -c ./.jshintrc --exclude-path .gitignore .",
     "coverage": "istanbul cover tape ./test/*.test.js && istanbul check-coverage --statements 95 --functions 95 --lines 95 --branches 95",
     "sass": "sass --watch ./assets/css/main.scss:./assets/css/main.css",
@@ -29,7 +30,8 @@
     "pre-commit": "^1.0.6",
     "rubberbands": "^1.0.2",
     "tap-spec": "^3.0.0",
-    "tape": "^4.0.0"
+    "tape": "^4.0.0",
+    "webdriverio": "^2.4.5"
   },
   "pre-commit": [
     "jshint",
