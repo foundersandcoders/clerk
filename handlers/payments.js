@@ -12,7 +12,7 @@ module.exports = function (payments) {
         if (e) {
           return res(e).code(500);
         } else {
-          return res(r.body);
+          return res(r.body).code(r.statusCode);
         }
       });
     },
@@ -23,7 +23,7 @@ module.exports = function (payments) {
         if (e) {
           return res(e).code(500);
         } else {
-          return res(r.body);
+          return res(r.body).code(r.statusCode);
         }
       });
     },
@@ -34,7 +34,7 @@ module.exports = function (payments) {
         if (e) {
           return res(e).code(500);
         } else {
-          return res(r);
+          return res(r.body).code(r.statusCode);
         }
       });
     },
@@ -45,7 +45,7 @@ module.exports = function (payments) {
         if (e) {
           return res(e).code(500);
         } else {
-          return res(r.body);
+          return res(r.body).code(r.statusCode);
         }
       });
     },
@@ -56,7 +56,7 @@ module.exports = function (payments) {
         if (e) {
           return res(e).code(500);
         } else {
-          return res(r);
+          return res(r.body).code(r.statusCode);
         }
       });
     }

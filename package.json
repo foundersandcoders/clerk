@@ -4,7 +4,7 @@
   "description": "Membership management for Friends of Chichester Harbour",
   "main": "index.js",
   "scripts": {
-    "test": "tape ./test/*.test.js | tap-spec",
+    "test": "tape ./test/*.test.js",
     "jshint": "jshint -c ./.jshintrc --exclude-path .gitignore .",
     "coverage": "istanbul cover tape ./test/*.test.js && istanbul check-coverage --statements 95 --functions 95 --lines 95 --branches 95",
     "sass": "sass --watch ./assets/css/main.scss:./assets/css/main.css",
@@ -36,7 +36,7 @@
     "coverage"
   ],
   "dependencies": {
-    "arrested": "0.0.2",
+    "arrested": "0.0.3",
     "async": "^0.9.0",
     "babyparse": "^0.4.3",
     "d-bap": "^1.0.0",

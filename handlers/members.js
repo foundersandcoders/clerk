@@ -15,7 +15,7 @@ module.exports = function (members) {
         if (e) {
           return res(e).code(500);
         } else {
-          return res(r.body);
+          return res(r.body).code(r.statusCode);
         }
       });
     },
@@ -50,10 +50,11 @@ module.exports = function (members) {
         if (e) {
           return res(e).code(500);
         } else {
-          return res(r.body);
+          return res(r.body).code(r.statusCode);
         }
       });
     },
+    /* istanbul ignore next */
     del: function (req, res) {
 
       members.update({id: req.params.id}, {
@@ -65,7 +66,7 @@ module.exports = function (members) {
         if (e) {
           return res(e).code(500);
         } else {
-          return res(r);
+          return res(r.body).code(r.statusCode);
         }
       });
     },
@@ -80,7 +81,7 @@ module.exports = function (members) {
         if (e) {
           return res(e).code(500);
         } else {
-          return res(r);
+          return res(r.body).code(r.statusCode);
         }
       });
     }

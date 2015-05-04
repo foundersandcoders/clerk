@@ -67,8 +67,9 @@ test("POST /members should create member", function (t) {
   server.inject(opts, function (res) {
 
     t.equals(res.statusCode, 200, "200 returned");
-    t.equals(JSON.parse(res.payload).id, "1234", "correct id");
-    t.equals(JSON.parse(res.payload).name, "wil", "created member returned");
+    res.payload = JSON.parse(res.payload); 
+    t.equals(res.payload.id, "1234", "correct id");
+    t.equals(res.payload.name, "wil", "created member returned");
     t.end();
   });
 });
@@ -87,8 +88,9 @@ test("GET /members/1234 should return member if found", function (t) {
   server.inject(opts, function (res) {
 
     t.equals(res.statusCode, 200, "200 returned");
-    t.equals(JSON.parse(res.payload).id, "1234", "correct id");
-    t.equals(JSON.parse(res.payload).name, "wil", "created member returned");
+    res.payload = JSON.parse(res.payload);
+    t.equals(res.payload.id, "1234", "correct id");
+    t.equals(res.payload.name, "wil", "created member returned");
     t.end();
   });
 });
@@ -105,8 +107,8 @@ test("GET /members/1234 should return 404 if not found", function (t) {
 
   server.inject(opts, function (res) {
 
-    res.payload = JSON.parse(res.payload);
     t.equals(res.statusCode, 404, "404 returned");
+    res.payload = JSON.parse(res.payload);
     t.ok(is.type(res.payload, "object"), "object returned");
     t.notOk(is.ok(res.payload), "object is empty");
     t.end();
@@ -127,8 +129,8 @@ test("GET /members?query=value should return 200 and matches if found", function
 
     server.inject(opts, function (res) {
 
-      res.payload = JSON.parse(res.payload);
       t.equals(res.statusCode, 200, "200 returned");
+      res.payload = JSON.parse(res.payload);
       t.equals(res.payload[0].id, "1234", "correct id");
       t.equals(res.payload[0].name, "wil", "created member returned");
       t.end();
@@ -149,10 +151,57 @@ test("GET /members?query=value should return 200 if not found", function (t) {
 
   server.inject(opts, function (res) {
 
-    res.payload = JSON.parse(res.payload);
     t.equals(res.statusCode, 200, "200 returned");
+    res.payload = JSON.parse(res.payload);
     t.ok(is.type(res.payload, "array"), "array returned");
     t.notOk(is.ok(res.payload), "array is empty");
+    t.end();
+  });
+});
+
+test("PUT /members/1234 should return 200 and updated member", function (t) {
+
+  var changes = {status: "deleted"};
+
+  var opts = {
+    method: "PUT",
+    url: "/members/1234",
+    payload: changes,
+    headers: {
+      cookie: cookie
+    }
+  };
+
+  server.inject(opts, function (res){
+
+    t.equals(res.statusCode, 200, "200 returned");
+    res.payload = JSON.parse(res.payload);
+    t.equals(res.payload.name, "wil", "correct name");
+    t.equals(res.payload.status, changes.status, "updated member return");
+    t.end();
+  });
+});
+
+
+test("PUT /members/7459023 should return 404 and empty object", function (t) {
+
+  var changes = {status: "deleted"};
+
+  var opts = {
+    method: "PUT",
+    url: "/members/7459023",
+    payload: changes,
+    headers: {
+      cookie: cookie
+    }
+  };
+
+  server.inject(opts, function (res){
+
+    t.equals(res.statusCode, 404, "404 returned");
+    res.payload = JSON.parse(res.payload);
+    t.ok(is.type(res.payload, "object"), "object returned");
+    t.notOk(is.ok(res.payload), "object is empty");
     t.end();
   });
 });
