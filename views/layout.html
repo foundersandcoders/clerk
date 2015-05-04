@@ -1,25 +1,33 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <link rel= "stylesheet" type="text/css" href= "/css/main.css">
-</head>
-<body>
+    <head>
+        <!-- <link rel= "stylesheet" type="text/css" href= "/css/main.css"> -->
+    </head>
+    <body>
+        <div id="wrap">
+            <div class="navigation">
+                <div class="left">
+                    <a id="home_link" href="/">Home</a>
+                    <a id="admin_link" href="/admin">Admin Home</a>
+                </div>
 
-  <div class="navigation">
-    <div class="left">
-      <a href="/">Home</a>
-      <a href="/admin">Admin Home</a>
-    </div>
+                <div class="right">
+                    <a id="signin_link" href="/login">Signin</a>
+                    <a id="signout_link"href="/logout">Singout</a>
+                    <a id="signup_link"href="/signup">Signup</a>
+                </div>
+            </div>
 
-    <div class="right">
-      <a href="/login">Login</a>
-      <a href="/logout">Logout</a>
-      <a href="/signup">Signup</a>
-    </div>
-  </div>
+            {{{ content }}}
+        </div>
 
-  {{{ content }}}
-
-    <script src='http://192.168.1.29:4242/client.js'></script>
-</body>
+        <footer>
+            <ul class="meta">
+            <li><a href="http://www.friendsch.org/aboutus.html" target="_blank">About</a></li>
+            <li class="desktop-tablet-only"><a href="mailto:secretary@friendsch.org" target="_blank">Contact</a></li>
+            </ul>
+            <p class="rights meta"> <span id="date_rights">2015</span> <a href="http://www.friendsch.org/" target="_blank"> Friends of Chichester Harbour</a></p>
+        </footer>
+        <script type="text/javascript" src="bundle.js"></script>
+    </body>
 </html>

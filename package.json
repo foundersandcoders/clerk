@@ -9,7 +9,8 @@
     "coverage": "istanbul cover tape ./test/*.test.js && istanbul check-coverage --statements 95 --functions 95 --lines 95 --branches 95",
     "sass": "sass --watch ./assets/css/main.scss:./assets/css/main.css",
     "start": "node index.js",
-    "faster": "faster"
+    "browse": "browserify ./assets/js/index.js ./assets/js/bundle.js",
+    "watch": "watchify ./assets/js/index.js -o ./assets/js/bundle.js -v"
   },
   "repository": {
     "type": "git",
@@ -22,6 +23,7 @@
   },
   "homepage": "https://github.com/foundersandcoders/clerk",
   "devDependencies": {
+    "browserify": "^10.0.0",
     "faster": "^3.4.6",
     "istanbul": "^0.3.13",
     "jshint": "^2.7.0",
