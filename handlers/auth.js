@@ -1,7 +1,7 @@
 "use strict";
 
 
-var authUrl = process.env.AUTH_URL || "http://0.0.0.0:8000";
+var authUrl = process.env.AUTH_URL || "0.0.0.0:8000";
 
 
 module.exports = function (request) {
@@ -16,22 +16,24 @@ module.exports = function (request) {
         method: "GET",
         uri: url
       };
+
       request(opts, function (e, r) {
 
         if (e) {
           return res(e).code(500);
         } else {
-          res.auth.session.set({
+          req.auth.session.set({
             token: r.headers.authorization
           });
-          return res(r);
+          return res(r.body).code(r.statusCode);
         }
       });
     },
     logout: function logout (req, res) {
 
       var opts = {
-        uri: authUrl + "/logout",
+        method: "GET",
+        uri: "http://" + authUrl + "/logout",
         headers: {
           authorization: req.auth.credentials.token
         }
@@ -55,19 +57,19 @@ module.exports = function (request) {
 
       var opts = {
         method: "POST",
-        uri: authUrl + "/register",
+        uri: "http://" + authUrl + "/signup",
         body: req.payload
       }
 
-      request(opts, function (e, h) {
+      request(opts, function (e, r) {
 
         if (e) {
           return res(e).code(500);
         } else {
           req.auth.session.set({
-            token: h.headers.authorization
+            token: r.headers.authorization
           });
-          return res(r);
+          return res(r.body).code(r.statusCode);
         }
       });
     }
