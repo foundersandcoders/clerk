@@ -209,7 +209,7 @@ if (typeof document !== 'undefined') {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"min-document":36}],9:[function(require,module,exports){
+},{"min-document":37}],9:[function(require,module,exports){
 "use strict";
 
 module.exports = function isObject(x) {
@@ -1645,7 +1645,7 @@ function appendPatch(apply, patch) {
 	"use strict";
 
 	var hub = require("./lib/hub.js");
-	var request = require("xhr");
+	var request = require("./services/request.js");
 	var h = require('virtual-dom/h');
 	var diff = require('virtual-dom/diff');
 	var patch = require('virtual-dom/patch');
@@ -1658,32 +1658,48 @@ function appendPatch(apply, patch) {
 
 		if (result.length > 0) {
 			console.log("results");
-
-			return h("div.results", {}, [
-				h("p", result[0].name)
+			return h("div.innerSectionContainer", [
+				h("a", {
+					href: "/members/" + result[0].id
+				}, [
+					h("div.inner-section-divider-small", [
+						h("div.field", [
+							h("p.meta", result[0].name)
+						]),
+						h("div.field", [
+							h("p.meta", result[0].id)
+						])
+					])
+				])
 			]);
 		} else {
 			console.log("no results");
-			return h("div.results", {}, [
-				h("p", "results go here")
-			]); 
+			return h("div.innerSectionContainer", [
+				h("div.inner-section-divider-small", [
+					h("div.field", [
+						h("p.meta", "No results")
+					])
+	
+				])
+			]);
 		}
 	}
 	var tree = renderResults([]);
 	var resultsNode = createElement(tree);
-	document.querySelector("#results").appendChild(resultsNode);
+	// document.querySelector(".container-results").appendChild(resultsNode);
 
 
 
-	document.querySelector("#search-btn").addEventListener("click", function () {
+	document.querySelector("#search-button").addEventListener("click", function () {
 
-		var query = document.querySelector("#search").value;
+		var query = document.querySelector("#search-field").value;
 		hub.emit("click", query, function (res) {
 
 			console.log(res);
 			var newResults = renderResults(res);
 			var patches = diff(tree, newResults);
 			resultsNode = patch(resultsNode, patches);
+
 			tree = newResults;
 		});	
 	});
@@ -1696,13 +1712,13 @@ function appendPatch(apply, patch) {
 			url: "/members?id=" + query
 		};
 		request(opts, function (e, h, b) {
-
+			console.log(b);
 			return cb(JSON.parse(b));
 		});
 	});
 
 }());
-},{"./lib/hub.js":35,"virtual-dom/create-element":1,"virtual-dom/diff":2,"virtual-dom/h":3,"virtual-dom/patch":11,"xhr":37}],35:[function(require,module,exports){
+},{"./lib/hub.js":35,"./services/request.js":36,"virtual-dom/create-element":1,"virtual-dom/diff":2,"virtual-dom/h":3,"virtual-dom/patch":11}],35:[function(require,module,exports){
 "use strict";
 
 module.exports = {
@@ -1741,8 +1757,14 @@ module.exports = {
 	}
 };
 },{}],36:[function(require,module,exports){
+"use strict";
 
-},{}],37:[function(require,module,exports){
+var request = require("xhr");
+
+module.exports = request;
+},{"xhr":38}],37:[function(require,module,exports){
+
+},{}],38:[function(require,module,exports){
 "use strict";
 var window = require("global/window")
 var once = require("once")
@@ -1914,7 +1936,7 @@ function createXHR(options, callback) {
 
 function noop() {}
 
-},{"global/window":38,"once":39,"parse-headers":43}],38:[function(require,module,exports){
+},{"global/window":39,"once":40,"parse-headers":44}],39:[function(require,module,exports){
 (function (global){
 if (typeof window !== "undefined") {
     module.exports = window;
@@ -1927,7 +1949,7 @@ if (typeof window !== "undefined") {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],39:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 module.exports = once
 
 once.proto = once(function () {
@@ -1948,7 +1970,7 @@ function once (fn) {
   }
 }
 
-},{}],40:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 var isFunction = require('is-function')
 
 module.exports = forEach
@@ -1996,7 +2018,7 @@ function forEachObject(object, iterator, context) {
     }
 }
 
-},{"is-function":41}],41:[function(require,module,exports){
+},{"is-function":42}],42:[function(require,module,exports){
 module.exports = isFunction
 
 var toString = Object.prototype.toString
@@ -2013,7 +2035,7 @@ function isFunction (fn) {
       fn === window.prompt))
 };
 
-},{}],42:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 
 exports = module.exports = trim;
 
@@ -2029,7 +2051,7 @@ exports.right = function(str){
   return str.replace(/\s*$/, '');
 };
 
-},{}],43:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 var trim = require('trim')
   , forEach = require('for-each')
   , isArray = function(arg) {
@@ -2061,4 +2083,4 @@ module.exports = function (headers) {
 
   return result
 }
-},{"for-each":40,"trim":42}]},{},[34]);
+},{"for-each":41,"trim":43}]},{},[34]);

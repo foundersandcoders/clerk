@@ -5,7 +5,11 @@ module.exports = function () {
 	return {
 		admin: function (req, res) {
 
-			res.view("admin-home");
+			res.view("adminhome");
+		},
+		addmember: function (req, res) {
+
+			res.view("newmember");
 		}
 	}
 }
