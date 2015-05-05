@@ -209,7 +209,7 @@ if (typeof document !== 'undefined') {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"min-document":37}],9:[function(require,module,exports){
+},{"min-document":38}],9:[function(require,module,exports){
 "use strict";
 
 module.exports = function isObject(x) {
@@ -1641,84 +1641,177 @@ function appendPatch(apply, patch) {
 }
 
 },{"../vnode/handle-thunk":22,"../vnode/is-thunk":23,"../vnode/is-vnode":25,"../vnode/is-vtext":26,"../vnode/is-widget":27,"../vnode/vpatch":30,"./diff-props":32,"x-is-array":10}],34:[function(require,module,exports){
+"use strict";
+
+var view = require("./view");
+
+module.exports = function (hub, request) {
+
+	var that  = {};
+	that.rendered = false;
+	that.selector = ".container-content";
+
+	var _data = {};
+
+	Object.defineProperty(that, "data", {
+		enumerable: true,
+		set: function (newVal) {
+
+			_data = newVal;
+			hub.emit("update", that);
+		},
+		get: function (){
+			return _data;
+		}
+	});
+
+	that.render = function () {
+
+		return view;
+	};
+	that.getData = function (query) {
+
+		request(_createOptions(query), function (e, h, b) {
+
+			that.data = JSON.parse(b);
+		});
+	};
+
+	return that;
+};
+
+
+function _createQuery(query) {
+
+	if (query) {
+		return "?id=" + query;
+	} else {
+		return "";
+	}
+}
+
+function _createOptions (query) {
+
+	return {
+		method: "GET",
+		url: "/members" + _createQuery(query)
+	}
+}
+},{"./view":35}],35:[function(require,module,exports){
+module.exports = function (data) {
+
+	var h = require("virtual-dom/h");
+
+	return h("div.container-results", [
+		h("div.table-results", [
+			h("div.table-headers", [
+				h("div.header", [
+					h("p", "Name")
+				]),
+				h("div.header", [
+					h("p", "Title")
+				]),
+				h("div.header", [
+					h("p", "Initials")
+				]),
+				h("div.header", [
+					h("p", "First Name(s)")
+				]),
+				h("div.header", [
+					h("p", "Last subscription")
+				]),
+				h("div.header", [
+					h("p", "Payment")
+				])
+			])
+		]),
+		h("div.table-rows", [
+			decide(data)
+		])
+	]);
+
+	function renderRows (data) {
+		
+		return data.map(function (result){
+
+			return h("div.table-row", [
+				h("div.header", [
+					h("p", result.lastName)
+				]),
+				h("div.header", [
+					h("p", result.title)
+				]),
+				h("div.header", [
+					h("p", result.initials)
+				]),
+				h("div.header", [
+					h("p", result.firstName)
+				]),
+				h("div.header", [
+					h("p", result.subscription)
+				]),
+				h("div.header", [
+					h("p", result.subscriptionAmount)
+				])
+			]);
+		});
+	}
+
+	function decide (data) {
+		if(data.length > 0) {
+			return renderRows(data);
+		}else{
+			return noResults();
+		}
+	}
+
+	function noResults () {
+
+		return h("p", "No results");
+	}
+};
+},{"virtual-dom/h":3}],36:[function(require,module,exports){
 ;(function () {
 	"use strict";
 
-	var hub = require("./lib/hub.js");
-	var request = require("./services/request.js");
-	var h = require('virtual-dom/h');
-	var diff = require('virtual-dom/diff');
-	var patch = require('virtual-dom/patch');
+	var hub           = require("./lib/hub.js");
+	var request       = require("xhr");
+	var search        = require("./components/search/index")(hub, request);
+	var diff          = require('virtual-dom/diff');
+	var patch         = require('virtual-dom/patch');
 	var createElement = require('virtual-dom/create-element');
 
-
-
-	// view/dom manipulation
-	function renderResults (result) {
-
-		if (result.length > 0) {
-			console.log("results");
-			return h("div.innerSectionContainer", [
-				h("a", {
-					href: "/members/" + result[0].id
-				}, [
-					h("div.inner-section-divider-small", [
-						h("div.field", [
-							h("p.meta", result[0].name)
-						]),
-						h("div.field", [
-							h("p.meta", result[0].id)
-						])
-					])
-				])
-			]);
-		} else {
-			console.log("no results");
-			return h("div.innerSectionContainer", [
-				h("div.inner-section-divider-small", [
-					h("div.field", [
-						h("p.meta", "No results")
-					])
-	
-				])
-			]);
-		}
-	}
-	var tree = renderResults([]);
-	var resultsNode = createElement(tree);
-	// document.querySelector(".container-results").appendChild(resultsNode);
 
 
 
 	document.querySelector("#search-button").addEventListener("click", function () {
 
 		var query = document.querySelector("#search-field").value;
-		hub.emit("click", query, function (res) {
-
-			console.log(res);
-			var newResults = renderResults(res);
-			var patches = diff(tree, newResults);
-			resultsNode = patch(resultsNode, patches);
-
-			tree = newResults;
-		});	
+		hub.emit("click", query);	
 	});
 
 
 	// model/data fetching
-	hub.addListener("click", function (query, cb) {
-		var opts = {
-			method: "GET",
-			url: "/members?id=" + query
-		};
-		request(opts, function (e, h, b) {
-			console.log(b);
-			return cb(JSON.parse(b));
-		});
+	hub.addListener("click", function (query) {
+		search.getData(query);
 	});
 
+	hub.addListener("update", function (component) {
+
+		if (component.rendered) {
+			var newResults = component.render()(component.data);
+			var patches = diff(component.tree, newResults);
+			component.resultsNode = patch(component.resultsNode, patches);
+			component.tree = component.resultsNode;
+		} else {
+			component.tree = component.render()(component.data);
+			component.resultsNode = createElement(component.tree);
+			document.querySelector(component.selector).appendChild(component.resultsNode);
+			component.rendered = true;
+		}
+	});
 }());
-},{"./lib/hub.js":35,"./services/request.js":36,"virtual-dom/create-element":1,"virtual-dom/diff":2,"virtual-dom/h":3,"virtual-dom/patch":11}],35:[function(require,module,exports){
+},{"./components/search/index":34,"./lib/hub.js":37,"virtual-dom/create-element":1,"virtual-dom/diff":2,"virtual-dom/patch":11,"xhr":39}],37:[function(require,module,exports){
 "use strict";
 
 module.exports = {
@@ -1756,15 +1849,9 @@ module.exports = {
 		}
 	}
 };
-},{}],36:[function(require,module,exports){
-"use strict";
-
-var request = require("xhr");
-
-module.exports = request;
-},{"xhr":38}],37:[function(require,module,exports){
-
 },{}],38:[function(require,module,exports){
+
+},{}],39:[function(require,module,exports){
 "use strict";
 var window = require("global/window")
 var once = require("once")
@@ -1936,7 +2023,7 @@ function createXHR(options, callback) {
 
 function noop() {}
 
-},{"global/window":39,"once":40,"parse-headers":44}],39:[function(require,module,exports){
+},{"global/window":40,"once":41,"parse-headers":45}],40:[function(require,module,exports){
 (function (global){
 if (typeof window !== "undefined") {
     module.exports = window;
@@ -1949,7 +2036,7 @@ if (typeof window !== "undefined") {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],40:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 module.exports = once
 
 once.proto = once(function () {
@@ -1970,7 +2057,7 @@ function once (fn) {
   }
 }
 
-},{}],41:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 var isFunction = require('is-function')
 
 module.exports = forEach
@@ -2018,7 +2105,7 @@ function forEachObject(object, iterator, context) {
     }
 }
 
-},{"is-function":42}],42:[function(require,module,exports){
+},{"is-function":43}],43:[function(require,module,exports){
 module.exports = isFunction
 
 var toString = Object.prototype.toString
@@ -2035,7 +2122,7 @@ function isFunction (fn) {
       fn === window.prompt))
 };
 
-},{}],43:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 
 exports = module.exports = trim;
 
@@ -2051,7 +2138,7 @@ exports.right = function(str){
   return str.replace(/\s*$/, '');
 };
 
-},{}],44:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 var trim = require('trim')
   , forEach = require('for-each')
   , isArray = function(arg) {
@@ -2083,4 +2170,4 @@ module.exports = function (headers) {
 
   return result
 }
-},{"for-each":41,"trim":43}]},{},[34]);
+},{"for-each":42,"trim":44}]},{},[36]);
