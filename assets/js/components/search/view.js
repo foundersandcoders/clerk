@@ -58,6 +58,9 @@ module.exports = function (data) {
 	}
 
 	function decide (data) {
+
+		console.log(data);
+
 		if(data.length > 0) {
 			return renderRows(data);
 		}else{

@@ -5,10 +5,9 @@ var view = require("./view");
 module.exports = function (hub, request) {
 
 	var that  = {};
-	that.rendered = false;
+	var _data = {};
 	that.selector = ".container-content";
 
-	var _data = {};
 
 	Object.defineProperty(that, "data", {
 		enumerable: true,
@@ -33,6 +32,17 @@ module.exports = function (hub, request) {
 			that.data = JSON.parse(b);
 		});
 	};
+
+
+	that.config = {
+		events: [
+			{name: "click", action: that.getData},
+		]
+	};
+
+	console.log(hub);
+
+	hub.emit("register", that.config);
 
 	return that;
 };

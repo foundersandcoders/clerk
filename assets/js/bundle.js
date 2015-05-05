@@ -209,7 +209,7 @@ if (typeof document !== 'undefined') {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"min-document":38}],9:[function(require,module,exports){
+},{"min-document":39}],9:[function(require,module,exports){
 "use strict";
 
 module.exports = function isObject(x) {
@@ -1648,10 +1648,9 @@ var view = require("./view");
 module.exports = function (hub, request) {
 
 	var that  = {};
-	that.rendered = false;
+	var _data = {};
 	that.selector = ".container-content";
 
-	var _data = {};
 
 	Object.defineProperty(that, "data", {
 		enumerable: true,
@@ -1676,6 +1675,17 @@ module.exports = function (hub, request) {
 			that.data = JSON.parse(b);
 		});
 	};
+
+
+	that.config = {
+		events: [
+			{name: "click", action: that.getData},
+		]
+	};
+
+	console.log(hub);
+
+	hub.emit("register", that.config);
 
 	return that;
 };
@@ -1758,6 +1768,9 @@ module.exports = function (data) {
 	}
 
 	function decide (data) {
+
+		console.log(data);
+
 		if(data.length > 0) {
 			return renderRows(data);
 		}else{
@@ -1776,42 +1789,16 @@ module.exports = function (data) {
 
 	var hub           = require("./lib/hub.js");
 	var request       = require("xhr");
+	var render        = require("./lib/render.js")(hub);
 	var search        = require("./components/search/index")(hub, request);
-	var diff          = require('virtual-dom/diff');
-	var patch         = require('virtual-dom/patch');
-	var createElement = require('virtual-dom/create-element');
-
-
-
 
 	document.querySelector("#search-button").addEventListener("click", function () {
 
 		var query = document.querySelector("#search-field").value;
-		hub.emit("click", query);	
-	});
-
-
-	// model/data fetching
-	hub.addListener("click", function (query) {
-		search.getData(query);
-	});
-
-	hub.addListener("update", function (component) {
-
-		if (component.rendered) {
-			var newResults = component.render()(component.data);
-			var patches = diff(component.tree, newResults);
-			component.resultsNode = patch(component.resultsNode, patches);
-			component.tree = component.resultsNode;
-		} else {
-			component.tree = component.render()(component.data);
-			component.resultsNode = createElement(component.tree);
-			document.querySelector(component.selector).appendChild(component.resultsNode);
-			component.rendered = true;
-		}
+		hub.emit("click", query);
 	});
 }());
-},{"./components/search/index":34,"./lib/hub.js":37,"virtual-dom/create-element":1,"virtual-dom/diff":2,"virtual-dom/patch":11,"xhr":39}],37:[function(require,module,exports){
+},{"./components/search/index":34,"./lib/hub.js":37,"./lib/render.js":38,"xhr":40}],37:[function(require,module,exports){
 "use strict";
 
 module.exports = {
@@ -1850,8 +1837,45 @@ module.exports = {
 	}
 };
 },{}],38:[function(require,module,exports){
+"use strict";
 
-},{}],39:[function(require,module,exports){
+
+var diff          = require('virtual-dom/diff');
+var patch         = require('virtual-dom/patch');
+var createElement = require('virtual-dom/create-element');
+
+
+module.exports = function (hub) {
+
+	//listen for components
+	hub.addListener("register", function (config){
+
+		var ii = 0;
+		while(ii < config.events.length){
+			hub.addListener(config.events[ii].name, config.events[ii].action);
+			ii += 1;
+		}
+	});
+
+	hub.addListener("update", function (component) {
+
+		if (component.rendered) {
+			var newResults = component.render()(component.data);
+			var patches = diff(component.tree, newResults);
+			component.resultsNode = patch(component.resultsNode, patches);
+			component.tree = component.resultsNode;
+		} else {
+			component.tree = component.render()(component.data);
+			component.resultsNode = createElement(component.tree);
+			document.querySelector(component.selector).appendChild(component.resultsNode);
+			component.rendered = true;
+		}
+	});
+
+}
+},{"virtual-dom/create-element":1,"virtual-dom/diff":2,"virtual-dom/patch":11}],39:[function(require,module,exports){
+
+},{}],40:[function(require,module,exports){
 "use strict";
 var window = require("global/window")
 var once = require("once")
@@ -2023,7 +2047,7 @@ function createXHR(options, callback) {
 
 function noop() {}
 
-},{"global/window":40,"once":41,"parse-headers":45}],40:[function(require,module,exports){
+},{"global/window":41,"once":42,"parse-headers":46}],41:[function(require,module,exports){
 (function (global){
 if (typeof window !== "undefined") {
     module.exports = window;
@@ -2036,7 +2060,7 @@ if (typeof window !== "undefined") {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],41:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 module.exports = once
 
 once.proto = once(function () {
@@ -2057,7 +2081,7 @@ function once (fn) {
   }
 }
 
-},{}],42:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 var isFunction = require('is-function')
 
 module.exports = forEach
@@ -2105,7 +2129,7 @@ function forEachObject(object, iterator, context) {
     }
 }
 
-},{"is-function":43}],43:[function(require,module,exports){
+},{"is-function":44}],44:[function(require,module,exports){
 module.exports = isFunction
 
 var toString = Object.prototype.toString
@@ -2122,7 +2146,7 @@ function isFunction (fn) {
       fn === window.prompt))
 };
 
-},{}],44:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 
 exports = module.exports = trim;
 
@@ -2138,7 +2162,7 @@ exports.right = function(str){
   return str.replace(/\s*$/, '');
 };
 
-},{}],45:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 var trim = require('trim')
   , forEach = require('for-each')
   , isArray = function(arg) {
@@ -2170,4 +2194,4 @@ module.exports = function (headers) {
 
   return result
 }
-},{"for-each":42,"trim":44}]},{},[36]);
+},{"for-each":43,"trim":45}]},{},[36]);
