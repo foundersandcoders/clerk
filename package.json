@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "tape ./test/*.test.js",
+    "test-end": "tape ./test/frontend/*.test.js",
     "jshint": "jshint -c ./.jshintrc --exclude-path .gitignore .",
     "coverage": "istanbul cover tape ./test/*.test.js && istanbul check-coverage --statements 95 --functions 95 --lines 95 --branches 95",
     "sass": "sass --watch ./assets/css/main.scss:./assets/css/main.css",
@@ -47,6 +48,7 @@
     "hapi": "^8.4.0",
     "hapi-auth-cookie": "^2.0.0",
     "request": "^2.55.0",
-    "torf": "^1.0.3"
+    "torf": "^1.0.3",
+    "xhr": "^2.0.1"
   }
 }

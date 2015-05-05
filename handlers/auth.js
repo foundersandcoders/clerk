@@ -7,7 +7,7 @@ var authUrl = process.env.AUTH_URL || "0.0.0.0:8000";
 module.exports = function (request) {
 
   return {
-    login: function login (req, res) {
+    login: function (req, res) {
 
       var url = "http://" + req.payload.email + ":" + req.payload.password;
       url += "@" + authUrl + "/login";
@@ -29,7 +29,7 @@ module.exports = function (request) {
         }
       });
     },
-    logout: function logout (req, res) {
+    logout: function (req, res) {
 
       var opts = {
         method: "GET",
@@ -49,12 +49,11 @@ module.exports = function (request) {
         }
       });
     },
-    signup: function signup (req, res) {
+    signup: function (req, res) {
 
       if (req.payload.password !== req.payload.cpassword) {
         return res("passwords don't match").code(401);
       }
-
       var opts = {
         method: "POST",
         uri: "http://" + authUrl + "/signup",
@@ -62,7 +61,8 @@ module.exports = function (request) {
       }
 
       request(opts, function (e, r) {
-
+        console.log(e);
+        
         if (e) {
           return res(e).code(500);
         } else {
