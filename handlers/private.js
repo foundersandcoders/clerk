@@ -1,15 +1,23 @@
 "use strict";
 
-module.exports = function () {
+module.exports = function (Members) {
 
 	return {
 		admin: function (req, res) {
 
-			res.view("adminhome");
+			return res.view("admin-home");
 		},
 		addmember: function (req, res) {
 
-			res.view("newmember");
+			return res.view("new-member");
+		},
+		member: function (req, res) {
+
+			Members
+			.findOne(req.params.id, req.auth.credentials.token, function (err, item){
+
+				res.view("view-member", {member:item});
+			});
 		}
 	}
 }

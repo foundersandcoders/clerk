@@ -1,6 +1,8 @@
 "use strict";
 
-var view = require("./view");
+var view  = require("./view");
+var is    = require("torf");
+var clean = require("d-bap");
 
 module.exports = function (hub, request) {
 
@@ -27,7 +29,7 @@ module.exports = function (hub, request) {
 	};
 	that.getData = function (query) {
 
-		request(_createOptions(query), function (e, h, b) {
+		request(_createOptions(clean.object(query)), function (e, h, b) {
 
 			that.data = JSON.parse(b);
 		});
@@ -50,17 +52,20 @@ module.exports = function (hub, request) {
 
 function _createQuery(query) {
 
-	if (query) {
-		return "?id=" + query;
-	} else {
-		return "";
+	var field, storeString = [];
+	for (field in query) {
+		if(query.hasOwnProperty(field)){
+			storeString.push(field + "=" + query[field]);
+		}
 	}
+
+	return "?" + storeString.join("&");
 }
 
 function _createOptions (query) {
 
 	return {
 		method: "GET",
-		url: "/members" + _createQuery(query)
+		url: "/api/members" + _createQuery(query)
 	}
 }

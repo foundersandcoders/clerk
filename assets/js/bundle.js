@@ -1643,7 +1643,9 @@ function appendPatch(apply, patch) {
 },{"../vnode/handle-thunk":22,"../vnode/is-thunk":23,"../vnode/is-vnode":25,"../vnode/is-vtext":26,"../vnode/is-widget":27,"../vnode/vpatch":30,"./diff-props":32,"x-is-array":10}],34:[function(require,module,exports){
 "use strict";
 
-var view = require("./view");
+var view  = require("./view");
+var is    = require("torf");
+var clean = require("d-bap");
 
 module.exports = function (hub, request) {
 
@@ -1670,7 +1672,7 @@ module.exports = function (hub, request) {
 	};
 	that.getData = function (query) {
 
-		request(_createOptions(query), function (e, h, b) {
+		request(_createOptions(clean.object(query)), function (e, h, b) {
 
 			that.data = JSON.parse(b);
 		});
@@ -1693,21 +1695,24 @@ module.exports = function (hub, request) {
 
 function _createQuery(query) {
 
-	if (query) {
-		return "?id=" + query;
-	} else {
-		return "";
+	var field, storeString = [];
+	for (field in query) {
+		if(query.hasOwnProperty(field)){
+			storeString.push(field + "=" + query[field]);
+		}
 	}
+
+	return "?" + storeString.join("&");
 }
 
 function _createOptions (query) {
 
 	return {
 		method: "GET",
-		url: "/members" + _createQuery(query)
+		url: "/api/members" + _createQuery(query)
 	}
 }
-},{"./view":35}],35:[function(require,module,exports){
+},{"./view":35,"d-bap":40,"torf":43}],35:[function(require,module,exports){
 module.exports = function (data) {
 
 	var h = require("virtual-dom/h");
@@ -1745,23 +1750,25 @@ module.exports = function (data) {
 		return data.map(function (result){
 
 			return h("div.table-row", [
-				h("div.header", [
-					h("p", result.lastName)
-				]),
-				h("div.header", [
-					h("p", result.title)
-				]),
-				h("div.header", [
-					h("p", result.initials)
-				]),
-				h("div.header", [
-					h("p", result.firstName)
-				]),
-				h("div.header", [
-					h("p", result.subscription)
-				]),
-				h("div.header", [
-					h("p", result.subscriptionAmount)
+				h("a", {href: "/members/" + result.id}, [
+					h("div.header", [
+						h("p", result.lastName)
+					]),
+					h("div.header", [
+						h("p", result.title)
+					]),
+					h("div.header", [
+						h("p", result.initials)
+					]),
+					h("div.header", [
+						h("p", result.firstName)
+					]),
+					h("div.header", [
+						h("p", result.subscription)
+					]),
+					h("div.header", [
+						h("p", result.subscriptionAmount)
+					])
 				])
 			]);
 		});
@@ -1787,18 +1794,23 @@ module.exports = function (data) {
 ;(function () {
 	"use strict";
 
-	var hub           = require("./lib/hub.js");
-	var request       = require("xhr");
-	var render        = require("./lib/render.js")(hub);
-	var search        = require("./components/search/index")(hub, request);
+	var hub     = require("./lib/hub.js");
+	var request = require("xhr");
+	var render  = require("./lib/render.js")(hub);
+	var search  = require("./components/search/index")(hub, request);
 
 	document.querySelector("#search-button").addEventListener("click", function () {
 
-		var query = document.querySelector("#search-field").value;
-		hub.emit("click", query);
+		var queries = {
+			id: document.querySelector("#search-field-id").value,
+			email1: document.querySelector("#search-field-email").value,
+			lastName: document.querySelector("#search-field-lastName").value,
+		};
+		
+		hub.emit("click", queries);
 	});
 }());
-},{"./components/search/index":34,"./lib/hub.js":37,"./lib/render.js":38,"xhr":40}],37:[function(require,module,exports){
+},{"./components/search/index":34,"./lib/hub.js":37,"./lib/render.js":38,"xhr":45}],37:[function(require,module,exports){
 "use strict";
 
 module.exports = {
@@ -1876,6 +1888,156 @@ module.exports = function (hub) {
 },{"virtual-dom/create-element":1,"virtual-dom/diff":2,"virtual-dom/patch":11}],39:[function(require,module,exports){
 
 },{}],40:[function(require,module,exports){
+"use strict";
+
+var is = require("torf");
+
+module.exports = {
+  object: object
+};
+
+
+function object (o) {
+
+  var oc = _clone(o);
+
+  var p;
+  for (p in oc) {
+    if (oc.hasOwnProperty(p) && _isDeletable(oc[p])) {
+
+      delete oc[p];
+    }
+  }
+
+  return oc;
+}
+
+
+function _isDeletable (val) {
+
+  //return true if string is empty
+  if (is.type(val, "string")) {
+    return (val.length === 0);
+  }
+  if (!is.ok(val)) {
+    return (is.type(val, "null") || is.type(val, "undefined") ||
+            is.type(val, "array") || is.type(val, "object"));
+  } else {
+    return false;
+  }
+}
+
+function _clone (obj){
+  if((is.type(obj, "object") && is.type(obj, "null")) || !is.type(obj, "object")){
+    return obj;
+  }
+
+  var temp = {};
+
+  for(var key in obj){
+    if(obj.hasOwnProperty(key)){
+      temp[key] = _clone(obj[key]);
+    }
+  }
+
+  return temp;
+}
+
+},{"torf":41}],41:[function(require,module,exports){
+'use strict';
+
+
+
+var isNumber = require('is-number');
+
+
+
+module.exports = {
+	ok:    ok,
+	email: checkEmail,
+	type:  isType,
+	empty: isEmpty
+};
+
+
+
+function isEmpty (obj){
+
+	return (Object.getOwnPropertyNames(obj).length === 0);
+};
+
+
+
+function ok (arg){
+
+	switch (Object.prototype.toString.call(arg)){
+		case '[object Array]': 
+			return arg.length < 1 ? false : ok(arg[0]) ? true : false;
+		case '[object Object]':
+			return isEmpty(arg) ? false : true;
+		case '[object Null]':
+			return false;
+		case '[object Undefined]':
+			return false;
+		case '[object Number]':
+			return isNumber(arg);
+		case '[object String]':
+			return true;
+		case '[object Boolean]':
+			return arg;
+		case '[object Function]':
+			return ok(arg());
+		default:
+			return true;
+	}
+};
+
+
+
+function isType (arg, type){
+
+	var classType = Object.prototype.toString.call(arg).match(/\s[a-zA-Z]+/)[0].trim();
+
+	if(type.toLowerCase() === 'number'){
+		return isNumber(arg);
+	}else{
+		return classType.toLowerCase() === type.toLowerCase() ? true : false;
+	};
+}
+
+
+
+function checkEmail (email, regexp){
+
+	if(ok(email)){
+		var myRegexp = isType(regexp, 'regexp') ? regexp : /\S+@\S+\.\S+/;
+		var result   = myRegexp.test(email);
+		return result;
+	}else{
+		return false;
+	};
+};
+},{"is-number":42}],42:[function(require,module,exports){
+/*!
+ * is-number <https://github.com/jonschlinkert/is-number>
+ *
+ * Copyright (c) 2014-2015, Jon Schlinkert.
+ * Licensed under the MIT License.
+ */
+
+'use strict';
+
+module.exports = function isNumber(n) {
+  return (!!(+n) && !Array.isArray(n)) && isFinite(n)
+    || n === '0'
+    || n === 0;
+};
+
+},{}],43:[function(require,module,exports){
+arguments[4][41][0].apply(exports,arguments)
+},{"dup":41,"is-number":44}],44:[function(require,module,exports){
+arguments[4][42][0].apply(exports,arguments)
+},{"dup":42}],45:[function(require,module,exports){
 "use strict";
 var window = require("global/window")
 var once = require("once")
@@ -2047,7 +2209,7 @@ function createXHR(options, callback) {
 
 function noop() {}
 
-},{"global/window":41,"once":42,"parse-headers":46}],41:[function(require,module,exports){
+},{"global/window":46,"once":47,"parse-headers":51}],46:[function(require,module,exports){
 (function (global){
 if (typeof window !== "undefined") {
     module.exports = window;
@@ -2060,7 +2222,7 @@ if (typeof window !== "undefined") {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],42:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
 module.exports = once
 
 once.proto = once(function () {
@@ -2081,7 +2243,7 @@ function once (fn) {
   }
 }
 
-},{}],43:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 var isFunction = require('is-function')
 
 module.exports = forEach
@@ -2129,7 +2291,7 @@ function forEachObject(object, iterator, context) {
     }
 }
 
-},{"is-function":44}],44:[function(require,module,exports){
+},{"is-function":49}],49:[function(require,module,exports){
 module.exports = isFunction
 
 var toString = Object.prototype.toString
@@ -2146,7 +2308,7 @@ function isFunction (fn) {
       fn === window.prompt))
 };
 
-},{}],45:[function(require,module,exports){
+},{}],50:[function(require,module,exports){
 
 exports = module.exports = trim;
 
@@ -2162,7 +2324,7 @@ exports.right = function(str){
   return str.replace(/\s*$/, '');
 };
 
-},{}],46:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 var trim = require('trim')
   , forEach = require('for-each')
   , isArray = function(arg) {
@@ -2194,4 +2356,4 @@ module.exports = function (headers) {
 
   return result
 }
-},{"for-each":43,"trim":45}]},{},[36]);
+},{"for-each":48,"trim":50}]},{},[36]);

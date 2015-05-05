@@ -1,8 +1,150 @@
-<h1>Admin home</h1>
+<style type="text/css">
 
+.container-content {
+    float: left;
+    width: 70%; 
+}
 
-<input id="search" type="text">
-<div id="search-btn">SEARCH</div>
+.container-controls {
+    float: left;
+    width: 25%; 
+    margin-left: 5%;
+    height: auto;
+}
 
+.button {
+    width: 9em;
+    height: 4em;
+    margin: 1em auto;
+    line-height: 4em;
+    text-align: center;
+    border: 1px solid pink;
+    border-radius: 2px;
+}
+.button:hover {
+    background-color: #f45; 
+}
 
-<div id="results"></div>
+.container-search {
+    overflow: auto;
+    margin-bottom: 2em;
+}
+
+.search-status {
+    width: 15%;
+    float: left;
+    height: auto;
+    padding: 1em;
+}
+
+.search-boxes {
+    width: 70%;
+    float: left;
+    height: auto;
+    padding: 1em; 
+}
+
+.search-control {
+    width: 15%;
+    float: left;
+    height: auto;
+    padding: 1em;
+}
+
+.container-search-field {
+    margin-bottom: 1em;
+}
+
+.container-results {
+    overflow: auto;
+    border: 1px solid #aaa;
+}
+
+.table-headers {
+    overflow: auto;
+    border-bottom: 1px solid #aaa;
+
+}
+
+.table-rows {
+    overflow-y: scroll;
+    height: 200px;
+}
+
+.table-row {
+    border-bottom: 1px solid #ddd;
+    overflow: auto;
+}
+
+.table-row:hover {
+    background-color: #dcf;
+    cursor: pointer;
+}
+
+.header {
+    float: left;
+    width: 16.1%;
+    height: 2em;
+    text-align: left;
+    line-height: 2em;
+    padding-left: 20px;
+}
+</style>
+
+<div class="container-large">
+
+    <div class="container-main">
+
+        <div class="container-content">
+
+            <div class="container-search">
+
+                <div class="search-status">
+                    <select class="no-margin use-max btn-standard-width" name="status">
+                        <option value="active" selected>Active</option>
+                        <option value="deleted">Deleted</option>
+                    </select>
+                </div>
+
+                <div class="search-boxes">
+                    <div class="container-search-field">
+                        <input 
+                            id="search-field-id"
+                            type="text" 
+                            placeholder="Membership number"
+                        >
+                    </div>
+                    <div class="container-search-field">
+                        <input
+                            id="search-field-email"
+                            type="text"
+                            placeholder="Email address"
+                        >
+                    </div>
+                    <div>
+                        <input
+                            id="search-field-lastName"
+                            type="text"
+                            placeholder="Last name"
+                        >
+                    </div>
+                </div>
+
+                <div class="search-control">
+                    <button id="search-button" class="btn-primary" type="submit">Search</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-controls">
+            <div id="newmember-button" class="button">
+                <a href="/addmember">
+                    New Member
+                </a>
+            </div>
+            <div id="maintenance-button" class="button">Maintenance</div>
+            <div id="events-button" class="button">Events</div>
+            <div id="donate-button" class="button">Donate</div>
+        </div>
+    </div>
+</div>
