@@ -4,13 +4,15 @@
   "description": "Membership management for Friends of Chichester Harbour",
   "main": "index.js",
   "scripts": {
-    "test": "tape ./test/*.test.js | tap-spec",
     "end2end": "node ./test/acceptance/index.js",
+    "test": "tape ./test/*.test.js",
+    "test-end": "tape ./test/frontend/*.test.js",
     "jshint": "jshint -c ./.jshintrc --exclude-path .gitignore .",
     "coverage": "istanbul cover tape ./test/*.test.js && istanbul check-coverage --statements 95 --functions 95 --lines 95 --branches 95",
     "sass": "sass --watch ./assets/css/main.scss:./assets/css/main.css",
     "start": "node index.js",
-    "faster": "faster"
+    "browse": "browserify ./assets/js/index.js ./assets/js/bundle.js",
+    "watch": "watchify ./assets/js/index.js -o ./assets/js/bundle.js -v"
   },
   "repository": {
     "type": "git",
@@ -23,6 +25,7 @@
   },
   "homepage": "https://github.com/foundersandcoders/clerk",
   "devDependencies": {
+    "browserify": "^10.0.0",
     "faster": "^3.4.6",
     "istanbul": "^0.3.13",
     "jshint": "^2.7.0",
@@ -38,13 +41,16 @@
     "coverage"
   ],
   "dependencies": {
+    "arrested": "0.0.3",
     "async": "^0.9.0",
     "babyparse": "^0.4.3",
     "d-bap": "^1.0.0",
+    "givit": "0.0.2",
     "handlebars": "^3.0.1",
     "hapi": "^8.4.0",
     "hapi-auth-cookie": "^2.0.0",
     "request": "^2.55.0",
-    "torf": "^1.0.3"
+    "torf": "^1.0.3",
+    "xhr": "^2.0.1"
   }
 }
