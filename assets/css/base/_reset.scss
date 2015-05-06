@@ -11,7 +11,12 @@ html, body{
 }
 
 #wrap {
-  min-height: 92%;
+	position: fixed;
+	overflow: hidden;
+	top: 0;
+	right: 0;
+	left: 0;
+	bottom: 0;
 }
 
 footer {

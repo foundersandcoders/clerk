@@ -1,5 +1,15 @@
 <style type="text/css">
 
+.button {
+    width: 9em;
+    height: 4em;
+    margin: 1em auto;
+    line-height: 4em;
+    text-align: center;
+    border: 1px solid pink;
+    border-radius: 2px;
+}
+
 .container-content {
     float: left;
     width: 70%; 
@@ -12,15 +22,6 @@
     height: auto;
 }
 
-.button {
-    width: 9em;
-    height: 4em;
-    margin: 1em auto;
-    line-height: 4em;
-    text-align: center;
-    border: 1px solid pink;
-    border-radius: 2px;
-}
 .button:hover {
     background-color: #f45; 
 }
@@ -68,7 +69,7 @@
 
 .table-rows {
     overflow-y: scroll;
-    height: 200px;
+    height: 300px;
 }
 
 .table-row {
@@ -93,58 +94,55 @@
 
 <div class="container-large">
 
-    <div class="container-main">
+    <div class="container-content">
 
-        <div class="container-content">
+        <div class="container-search">
 
-            <div class="container-search">
+            <div class="search-status">
+                <select class="no-margin use-max btn-standard-width" name="status">
+                    <option value="active" selected>Active</option>
+                    <option value="deleted">Deleted</option>
+                </select>
+            </div>
 
-                <div class="search-status">
-                    <select class="no-margin use-max btn-standard-width" name="status">
-                        <option value="active" selected>Active</option>
-                        <option value="deleted">Deleted</option>
-                    </select>
+            <div class="search-boxes">
+                <div class="container-search-field">
+                    <input 
+                        id="search-field-id"
+                        type="text"
+                        placeholder="Membership number"
+                    >
                 </div>
-
-                <div class="search-boxes">
-                    <div class="container-search-field">
-                        <input 
-                            id="search-field-id"
-                            type="text" 
-                            placeholder="Membership number"
-                        >
-                    </div>
-                    <div class="container-search-field">
-                        <input
-                            id="search-field-email"
-                            type="text"
-                            placeholder="Email address"
-                        >
-                    </div>
-                    <div>
-                        <input
-                            id="search-field-lastName"
-                            type="text"
-                            placeholder="Last name"
-                        >
-                    </div>
+                <div class="container-search-field">
+                    <input
+                        id="search-field-email"
+                        type="text"
+                        placeholder="Email address"
+                    >
                 </div>
-
-                <div class="search-control">
-                    <button id="search-button" class="btn-primary" type="submit">Search</button>
+                <div>
+                    <input
+                        id="search-field-lastName"
+                        type="text"
+                        placeholder="Last name"
+                    >
                 </div>
             </div>
-        </div>
 
-        <div class="container-controls">
-            <div id="newmember-button" class="button">
-                <a href="/addmember">
-                    New Member
-                </a>
+            <div class="search-control">
+                <button id="search-button" class="btn-primary" type="submit">Search</button>
             </div>
-            <div id="maintenance-button" class="button">Maintenance</div>
-            <div id="events-button" class="button">Events</div>
-            <div id="donate-button" class="button">Donate</div>
         </div>
+    </div>
+
+    <div class="container-controls">
+        <div id="newmember-button" class="button">
+            <a href="/addmember">
+                New Member
+            </a>
+        </div>
+        <div id="maintenance-button" class="button">Maintenance</div>
+        <div id="events-button" class="button">Events</div>
+        <div id="donate-button" class="button">Donate</div>
     </div>
 </div>

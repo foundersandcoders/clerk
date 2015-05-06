@@ -1643,54 +1643,185 @@ function appendPatch(apply, patch) {
 },{"../vnode/handle-thunk":22,"../vnode/is-thunk":23,"../vnode/is-vnode":25,"../vnode/is-vtext":26,"../vnode/is-widget":27,"../vnode/vpatch":30,"./diff-props":32,"x-is-array":10}],34:[function(require,module,exports){
 "use strict";
 
-var view  = require("./view");
-var is    = require("torf");
-var clean = require("d-bap");
 
-module.exports = function (hub, request) {
-
-	var that  = {};
-	var _data = {};
-	that.selector = ".container-content";
+var view = require("./view");
 
 
-	Object.defineProperty(that, "data", {
-		enumerable: true,
-		set: function (newVal) {
+module.exports = function (utils) {
 
-			_data = newVal;
-			hub.emit("update", that);
-		},
-		get: function (){
-			return _data;
+	var tree, resultsNode, initial = true;
+
+	function render (data) {
+
+		if(initial){
+			tree        = view(postData);
+			resultsNode = utils.createElement(tree);
+			initial     = false;
+			return resultsNode;
+		} else {
+			var newResults = view(postData);
+			var patches    = utils.diff(tree, newResults);
+			resultsNode    = utils.patch(resultsNode, patches);
+			tree           = resultsNode;
 		}
-	});
-
-	that.render = function () {
-
-		return view;
 	};
-	that.getData = function (query) {
 
-		request(_createOptions(clean.object(query)), function (e, h, b) {
+	function postData (query) {
 
-			that.data = JSON.parse(b);
+		var payload = {
+			date:      document.querySelector("#date-payment").value,
+			type:      document.querySelector("#type-payment").value,
+			reference: document.querySelector("#reference-payment").value,
+			amount:    document.querySelector("#amount-payment").value,
+			notes:     document.querySelector("#notes-payment").value
+		};
+
+		utils.request(_createOptions(payload), function (e, h, b) {
+
+			render();
 		});
 	};
 
+	try {
+		document.querySelector(".container-bottom").appendChild(render());
+	} catch (e) {}
 
-	that.config = {
-		events: [
-			{name: "click", action: that.getData},
-		]
+};
+
+function _createOptions (payload) {
+
+	return {
+		method: "POST",
+		url: "/api/payments",
+		json: payload
+	};
+}
+},{"./view":35}],35:[function(require,module,exports){
+"use strict";
+
+var h = require("virtual-dom/h");
+
+module.exports = function render (fn) {
+
+	return h("div.super-wrapper", [
+		renderInputs(["Date", "Type", "Reference", "Amount", "Notes"]),
+		h("div.input-wrapper-2", [
+			h("div.button#post-payment", {
+				onclick: fn
+			}, "Enter")
+		]),
+		h("div.input-wrapper-2", [
+			h("div.button", "Close")
+		])
+	]);
+
+	function renderInputs (content) {
+
+		return content.map(function (elm) {
+
+			return h("div.input-wrapper-2", [
+				h("p", elm + ":"),
+				h("input#" + elm.toLowerCase() + "-payment", {
+					type: "text"
+				})
+			]);
+		});
+	}
+}
+},{"virtual-dom/h":3}],36:[function(require,module,exports){
+"use strict";
+
+var view  = require("./view");
+
+module.exports = function (utils) {
+	
+	var tree, resultsNode, initial = true;
+
+	function render (data) {
+
+		// abstract this into single shared function
+		if(initial){
+			tree        = view(data);
+			resultsNode = utils.createElement(tree);
+			initial     = false;
+			return resultsNode;
+		} else {
+			var newResults = view(data);
+			var patches    = utils.diff(tree, newResults);
+			resultsNode    = utils.patch(resultsNode, patches);
+			tree           = resultsNode;
+		}
+	};
+	function getData (query) {
+
+		var query = {
+			id:       document.querySelector("#search-field-id").value,
+			email1:   document.querySelector("#search-field-email").value,
+			lastName: document.querySelector("#search-field-lastName").value,
+		};
+
+		utils.request(_createOptions(utils.clean.object(query)), function (e, h, b) {
+
+			// refarctor this
+			if (initial) {
+				document.querySelector(".container-content").appendChild(render(JSON.parse(b)));
+			} else {
+				render(JSON.parse(b));
+			}
+		});
 	};
 
-	console.log(hub);
+	try {
+		document.querySelector("#search-button").addEventListener("click", function () {
 
-	hub.emit("register", that.config);
+			getData();
+		});
+	} catch (e) {};
 
-	return that;
+
+	return;
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 function _createQuery(query) {
@@ -1712,10 +1843,12 @@ function _createOptions (query) {
 		url: "/api/members" + _createQuery(query)
 	}
 }
-},{"./view":35,"d-bap":40,"torf":43}],35:[function(require,module,exports){
-module.exports = function (data) {
+},{"./view":37}],37:[function(require,module,exports){
+"use strict";
 
-	var h = require("virtual-dom/h");
+var h = require("virtual-dom/h");
+
+module.exports = function (data) {
 
 	return h("div.container-results", [
 		h("div.table-results", [
@@ -1776,8 +1909,6 @@ module.exports = function (data) {
 
 	function decide (data) {
 
-		console.log(data);
-
 		if(data.length > 0) {
 			return renderRows(data);
 		}else{
@@ -1790,102 +1921,25 @@ module.exports = function (data) {
 		return h("p", "No results");
 	}
 };
-},{"virtual-dom/h":3}],36:[function(require,module,exports){
+},{"virtual-dom/h":3}],38:[function(require,module,exports){
 ;(function () {
 	"use strict";
 
-	var hub     = require("./lib/hub.js");
-	var request = require("xhr");
-	var render  = require("./lib/render.js")(hub);
-	var search  = require("./components/search/index")(hub, request);
+	var utils = {
+		is:            require("torf"),
+		clean:         require("d-bap"),
+		diff:          require('virtual-dom/diff'),
+		patch:         require('virtual-dom/patch'),
+		createElement: require('virtual-dom/create-element'),
+		request:       require("xhr")
+	};
 
-	document.querySelector("#search-button").addEventListener("click", function () {
-
-		var queries = {
-			id: document.querySelector("#search-field-id").value,
-			email1: document.querySelector("#search-field-email").value,
-			lastName: document.querySelector("#search-field-lastName").value,
-		};
-		
-		hub.emit("click", queries);
-	});
+	// components
+	var search  = require("./components/search/index")(utils);
+	var payment = require("./components/addpayment/index")(utils);
+	// var viewPay = require("./components/displaypayments/index")(utils);
 }());
-},{"./components/search/index":34,"./lib/hub.js":37,"./lib/render.js":38,"xhr":45}],37:[function(require,module,exports){
-"use strict";
-
-module.exports = {
-
-	_listeners: {},
-	addListener: function (ev, fn){
-
-		if(!this._listeners.hasOwnProperty(ev)){
-			this._listeners[ev] = [];
-		}
-		this._listeners[ev].push(fn);
-	},
-	removeListener: function (ev, fn){
-
-		if(!this._listeners.hasOwnProperty(ev)){
-			return;
-		} else {
-			var index = this._listeners[ev].indexOf(fn);
-			if(index > -1){
-				this._listeners[ev].splice(index,1);
-			}
-		}
-	},
-	emit: function (ev){
-
-		var argv = Array.prototype.slice.call(arguments, 1, arguments.length);
-
-		if(this._listeners.hasOwnProperty(ev)){
-			var ii = 0;
-			var ln = this._listeners[ev].length;
-			while(ii < ln){
-				this._listeners[ev][ii].apply(null, argv);
-				ii += 1;
-			}
-		}
-	}
-};
-},{}],38:[function(require,module,exports){
-"use strict";
-
-
-var diff          = require('virtual-dom/diff');
-var patch         = require('virtual-dom/patch');
-var createElement = require('virtual-dom/create-element');
-
-
-module.exports = function (hub) {
-
-	//listen for components
-	hub.addListener("register", function (config){
-
-		var ii = 0;
-		while(ii < config.events.length){
-			hub.addListener(config.events[ii].name, config.events[ii].action);
-			ii += 1;
-		}
-	});
-
-	hub.addListener("update", function (component) {
-
-		if (component.rendered) {
-			var newResults = component.render()(component.data);
-			var patches = diff(component.tree, newResults);
-			component.resultsNode = patch(component.resultsNode, patches);
-			component.tree = component.resultsNode;
-		} else {
-			component.tree = component.render()(component.data);
-			component.resultsNode = createElement(component.tree);
-			document.querySelector(component.selector).appendChild(component.resultsNode);
-			component.rendered = true;
-		}
-	});
-
-}
-},{"virtual-dom/create-element":1,"virtual-dom/diff":2,"virtual-dom/patch":11}],39:[function(require,module,exports){
+},{"./components/addpayment/index":34,"./components/search/index":36,"d-bap":40,"torf":43,"virtual-dom/create-element":1,"virtual-dom/diff":2,"virtual-dom/patch":11,"xhr":45}],39:[function(require,module,exports){
 
 },{}],40:[function(require,module,exports){
 "use strict";
@@ -2356,4 +2410,4 @@ module.exports = function (headers) {
 
   return result
 }
-},{"for-each":48,"trim":50}]},{},[36]);
+},{"for-each":48,"trim":50}]},{},[38]);

@@ -1,53 +1,96 @@
 "use strict";
 
 var view  = require("./view");
-var is    = require("torf");
-var clean = require("d-bap");
 
-module.exports = function (hub, request) {
+module.exports = function (utils) {
+	
+	var tree, resultsNode, initial = true;
 
-	var that  = {};
-	var _data = {};
-	that.selector = ".container-content";
+	function render (data) {
 
-
-	Object.defineProperty(that, "data", {
-		enumerable: true,
-		set: function (newVal) {
-
-			_data = newVal;
-			hub.emit("update", that);
-		},
-		get: function (){
-			return _data;
+		// abstract this into single shared function
+		if(initial){
+			tree        = view(data);
+			resultsNode = utils.createElement(tree);
+			initial     = false;
+			return resultsNode;
+		} else {
+			var newResults = view(data);
+			var patches    = utils.diff(tree, newResults);
+			resultsNode    = utils.patch(resultsNode, patches);
+			tree           = resultsNode;
 		}
-	});
-
-	that.render = function () {
-
-		return view;
 	};
-	that.getData = function (query) {
+	function getData (query) {
 
-		request(_createOptions(clean.object(query)), function (e, h, b) {
+		var query = {
+			id:       document.querySelector("#search-field-id").value,
+			email1:   document.querySelector("#search-field-email").value,
+			lastName: document.querySelector("#search-field-lastName").value,
+		};
 
-			that.data = JSON.parse(b);
+		utils.request(_createOptions(utils.clean.object(query)), function (e, h, b) {
+
+			// refarctor this
+			if (initial) {
+				document.querySelector(".container-content").appendChild(render(JSON.parse(b)));
+			} else {
+				render(JSON.parse(b));
+			}
 		});
 	};
 
+	try {
+		document.querySelector("#search-button").addEventListener("click", function () {
 
-	that.config = {
-		events: [
-			{name: "click", action: that.getData},
-		]
-	};
+			getData();
+		});
+	} catch (e) {};
 
-	console.log(hub);
 
-	hub.emit("register", that.config);
-
-	return that;
+	return;
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 function _createQuery(query) {

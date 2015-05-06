@@ -14,9 +14,9 @@ module.exports = function (Members) {
 		member: function (req, res) {
 
 			Members
-			.findOne(req.params.id, req.auth.credentials.token, function (err, item){
+			.findOne({id: req.params.id}, req.auth.credentials.token, function (err, r){
 
-				res.view("view-member", {member:item});
+				res.view("view-member", {member: r.body});
 			});
 		}
 	}

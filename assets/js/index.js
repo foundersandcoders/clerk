@@ -1,19 +1,17 @@
 ;(function () {
 	"use strict";
 
-	var hub     = require("./lib/hub.js");
-	var request = require("xhr");
-	var render  = require("./lib/render.js")(hub);
-	var search  = require("./components/search/index")(hub, request);
+	var utils = {
+		is:            require("torf"),
+		clean:         require("d-bap"),
+		diff:          require('virtual-dom/diff'),
+		patch:         require('virtual-dom/patch'),
+		createElement: require('virtual-dom/create-element'),
+		request:       require("xhr")
+	};
 
-	document.querySelector("#search-button").addEventListener("click", function () {
-
-		var queries = {
-			id: document.querySelector("#search-field-id").value,
-			email1: document.querySelector("#search-field-email").value,
-			lastName: document.querySelector("#search-field-lastName").value,
-		};
-		
-		hub.emit("click", queries);
-	});
+	// components
+	var search  = require("./components/search/index")(utils);
+	var payment = require("./components/addpayment/index")(utils);
+	// var viewPay = require("./components/displaypayments/index")(utils);
 }());

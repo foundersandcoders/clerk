@@ -1,6 +1,8 @@
-module.exports = function (data) {
+"use strict";
 
-	var h = require("virtual-dom/h");
+var h = require("virtual-dom/h");
+
+module.exports = function (data) {
 
 	return h("div.container-results", [
 		h("div.table-results", [
@@ -60,8 +62,6 @@ module.exports = function (data) {
 	}
 
 	function decide (data) {
-
-		console.log(data);
 
 		if(data.length > 0) {
 			return renderRows(data);

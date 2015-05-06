@@ -1,405 +1,266 @@
+<style type="text/css">
+
+    .container-large {
+        width: 100%;
+        height: 94%;
+        padding: 2%;
+    }
+
+    .button {
+        width: 9em;
+        height: 4em;
+        margin: 1em auto;
+        line-height: 4em;
+        text-align: center;
+        border: 1px solid pink;
+        border-radius: 2px;
+    }
+
+    .container-content {
+        float: left;
+        width: 70%;
+        height: 80%;
+    }
+
+    .container-controls {
+        float: left;
+        width: 28%; 
+        margin-left: 2%;
+        height: 80%;
+        border-left: 1px solid #aaa;
+    }
+
+    .button:hover {
+        background-color: #f45;
+    }
+
+    .container-bottom {
+        width: 100%;
+        height: 20%;
+        clear: both;
+        border-top: 1px solid #aaa;
+    }
+
+    .container-member {
+        width: 100%;
+        overflow: auto;
+        height: 40%;
+    }
+
+    .container-payments {
+        overflow: auto;
+        width: 100%;
+        border-left: 1px solid #aaa;
+        border-top: 1px solid #aaa;
+        border-right: 1px solid #aaa;
+        height: 60%;
+    }
+
+
+    .input-wrapper {
+        width: 100%;
+        overflow: auto;
+    }
+
+    #payment-amount {
+        width: 70%;
+        margin-left: 15%;
+        height: 2em;
+    }
+
+    .member-buttons {
+        overflow: auto;
+        height: 30%;
+    }
+
+    .donation-payment {
+        padding-top: 5%;
+        height: 35%;
+        overflow: auto;
+    }
+
+    #donation-notes {
+        height: 5em;
+        font-size: 15px;
+    }
+
+    .textarea-wrap {
+        width: 100%;
+        padding: 0 15%;
+    }
+
+    .subscription-payment {
+        height: 35%;
+        overflow: auto;
+    }
+
+   .info-section {
+        float: left;
+        width: 33.3333333333333333%;
+        height: 100%;
+        padding: 2%;
+        font-size: 1.2em;
+    }
+
+    .info-section p {
+        margin-bottom: 0.5em;
+    }
+
+    .table-headers {
+        overflow: auto;
+        border-bottom: 1px solid #aaa;
+        height: 7%;
+    }
+
+    .table-rows {
+        overflow-y: scroll;
+        height: 93%;
+    }
+
+    .table-row {
+        border-bottom: 1px solid #ddd;
+        overflow: auto;
+    }
+
+    .table-row:hover {
+        cursor: pointer;
+    }
+
+    .header {
+        float: left;
+        width: 12.5%;
+        height: 2em;
+        text-align: left;
+        line-height: 2em;
+        padding-left: 20px;
+    }
+
+    .input-wrapper-2 {
+        margin-left: 1.5%;
+        float: left;
+
+    }
+
+    .super-wrapper {
+        overflow: auto;
+        padding-top: 5%;
+    }
+</style>
+
+
 <div class="container-large">
 
-    {{#member}}
-        <h1>View Member</h1>
+    
+    <div class="container-content">
 
-            <div class="topSectionDividor">
-                <ul>
-                    <li><h2>1. Profile</h2></li>
-                </ul>
+        
+        <div class="container-member">
+            
+            <div class="info-section" id="personal-info">
+                
+                <p>Title: Mr.</p>
+                
+                <p>First name: Besart</p>
+                
+                <p>Initials: Bes</p>
+                
+                <p>Last name: Hoxhaj</p>
+                
+                <p>Birthday: 21/11/1990</p>
+                
+                <p>Primary email: besartshyti@foundersandcoders.org</p>
+                
+                <p>Secondary email: besartshyti@gma.omc</p>
+                
+                <p>Email bounced: NO!</p>
+                
+                <p>Online: yes</p>
+                
+                <p>Notes: Hello world</p>
             </div>
-
-            <div class="innerSectionContainer">
-                <div class="inner-section-divider-small">
-                    <div class="field">
-                        <p class="meta">Membership id</p>
-                    </div>
-                    <div class="value">
-                        <p id="id" class="meta">{{id}}</p>
-                    </div>
-                </div>
+            
+            <div class="info-section" id="contact-info">
+                
+                <p>Address: Globe Town</p>
+                
+                <p>27 YE5 G4</p>
+                
+                <p>Roman Road</p>
+                
+                <p>Deliverer: Globe Town</p>
+                
+                <p>Home phone: 748 548732</p>
+                
+                <p>Work phone: 748 548732</p>
+                
+                <p>Mobile phone: 748 548732</p>        
             </div>
-
-            <div class="innerSectionContainer">
-                    <div class="field">
-                        <p class="meta">Title</p>
-                    </div>
-                    <div class="value">
-                        <p id="title" class="meta">{{title}}</p>
-                    </div>
-            </div>
-
-            <div class="innerSectionContainer">
-                    <div class="field">
-                        <p class="meta">First name</p>
-                    </div>
-                    <div class="value">
-                        <p id="first-name" class="meta">{{firstName}}</p>
-                    </div>
-            </div>
-
-            <div class="innerSectionContainer">
-                <div class="field">
-                    <p class="meta">Last name</p>
-                </div>
-                <div class="value">
-                    <p id="last-name" class="meta">{{lastName}}</p>
-                </div>
-            </div>
-
-            <div class="innerSectionContainer">
-                    <div class="field">
-                        <p class="meta">Date of birthday</p>
-                    </div>
-                    <div class="value">
-                        <p class="meta">{{birthday}}</p>
-                    </div>
-            </div>
-
-            <div class="topSectionDividor">
-                <ul>
-                    <li><h2>2. Address</h2></li>
-                </ul>
-            </div>
-
-            <div class="innerSectionContainer">
-                <div class="inner-section-divider-small">
-                    <div class="field">
-                        <p class="meta">Address 1</p>
-                    </div>
-                    <div class="value">
-                        <p class="meta">{{address1}}</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="innerSectionContainer">
-                    <div class="field">
-                        <p class="meta">Address 2</p>
-                    </div>
-                    <div class="value">
-                        <p class="meta">{{address2}}</p>
-                    </div>
-            </div>
-
-            <div class="innerSectionContainer">
-                    <div class="field">
-                        <p class="meta">Address 3</p>
-                    </div>
-                    <div class="value">
-                        <p class="meta">{{address3}}</p>
-                    </div>
-            </div>
-
-            <div class="innerSectionContainer">
-                    <div class="field">
-                        <p class="meta">Address 4</p>
-                    </div>
-                    <div class="value">
-                        <p class="meta">{{address4}}</p>
-                    </div>
-            </div>
-
-            <div class="innerSectionContainer">
-                    <div class="field">
-                        <p class="meta">County</p>
-                    </div>
-                    <div class="value">
-                        <p class="meta">{{county}}</p>
-                    </div>
-            </div>
-
-            <div class="innerSectionContainer">
-                    <div class="field">
-                        <p class="meta">Postcode</p>
-                    </div>
-                    <div class="value">
-                        <p class="meta">{{postcode}}</p>
-                    </div>
-            </div>
-
-            <div class="innerSectionContainer">
-                    <div class="field">
-                        <p class="meta">Deliverer</p>
-                    </div>
-                    <div class="value">
-                        <p class="meta">{{deliverer}}</p>
-                    </div>
-            </div>
-
-
-            <div class="topSectionDividor">
-                <ul>
-                    <li><h2>3. Contact online</h2></li>
-                </ul>
-            </div>
-
-            <div class="innerSectionContainer">
-                <div class="inner-section-divider-small">
-                    <div class="field">
-                        <p class="meta">Home phone</p>
-                    </div>
-                    <div class="value">
-                        <p class="meta">{{homePhone}}</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="innerSectionContainer">
-                    <div class="field">
-                        <p class="meta">Mobile phone</p>
-                    </div>
-                    <div class="value">
-                        <p class="meta">{{mobilePhone}}</p>
-                    </div>
-            </div>
-
-            <div class="innerSectionContainer">
-                    <div class="field">
-                        <p class="meta">Work phone</p>
-                    </div>
-                    <div class="value">
-                        <p class="meta">{{workPhone}}</p>
-                    </div>
-            </div>
-
-            <div class="innerSectionContainer">
-                    <div class="field">
-                        <p class="meta">Primary email</p>
-                    </div>
-                    <div class="value">
-                        <p class="meta">{{email1}}</p>
-                    </div>
-            </div>
-
-            <div class="innerSectionContainer">
-                    <div class="field">
-                        <p class="meta">Secondary email</p>
-                    </div>
-                    <div class="value">
-                        <p class="meta">{{email2}}</p>
-                    </div>
-            </div>
-
-            <div class="innerSectionContainer">
-                    <div class="field">
-                        <p class="meta">Email bounced?</p>
-                    </div>
-                    <div class="value">
-                        <p class="meta">{{emailBounced}}</p>
-                    </div>
-            </div>
-
-            <div class="topSectionDividor">
-                <ul>
-                    <li><h2>4. Membership</h2></li>
-                </ul>
-            </div>
-
-            <div class="innerSectionContainer">
-                <div class="inner-section-divider-small">
-                    <div class="field">
-                        <p class="meta">Membership type</p>
-                    </div>
-                    <div class="value">
-                        <p class="meta">{{membershipType}}</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="innerSectionContainer">
-                    <div class="field">
-                        <p class="meta">Date joined</p>
-                    </div>
-                    <div class="value">
-                        <p class="meta">{{dateJoined}}</p>
-                    </div>
-            </div>
-
-            <div class="innerSectionContainer">
-                    <div class="field">
-                        <p class="meta">Date membership joined</p>
-                    </div>
-                    <div class="value">
-                        <p class="meta">{{dateTypeChanged}}</p>
-                    </div>
-            </div>
-
-            <div class="innerSectionContainer">
-                    <div class="field">
-                        <p class="meta">Date life membership paid</p>
-                    </div>
-                    <div class="value">
-                        <p class="meta">{{lifePaymentDate}}</p>
-                    </div>
-            </div>
-
-            <div class="topSectionDividor">
-                <ul>
-                    <li><h2>5. Gift aid</h2></li>
-                </ul>
-            </div>
-
-            <div class="innerSectionContainer">
-                <div class="inner-section-divider-small">
-                    <div class="field">
-                        <p class="meta">Gift aid</p>
-                    </div>
-                    <div class="value">
-                        <p class="meta">{{giftAid}}</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="innerSectionContainer">
-                    <div class="field">
-                        <p class="meta">Date gif aid signed</p>
-                    </div>
-                    <div class="value">
-                        <p class="meta">{{dateGiftAidSigned}}</p>
-                    </div>
-            </div>
-
-            <div class="innerSectionContainer">
-                    <div class="field">
-                        <p class="meta">Date gif aid cancelled</p>
-                    </div>
-                    <div class="value">
-                        <p class="meta">{{dateGiftAidCancelled}}</p>
-                    </div>
-            </div>
-
-            <div class="topSectionDividor">
-                <ul>
-                    <li><h2>6. Payment info</h2></li>
-                </ul>
-            </div>
-
-            <div class="innerSectionContainer">
-                <div class="inner-section-divider-small">
-                    <div class="field">
-                        <p class="meta">Pays by standing order</p>
-                    </div>
-                    <div class="value">
-                        <p class="meta">{{standingOrder}}</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="topSectionDividor">
-                <ul>
-                    <li><h2>7. Other</h2></li>
-                </ul>
-            </div>
-
-            <div class="innerSectionContainer">
-                <div class="inner-section-divider-small">
-                    <div class="field">
-                        <p class="meta">Online Member</p>
-                    </div>
-                    <div class="value">
-                        <p class="meta">{{onlineMember}}</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="innerSectionContainer">
-                    <div class="field">
-                        <p class="meta">Notes</p>
-                    </div>
-                    <div class="value">
-                        <p class="meta">{{membershipNotes}}</p>
-                    </div>
-            </div>
-        {{/member}}
-
-        <div class="topSectionDividor">
-            <ul>
-                <li><h2>8. Payment history</h2></li>
-            </ul>
-        </div>
-
-        <div class="inner-section-divider-small">
-
-        <a href="/members/{{ member.id }}/payments">
-            <button
-                id="add-payment-btn"
-                class="btn-primary right btn-standard-width"
-            >Add payment
-            </button>
-        </a>
-
-        <div class="inner-section-divider-small">
-
-            <div class="wrap">
-                <table class="head meta">
-                    <tr>
-                        <td>Date</td>
-                        <td>Type</td>
-                        <td>Ref</td>
-                        <td>Subscription</td>
-                        <td>Donation</td>
-                        <td>Events</td>
-                        <td>View</td>
-                    </tr>
-                </table>
-                <div class="inner_table">
-                    <table>
-                        {{#each payments}}
-                            <tr class="meta inactive central-text">
-                                <a href="/members/{{../member.id}}/payments/{{this._id}}">
-                                    <td>{{this._source.datePaid}}</td>
-                                    <td>{{this._source.typeCode}}</td>
-                                    <td>{{this._source.listReference}}</td>
-                                    <td>{{this._source.subscription}}</td>
-                                    <td>{{this._source.donation}}</td>
-                                    <td>{{this._source.events}}</td>
-                                    <td>
-                                        <a href="/members/{{../member.id}}/payments/{{this._id}}">
-                                            view
-                                        </a>
-                                    </td>
-                                </a>
-                            </tr>
-                        {{/each}}
-                    </table>
-                </div>
+            
+            <div class="info-section" id="membership-info">
+                
+                <p>Membership type: Life</p>
+                
+                <p>Date joined: 21/11/2014</p>
+                
+                <p>Date membershipt change: 21/11/2015</p>
+                
+                <p>Life membership date paid: 21/11/2016</p>
+                
+                <p>Gift aid: Yes</p>
+                
+                <p>Date gift aid signed: yesterday</p>
+                
+                <p>Date gift aid cancelled: tomorrow</p>
+                
+                <p>Paid by standing order: Maybe</p>
+                
+                <p>Paid by standing order: Maybe</p>
             </div>
         </div>
+        
+        <div class="container-payments"></div>
+    </div>
 
-        <div class="topSectionDividor">
-            <ul>
-                <li><h2>9. Edit member</h2></li>
-            </ul>
-        </div>
-
-        <div class="innerSectionContainer">
-            <div class="inner-section-divider-medium">
-                <a href="/members/{{member.id}}/edit">
-                    <button id="save_person" class="btn-primary left btn-standard-width" type="submit">Edit</button>
+    
+    <div class="container-controls">
+ 
+        <div class="member-buttons">
+            
+            <div id="newmember-button" class="button">
+                <a href="/addmember">
+                    Save Changes
                 </a>
-
-                {{#if member.deletionReason}}
-                    <form action="/members/{{member.id}}/reactivate" method="POST">
-                        <button type="submit" id="cancel_person" class="btn-secondary right btn-standard-width">Reactivate</button>
-                    </form>
-                {{else}}
-                    <form class="right" action="/members/{{member.id}}/delete" method="POST">
-                        <select class="left no-margin" style="width: 183px;font-size: 20px;margin-right: 10px;" name="deletionReason">
-                            <option value="" disabled selected>Deletion reason</option>
-                            <option value="deceased">Deceased</option>
-                            <option value="notResponding">Did not respond to reminders</option>
-                            <option value="duplicate">Duplicate</option>
-                            <option value="dissatisfied">Expressed dissatisfaction</option>
-                            <option value="mailReturned">Mail returned to us</option>
-                            <option value="moved">Moved away</option>
-                            <option value="notifiedTermination">Notified termination</option>
-                            <option value="other">Other</option>
-                        </select>
-                        <button type="submit" id="cancel_person" class="btn-secondary right btn-standard-width">Delete</button>
-                    </form>
-                {{/if}}
             </div>
+            
+            <div id="maintenance-button" class="button">Delete Member</div>
+        </div>
+
+        <div class="subscription-payment">
+            
+            <div class="button">Advance Sub</div>
+            
+            <div class="button">Refund</div>
+            
+            <div class="input-wrapper">
+                <p>Amount:</p>
+                <input id="payment-amount" type="text">
+            </div>
+        </div>
+
+        <div class="donation-payment">
+            <p>Amount:</p>
+            <input id="payment-amount" type="text">
+            
+            <div class="textarea-wrap">
+                <p>Notes:</p>
+                <textarea id="donation-notes"></textarea>
+            </div>
+            
+            <div class="button">Add</div>
         </div>
     </div>
+    
+    <div class="container-bottom"></div>
+    
+    <p id="memberid" style="display:none;">{{member.id}}</p>
 </div>
