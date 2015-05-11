@@ -209,7 +209,7 @@ if (typeof document !== 'undefined') {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"min-document":39}],9:[function(require,module,exports){
+},{"min-document":48}],9:[function(require,module,exports){
 "use strict";
 
 module.exports = function isObject(x) {
@@ -1651,7 +1651,7 @@ module.exports = function (utils) {
 
 	var tree, resultsNode, initial = true;
 
-	function render (data) {
+	function render () {
 
 		if(initial){
 			tree        = view(postData);
@@ -1669,6 +1669,7 @@ module.exports = function (utils) {
 	function postData (query) {
 
 		var payload = {
+			memberId:  document.querySelector("#memberid").textContent,
 			date:      document.querySelector("#date-payment").value,
 			type:      document.querySelector("#type-payment").value,
 			reference: document.querySelector("#reference-payment").value,
@@ -1685,7 +1686,6 @@ module.exports = function (utils) {
 	try {
 		document.querySelector(".container-bottom").appendChild(render());
 	} catch (e) {}
-
 };
 
 function _createOptions (payload) {
@@ -1729,6 +1729,451 @@ module.exports = function render (fn) {
 	}
 }
 },{"virtual-dom/h":3}],36:[function(require,module,exports){
+"use strict";
+
+
+var view = require("./view");
+
+
+module.exports = function (utils) {
+
+	var tree, resultsNode, initial = true;
+
+	function render () {
+
+		if(initial){
+			tree        = view(postData);
+			resultsNode = utils.createElement(tree);
+			initial     = false;
+			return resultsNode;
+		} else {
+			var newResults = view(postData);
+			var patches    = utils.diff(tree, newResults);
+			resultsNode    = utils.patch(resultsNode, patches);
+			tree           = resultsNode;
+		}
+	};
+
+	function postData (query) {
+
+		var payload = {
+			memberId:    document.querySelector("#memberid").textContent,
+			description: "Donation",
+			amount:      document.querySelector("#payment-amount").value,
+			notes:       document.querySelector("#donation-notes").value
+		};
+
+		utils.request(_createOptions(payload), function (e, h, b) {
+
+			render();
+		});
+	};
+
+	try {
+		document.querySelector(".container-controls").appendChild(render());
+	} catch (e) {}
+};
+
+function _createOptions (payload) {
+
+	return {
+		method: "POST",
+		url: "/api/charges",
+		json: payload
+	};
+}
+},{"./view":37}],37:[function(require,module,exports){
+"use strict";
+
+var h = require("virtual-dom/h");
+
+module.exports = function (fn) {
+
+	return h("div.donation-payment", [
+		h("p", "Amount: "),
+		h("input#payment-amount", {type: "text"}),
+		h("div.textarea-wrap", [
+			h("p", "Notes: "),
+			h("textarea#donation-notes")
+		]),
+		h("div.button",{
+			onclick: fn
+		}, "Add")
+	]);
+};
+},{"virtual-dom/h":3}],38:[function(require,module,exports){
+"use strict";
+
+
+var view = require("./view");
+
+
+module.exports = function (utils) {
+
+	var tree, resultsNode, initial = true;
+
+	function render () {
+
+		if(initial){
+			tree        = view(postData);
+			resultsNode = utils.createElement(tree);
+			initial     = false;
+			return resultsNode;
+		} else {
+			var newResults = view(postData);
+			var patches    = utils.diff(tree, newResults);
+			resultsNode    = utils.patch(resultsNode, patches);
+			tree           = resultsNode;
+		}
+	};
+
+	function postData (type) {
+
+		return function () {
+
+			var payload = {
+				memberId:    document.querySelector("#memberid").textContent
+			};
+
+			var value = document.querySelector("#payment-amount").value;
+
+			payload.amount      = (type === "charge") ? value          : 0 - Number(value);
+			payload.description = (type === "charge") ? "Subscription" : "Subscription refund";
+
+			utils.request(_createOptions(payload), function (e, h, b) {
+
+				render();
+			});
+		}
+	};
+
+	try {
+		document.querySelector(".container-controls").appendChild(render());
+	} catch (e) {}
+};
+
+function _createOptions (payload) {
+
+	return {
+		method: "POST",
+		url: "/api/charges",
+		json: payload
+	};
+}
+},{"./view":39}],39:[function(require,module,exports){
+"use strict";
+
+var h = require("virtual-dom/h");
+
+module.exports = function (fn) {
+
+	return h("div.subscription-payment", [
+		h("div.button", {
+			onclick: fn("charge")
+		}, "Advance Subscription"),
+		h("div.button", {
+			onclick: fn("refund")
+		}, "Refund"),
+		h("div.input-wrapper", [
+			h("p", "Amount: "),
+			h("input#payment-amount", {
+				type: "text"
+			})
+		])
+	]);
+
+};
+},{"virtual-dom/h":3}],40:[function(require,module,exports){
+"use strict";
+
+
+var view  = require("./view");
+
+
+module.exports = function (utils) {
+	var that = {};
+
+	var tree, resultsNode, initial = true;
+
+	that.render = function (data) {
+
+		if(initial){
+			tree        = view(data);
+			resultsNode = utils.createElement(tree);
+			initial     = false;
+			return resultsNode;
+		} else {
+			var newResults = view(data);
+			var patches    = utils.diff(tree, newResults);
+			resultsNode    = utils.patch(resultsNode, patches);
+			tree           = resultsNode;
+		}
+	};
+
+	that.getData = function () {
+
+		var count = 0;
+		var store = [];
+
+		utils.request(_createOptions("payments"), function (e, h, b) {
+
+			store = store.concat(JSON.parse(b));
+			count += 1;
+
+			if(count === 2){
+				_render(initial, store, that.render);
+			}
+		});
+
+		utils.request(_createOptions("charges"), function (e, h, b) {
+
+			store = store.concat(JSON.parse(b));
+			count += 1;
+
+			if(count === 2){
+				_render(initial, store, that.render);
+			}
+		});
+	};
+
+	return that;
+};
+
+function _createOptions (item) {
+
+	return {
+		method: "GET",
+		url: "/api/" + item + "?memberId=" + document.querySelector("#memberid").textContent
+	}
+}
+
+function _render (initial, data, render) {
+	if (initial) {
+		document.querySelector(".container-payments").appendChild(render(data));
+	} else {
+		render(data);
+	}
+}
+},{"./view":41}],41:[function(require,module,exports){
+"use strict";
+
+var h = require("virtual-dom/h");
+
+module.exports = function (data) {
+
+	return h("div.table-results", [
+		h("div.table-headers", [
+			renderHeaders(["Date", "Description", "Cost", "Payment", "Due", "Reference", "Notes", "Edit"]),
+		]),
+		h("div.table-rows", [
+			renderRows(data)
+		])
+	]);
+
+	function renderHeaders (headers) {
+		return headers.map(function (elm){
+
+			return h("div.header", [
+				h("p", elm)
+			]);
+		});
+	}
+
+
+	function renderRows (data) {
+		return data.map(function (elm){
+
+			return h("div.table-row", [
+				h("div.header", [
+					h("p", elm.date)
+				]),
+				h("div.header", [
+					h("p", elm.description)
+				]),
+				h("div.header", [
+					h("p", elm.cost)
+				]),
+				h("div.header", [
+					h("p", elm.payment)
+				]),
+				h("div.header", [
+					h("p", elm.due)
+				]),
+				h("div.header", [
+					h("p", elm.reference)
+				]),
+				h("div.header", [
+					h("p", elm.notes)
+				]),
+				h("div.header", [
+					h("p", "elm.notes")
+				])
+			])
+		});
+	}
+};
+},{"virtual-dom/h":3}],42:[function(require,module,exports){
+"use strict";
+
+
+var view = require("./view");
+
+
+module.exports = function (utils) {
+
+
+	var tree, resultsNode, initial = true;
+	var status = document.querySelector("#memberstatus").textContent;
+
+	function render () {
+
+		if(initial){
+			tree        = view(status, deleteMember, reactivate);
+			resultsNode = utils.createElement(tree);
+			initial     = false;
+			return resultsNode;
+		} else {
+			var newResults = view(status, deleteMember, reactivate);
+			var patches    = utils.diff(tree, newResults);
+			resultsNode    = utils.patch(resultsNode, patches);
+			tree           = resultsNode;
+		}
+	};
+
+
+	try {
+		document.querySelector(".container-controls").appendChild(render());
+	} catch (e) {}
+
+
+	function deleteMember () {
+
+		var selectElm = document.querySelector("#deletion-reason");
+
+		var payload = {
+			deletionReason: selectElm.options[selectElm.selectedIndex].value,
+			status: "deleted"
+		};
+		
+		utils.request(_createOptions(payload), function (e, h, b) {
+
+			location.reload();
+		});
+	}
+
+	function reactivate () {
+
+		var payload = {
+			deletionReason: null,
+			status: "active"
+		};
+		
+		utils.request(_createOptions(payload), function (e, h, b) {
+
+			location.reload();
+		});
+
+	}
+
+	function _createOptions (payload) {
+
+		return {
+			method: "PUT",
+			url: "/api/members/" + document.querySelector("#memberid").textContent,
+			json: payload
+		};
+	}
+
+};
+},{"./view":43}],43:[function(require,module,exports){
+"use strict";
+
+var h = require("virtual-dom/h");
+
+module.exports = function (status, deleteFn, reactivateFn) {
+
+	var deletionReasons = [{
+			value:      "deceased",
+			description: "Deceased"
+		},{
+			value: "notResponding",
+			description: "Did not respond to reminders"
+		},{
+			value: "duplicate",
+			description: "Duplicate"
+		}, {
+			value: "dissatisfied",
+			description: "Expressed dissatisfaction"
+		},{
+			value: "mailReturned",
+			description: "Mail returned to us"
+		}, {
+			value: "moved",
+			description: "Moved away"
+		},{
+			value: "notifiedTermination",
+			description: "Notified termination"
+		}, {
+			value: "other",
+			description: "Other"
+		}
+	];
+
+
+	return h("div.member-buttons", [
+		h("div.button#newmember-button", [
+			h("a", {
+				href: "/addmember"
+			}, "Save changes")
+		]),
+		renderStatus(status)
+	]);
+
+
+	function renderStatus (status) {
+
+		var active = h("div#delete", [
+			h("select#deletion-reason", renderOptions(deletionReasons)),
+			h("div#maintenance-button.button", {
+				onclick: deleteFn
+			}, "Delete member")
+		]);
+
+		var deleted = h("div#active", [
+			h("div#maintenance-button.button", {
+				onclick: reactivateFn
+			},  "Reactivate member")
+		]);
+
+		if(status === "active"){
+			return active;
+		}else{
+			return deleted;
+		}
+
+	}
+
+	function renderOptions(reasons){
+
+		var options = [
+			h("option", {
+				value: "",
+				disabled: true,
+				selected: true
+			},"Deletion reason")
+		];
+
+		return options.concat(
+			reasons.map(function (elm){
+
+				return h("option", {
+					value: elm.value
+				}, elm.description)
+			})
+		);
+	}
+};
+},{"virtual-dom/h":3}],44:[function(require,module,exports){
 "use strict";
 
 var view  = require("./view");
@@ -1843,7 +2288,7 @@ function _createOptions (query) {
 		url: "/api/members" + _createQuery(query)
 	}
 }
-},{"./view":37}],37:[function(require,module,exports){
+},{"./view":45}],45:[function(require,module,exports){
 "use strict";
 
 var h = require("virtual-dom/h");
@@ -1921,7 +2366,7 @@ module.exports = function (data) {
 		return h("p", "No results");
 	}
 };
-},{"virtual-dom/h":3}],38:[function(require,module,exports){
+},{"virtual-dom/h":3}],46:[function(require,module,exports){
 ;(function () {
 	"use strict";
 
@@ -1931,17 +2376,29 @@ module.exports = function (data) {
 		diff:          require('virtual-dom/diff'),
 		patch:         require('virtual-dom/patch'),
 		createElement: require('virtual-dom/create-element'),
-		request:       require("xhr")
+		request:       require("./services/request.js")
 	};
 
 	// components
-	var search  = require("./components/search/index")(utils);
-	var payment = require("./components/addpayment/index")(utils);
-	// var viewPay = require("./components/displaypayments/index")(utils);
-}());
-},{"./components/addpayment/index":34,"./components/search/index":36,"d-bap":40,"torf":43,"virtual-dom/create-element":1,"virtual-dom/diff":2,"virtual-dom/patch":11,"xhr":45}],39:[function(require,module,exports){
+	var search       = require("./components/search/index")(utils);
+	var payment      = require("./components/addpayment/index")(utils);
+	var viewPay      = require("./components/displaypayments/index")(utils);
+	var status       = require("./components/memberstatus/index")(utils);
+	var subscription = require("./components/chargesubscriptions/index")(utils);
+	var donation     = require("./components/chargedonations/index")(utils);
 
-},{}],40:[function(require,module,exports){
+	// var displayMember = require("./pages/displaymember.js")(utils);
+	viewPay.getData();
+}());
+},{"./components/addpayment/index":34,"./components/chargedonations/index":36,"./components/chargesubscriptions/index":38,"./components/displaypayments/index":40,"./components/memberstatus/index":42,"./components/search/index":44,"./services/request.js":47,"d-bap":49,"torf":52,"virtual-dom/create-element":1,"virtual-dom/diff":2,"virtual-dom/patch":11}],47:[function(require,module,exports){
+"use strict";
+
+var request = require("xhr");
+
+module.exports = request;
+},{"xhr":54}],48:[function(require,module,exports){
+
+},{}],49:[function(require,module,exports){
 "use strict";
 
 var is = require("torf");
@@ -1997,7 +2454,7 @@ function _clone (obj){
   return temp;
 }
 
-},{"torf":41}],41:[function(require,module,exports){
+},{"torf":50}],50:[function(require,module,exports){
 'use strict';
 
 
@@ -2071,7 +2528,7 @@ function checkEmail (email, regexp){
 		return false;
 	};
 };
-},{"is-number":42}],42:[function(require,module,exports){
+},{"is-number":51}],51:[function(require,module,exports){
 /*!
  * is-number <https://github.com/jonschlinkert/is-number>
  *
@@ -2087,11 +2544,11 @@ module.exports = function isNumber(n) {
     || n === 0;
 };
 
-},{}],43:[function(require,module,exports){
-arguments[4][41][0].apply(exports,arguments)
-},{"dup":41,"is-number":44}],44:[function(require,module,exports){
-arguments[4][42][0].apply(exports,arguments)
-},{"dup":42}],45:[function(require,module,exports){
+},{}],52:[function(require,module,exports){
+arguments[4][50][0].apply(exports,arguments)
+},{"dup":50,"is-number":53}],53:[function(require,module,exports){
+arguments[4][51][0].apply(exports,arguments)
+},{"dup":51}],54:[function(require,module,exports){
 "use strict";
 var window = require("global/window")
 var once = require("once")
@@ -2263,7 +2720,7 @@ function createXHR(options, callback) {
 
 function noop() {}
 
-},{"global/window":46,"once":47,"parse-headers":51}],46:[function(require,module,exports){
+},{"global/window":55,"once":56,"parse-headers":60}],55:[function(require,module,exports){
 (function (global){
 if (typeof window !== "undefined") {
     module.exports = window;
@@ -2276,7 +2733,7 @@ if (typeof window !== "undefined") {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],47:[function(require,module,exports){
+},{}],56:[function(require,module,exports){
 module.exports = once
 
 once.proto = once(function () {
@@ -2297,7 +2754,7 @@ function once (fn) {
   }
 }
 
-},{}],48:[function(require,module,exports){
+},{}],57:[function(require,module,exports){
 var isFunction = require('is-function')
 
 module.exports = forEach
@@ -2345,7 +2802,7 @@ function forEachObject(object, iterator, context) {
     }
 }
 
-},{"is-function":49}],49:[function(require,module,exports){
+},{"is-function":58}],58:[function(require,module,exports){
 module.exports = isFunction
 
 var toString = Object.prototype.toString
@@ -2362,7 +2819,7 @@ function isFunction (fn) {
       fn === window.prompt))
 };
 
-},{}],50:[function(require,module,exports){
+},{}],59:[function(require,module,exports){
 
 exports = module.exports = trim;
 
@@ -2378,7 +2835,7 @@ exports.right = function(str){
   return str.replace(/\s*$/, '');
 };
 
-},{}],51:[function(require,module,exports){
+},{}],60:[function(require,module,exports){
 var trim = require('trim')
   , forEach = require('for-each')
   , isArray = function(arg) {
@@ -2410,4 +2867,4 @@ module.exports = function (headers) {
 
   return result
 }
-},{"for-each":48,"trim":50}]},{},[38]);
+},{"for-each":57,"trim":59}]},{},[46]);

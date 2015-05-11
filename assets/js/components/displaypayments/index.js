@@ -5,10 +5,11 @@ var view  = require("./view");
 
 
 module.exports = function (utils) {
+	var that = {};
 
 	var tree, resultsNode, initial = true;
 
-	function render (data) {
+	that.render = function (data) {
 
 		if(initial){
 			tree        = view(data);
@@ -23,24 +24,47 @@ module.exports = function (utils) {
 		}
 	};
 
-	function getData (query) {
+	that.getData = function () {
 
-		request(_createOptions(), function (e, h, b) {
+		var count = 0;
+		var store = [];
 
-			// refarctor this
-			if (initial) {
-				document.querySelector(".container-payments").appendChild(render(JSON.parse(b)));
-			} else {
-				render(JSON.parse(b));
+		utils.request(_createOptions("payments"), function (e, h, b) {
+
+			store = store.concat(JSON.parse(b));
+			count += 1;
+
+			if(count === 2){
+				_render(initial, store, that.render);
+			}
+		});
+
+		utils.request(_createOptions("charges"), function (e, h, b) {
+
+			store = store.concat(JSON.parse(b));
+			count += 1;
+
+			if(count === 2){
+				_render(initial, store, that.render);
 			}
 		});
 	};
+
+	return that;
 };
 
-function _createOptions (id) {
+function _createOptions (item) {
 
 	return {
 		method: "GET",
-		url: "/api/payments?member=" + document.querySelector("#memberid").value
+		url: "/api/" + item + "?memberId=" + document.querySelector("#memberid").textContent
+	}
+}
+
+function _render (initial, data, render) {
+	if (initial) {
+		document.querySelector(".container-payments").appendChild(render(data));
+	} else {
+		render(data);
 	}
 }

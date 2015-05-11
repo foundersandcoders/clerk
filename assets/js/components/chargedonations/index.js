@@ -26,12 +26,10 @@ module.exports = function (utils) {
 	function postData (query) {
 
 		var payload = {
-			memberId:  document.querySelector("#memberid").textContent,
-			date:      document.querySelector("#date-payment").value,
-			type:      document.querySelector("#type-payment").value,
-			reference: document.querySelector("#reference-payment").value,
-			amount:    document.querySelector("#amount-payment").value,
-			notes:     document.querySelector("#notes-payment").value
+			memberId:    document.querySelector("#memberid").textContent,
+			description: "Donation",
+			amount:      document.querySelector("#payment-amount").value,
+			notes:       document.querySelector("#donation-notes").value
 		};
 
 		utils.request(_createOptions(payload), function (e, h, b) {
@@ -41,7 +39,7 @@ module.exports = function (utils) {
 	};
 
 	try {
-		document.querySelector(".container-bottom").appendChild(render());
+		document.querySelector(".container-controls").appendChild(render());
 	} catch (e) {}
 };
 
@@ -49,7 +47,7 @@ function _createOptions (payload) {
 
 	return {
 		method: "POST",
-		url: "/api/payments",
+		url: "/api/charges",
 		json: payload
 	};
 }

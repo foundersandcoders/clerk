@@ -4,16 +4,14 @@ var h = require("virtual-dom/h");
 
 module.exports = function (data) {
 
-	return function (){
-		return h("div.table-results", [
-			h("div.table-headers", [
-				renderHeaders(["Date", "Description", "Cost", "Payment", "Due", "Reference", "Notes", "Edit"]),
-			]),
-			h("div.table-rows", [
-				renderRows(data)
-			])
-		]);
-	}
+	return h("div.table-results", [
+		h("div.table-headers", [
+			renderHeaders(["Date", "Description", "Cost", "Payment", "Due", "Reference", "Notes", "Edit"]),
+		]),
+		h("div.table-rows", [
+			renderRows(data)
+		])
+	]);
 
 	function renderHeaders (headers) {
 		return headers.map(function (elm){
