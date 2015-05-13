@@ -4,54 +4,65 @@ var h = require("virtual-dom/h");
 
 module.exports = function (data) {
 
-	return h("div.table-results", [
-		h("div.table-headers", [
-			renderHeaders(["Date", "Description", "Cost", "Payment", "Due", "Reference", "Notes", "Edit"]),
+
+	return h("div.table-section-individual", [
+		h("div.table-section-individual-header", [
+			h("div.col-1", [
+				h("p", "Date")
+			]),
+			h("div.col-2", [
+				h("p", "Description")
+			]),
+			h("div.col-3", [
+				h("p", "Cost £")
+			]),
+			h("div.col-4", [
+				h("p", "Due £")
+			]),
+			h("div.col-5", [
+				h("p", "Reference")
+			]),
+			h("div.col-6", [
+				h("p", "Notes")
+			]),
+			h("div.col-7", [
+				h("p", "Delete")
+			])
 		]),
-		h("div.table-rows", [
-			renderRows(data)
-		])
+		h("div.table-section-individual-rows", renderRows(data))
 	]);
 
-	function renderHeaders (headers) {
-		return headers.map(function (elm){
+	function renderRows (data){
 
-			return h("div.header", [
-				h("p", elm)
-			]);
-		});
-	}
-
-
-	function renderRows (data) {
+ 
 		return data.map(function (elm){
-
-			return h("div.table-row", [
-				h("div.header", [
-					h("p", elm.date)
+			return h("div.row", [
+				h("div.col-1", [
+					h("p", elm.datePaid)
 				]),
-				h("div.header", [
+				h("div.col-2", [
 					h("p", elm.description)
 				]),
-				h("div.header", [
-					h("p", elm.cost)
+				h("div.col-3", [
+					h("p", elm.total)
 				]),
-				h("div.header", [
-					h("p", elm.payment)
+				h("div.col-4", [
+					h("p", "?")
 				]),
-				h("div.header", [
-					h("p", elm.due)
-				]),
-				h("div.header", [
+				h("div.col-5", [
 					h("p", elm.reference)
 				]),
-				h("div.header", [
+				h("div.col-6", [
 					h("p", elm.notes)
 				]),
-				h("div.header", [
-					h("p", "elm.notes")
+				h("div.col-7", [
+					h("p", {
+						onclick: function () {
+							console.log(elm.id);
+						}
+					}, "X")
 				])
-			])
+			])		 
 		});
 	}
 };

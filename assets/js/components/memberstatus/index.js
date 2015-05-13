@@ -46,7 +46,7 @@ module.exports = function (utils) {
 		var payload = {
 			membershipType: selectElm.options[selectElm.selectedIndex].value
 		};
-		
+
 		utils.request(_createOptions(payload), function (e, h, b) {
 
 			location.reload();
@@ -61,7 +61,7 @@ module.exports = function (utils) {
 			deletionReason: selectElm.options[selectElm.selectedIndex].value,
 			status: "deleted"
 		};
-		
+
 		utils.request(_createOptions(payload), function (e, h, b) {
 
 			location.reload();
@@ -71,10 +71,10 @@ module.exports = function (utils) {
 	function reactivate () {
 
 		var payload = {
-			deletionReason: null,
+			deletionReason: [],
 			status: "active"
 		};
-		
+
 		utils.request(_createOptions(payload), function (e, h, b) {
 
 			location.reload();

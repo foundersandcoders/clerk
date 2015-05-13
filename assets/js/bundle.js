@@ -1909,6 +1909,8 @@ var view  = require("./view");
 
 
 module.exports = function (utils) {
+
+
 	var that = {};
 
 	var tree, resultsNode, initial = true;
@@ -1935,6 +1937,7 @@ module.exports = function (utils) {
 
 		utils.request(_createOptions("payments"), function (e, h, b) {
 
+      console.log("PAYMENTS", arguments);
 			store = store.concat(JSON.parse(b));
 			count += 1;
 
@@ -1945,6 +1948,8 @@ module.exports = function (utils) {
 
 		utils.request(_createOptions("charges"), function (e, h, b) {
 
+      console.log("CHARGES", arguments);
+			store = store.concat(JSON.parse(b));
 			store = store.concat(JSON.parse(b));
 			count += 1;
 
@@ -1960,7 +1965,7 @@ module.exports = function (utils) {
 function _createOptions (item) {
 
 	try{
-		var id = document.querySelector("#memberid").textContent;
+		var id = document.querySelector("#member-id").textContent;
 	} catch(e) {
 		console.log("Erro: ", e);
 	}
@@ -1976,7 +1981,7 @@ function _render (initial, data, render) {
 	try{
 
 		if (initial) {
-			document.querySelector(".container-payments").appendChild(render(data));
+			document.querySelector("#table-payments").appendChild(render(data));
 		} else {
 			render(data);
 		}
@@ -1984,6 +1989,7 @@ function _render (initial, data, render) {
 		console.log("fas: ", e);
 	}
 }
+
 },{"./view":41}],41:[function(require,module,exports){
 "use strict";
 
@@ -1991,54 +1997,65 @@ var h = require("virtual-dom/h");
 
 module.exports = function (data) {
 
-	return h("div.table-results", [
-		h("div.table-headers", [
-			renderHeaders(["Date", "Description", "Cost", "Payment", "Due", "Reference", "Notes", "Edit"]),
+
+	return h("div.table-section-individual", [
+		h("div.table-section-individual-header", [
+			h("div.col-1", [
+				h("p", "Date")
+			]),
+			h("div.col-2", [
+				h("p", "Description")
+			]),
+			h("div.col-3", [
+				h("p", "Cost £")
+			]),
+			h("div.col-4", [
+				h("p", "Due £")
+			]),
+			h("div.col-5", [
+				h("p", "Reference")
+			]),
+			h("div.col-6", [
+				h("p", "Notes")
+			]),
+			h("div.col-7", [
+				h("p", "Delete")
+			])
 		]),
-		h("div.table-rows", [
-			renderRows(data)
-		])
+		h("div.table-section-individual-rows", renderRows(data))
 	]);
 
-	function renderHeaders (headers) {
-		return headers.map(function (elm){
+	function renderRows (data){
 
-			return h("div.header", [
-				h("p", elm)
-			]);
-		});
-	}
-
-
-	function renderRows (data) {
+ 
 		return data.map(function (elm){
-
-			return h("div.table-row", [
-				h("div.header", [
-					h("p", elm.date)
+			return h("div.row", [
+				h("div.col-1", [
+					h("p", elm.datePaid)
 				]),
-				h("div.header", [
+				h("div.col-2", [
 					h("p", elm.description)
 				]),
-				h("div.header", [
-					h("p", elm.cost)
+				h("div.col-3", [
+					h("p", elm.total)
 				]),
-				h("div.header", [
-					h("p", elm.payment)
+				h("div.col-4", [
+					h("p", "?")
 				]),
-				h("div.header", [
-					h("p", elm.due)
-				]),
-				h("div.header", [
+				h("div.col-5", [
 					h("p", elm.reference)
 				]),
-				h("div.header", [
+				h("div.col-6", [
 					h("p", elm.notes)
 				]),
-				h("div.header", [
-					h("p", "elm.notes")
+				h("div.col-7", [
+					h("p", {
+						onclick: function () {
+							console.log(elm.id);
+						}
+					}, "X")
 				])
-			])
+			])		 
 		});
 	}
 };
@@ -2091,7 +2108,7 @@ module.exports = function (utils) {
 		var payload = {
 			membershipType: selectElm.options[selectElm.selectedIndex].value
 		};
-		
+
 		utils.request(_createOptions(payload), function (e, h, b) {
 
 			location.reload();
@@ -2106,7 +2123,7 @@ module.exports = function (utils) {
 			deletionReason: selectElm.options[selectElm.selectedIndex].value,
 			status: "deleted"
 		};
-		
+
 		utils.request(_createOptions(payload), function (e, h, b) {
 
 			location.reload();
@@ -2116,10 +2133,10 @@ module.exports = function (utils) {
 	function reactivate () {
 
 		var payload = {
-			deletionReason: null,
+			deletionReason: [],
 			status: "active"
 		};
-		
+
 		utils.request(_createOptions(payload), function (e, h, b) {
 
 			location.reload();
@@ -2136,6 +2153,7 @@ module.exports = function (utils) {
 	}
 
 };
+
 },{"./view":43}],43:[function(require,module,exports){
 "use strict";
 
