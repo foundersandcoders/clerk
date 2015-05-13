@@ -1,5 +1,5 @@
 "use strict";
 
 module.exports = {
-	beekeeper: "http://localhost:8010"
+	beekeeper: process.env.MEMBERS_URL || "http://localhost:8010"
 };
