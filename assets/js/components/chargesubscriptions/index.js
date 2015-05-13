@@ -28,7 +28,7 @@ module.exports = function (utils) {
 		return function () {
 
 			var payload = {
-				memberId:    document.querySelector("#memberid").textContent
+				memberId:    document.querySelector("#member-id").textContent
 			};
 
 			var value = document.querySelector("#payment-amount").value;
@@ -44,7 +44,7 @@ module.exports = function (utils) {
 	};
 
 	try {
-		document.querySelector(".container-controls").appendChild(render());
+		document.querySelector(".refund-section").appendChild(render());
 	} catch (e) {}
 };
 

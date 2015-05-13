@@ -49,6 +49,7 @@
     "handlebars": "^3.0.1",
     "hapi": "^8.4.0",
     "hapi-auth-cookie": "^2.0.0",
+    "hyperquest": "^1.2.0",
     "request": "^2.55.0",
     "torf": "^1.0.3",
     "xhr": "^2.0.1"

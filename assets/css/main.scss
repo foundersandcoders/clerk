@@ -1,22 +1,32 @@
-@import
+@import "base/fonts";
+@import "components/button";
+@import "components/input";
+@import "features/navbar";
+@import "layout/specifics";
+@import "pages/create-member";
+@import "pages/index";
+@import "pages/search-member";
 
-  'base/variables',
-	'base/colours',
- 	'base/typography',
-	'base/reset',
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
 
-  'helpers',
+body{
+  font-family: "Helvetica";
+  padding: 50px 20px 0;
+  background: #f4f4f7;
+  color: #444;
+  margin: 0;
+}
 
-  'components/containers',
-  'components/footer',
-	'components/errormessages',
-	'components/buttons',
-	'components/forms',
-  'components/adminhome',
-  'components/navigation',
-  'components/header',
-  'components/searchresults',
-  'components/showmember',
+h1{
+  font-size: 40px;
+  line-height: 1.2em;
+  padding: 20px 0;
+}
 
-  'layout/layout'
-;
+h3{
+  font-weight: 300;
+}

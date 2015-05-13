@@ -55,16 +55,28 @@ module.exports = function (utils) {
 
 function _createOptions (item) {
 
+	try{
+		var id = document.querySelector("#memberid").textContent;
+	} catch(e) {
+		console.log("Erro: ", e);
+	}
+
 	return {
 		method: "GET",
-		url: "/api/" + item + "?memberId=" + document.querySelector("#memberid").textContent
+		url: "/api/" + item + "?memberId=" + id
 	}
 }
 
 function _render (initial, data, render) {
-	if (initial) {
-		document.querySelector(".container-payments").appendChild(render(data));
-	} else {
-		render(data);
+
+	try{
+
+		if (initial) {
+			document.querySelector(".container-payments").appendChild(render(data));
+		} else {
+			render(data);
+		}
+	} catch (e) {
+		console.log("fas: ", e);
 	}
 }

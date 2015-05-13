@@ -4,19 +4,19 @@ var h = require("virtual-dom/h");
 
 module.exports = function (fn) {
 
-	return h("div.subscription-payment", [
-		h("div.button", {
-			onclick: fn("charge")
-		}, "Advance Subscription"),
-		h("div.button", {
-			onclick: fn("refund")
-		}, "Refund"),
-		h("div.input-wrapper", [
-			h("p", "Amount: "),
-			h("input#payment-amount", {
-				type: "text"
+	return h("div.container-1", [
+		h("div.gbp", [
+			h("input.input-three#payment-amount", {
+				placeholder: "Amount"
 			})
+		]),
+		h("div.container-2", [
+			h("button.button-two.left.small-font", {
+				onclick: fn("charge")
+			}, "Advanced Sub"),
+			h("button.button-two.right", {
+				onclick: fn("refund")
+			}, "Refund")
 		])
-	]);
-
+	])
 };

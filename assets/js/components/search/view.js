@@ -4,56 +4,51 @@ var h = require("virtual-dom/h");
 
 module.exports = function (data) {
 
-	return h("div.container-results", [
-		h("div.table-results", [
-			h("div.table-headers", [
-				h("div.header", [
-					h("p", "Name")
-				]),
-				h("div.header", [
-					h("p", "Title")
-				]),
-				h("div.header", [
-					h("p", "Initials")
-				]),
-				h("div.header", [
-					h("p", "First Name(s)")
-				]),
-				h("div.header", [
-					h("p", "Last subscription")
-				]),
-				h("div.header", [
-					h("p", "Payment")
-				])
+
+
+
+
+	return h("div#search-results", [
+
+		h("div.table-section-member", [
+			h("div.col-1", [
+				h("p", "Name")
+			]),
+			h("div.col-2", [
+				h("p", "Title")
+			]),
+			h("div.col-3", [
+				h("p", "Initials")
+			]),
+			h("div.col-4", [
+				h("p", "Subscription")
+			]),
+			h("div.col-5", [
+				h("p", "Payment")
 			])
 		]),
-		h("div.table-rows", [
-			decide(data)
-		])
+		decide(data)
 	]);
 
 	function renderRows (data) {
 		
 		return data.map(function (result){
 
-			return h("div.table-row", [
+			return h("div.table-section-member.content", [
 				h("a", {href: "/members/" + result.id}, [
-					h("div.header", [
-						h("p", result.lastName)
+					h("div.col-1", [
+						h("p", result.firstName + " " + result.lastName)
 					]),
-					h("div.header", [
+					h("div.col-2", [
 						h("p", result.title)
 					]),
-					h("div.header", [
+					h("div.col-3", [
 						h("p", result.initials)
 					]),
-					h("div.header", [
-						h("p", result.firstName)
+					h("div.col-4", [
+						h("p", result.membershipType)
 					]),
-					h("div.header", [
-						h("p", result.subscription)
-					]),
-					h("div.header", [
+					h("div.col-5", [
 						h("p", result.subscriptionAmount)
 					])
 				])

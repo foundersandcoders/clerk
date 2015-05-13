@@ -209,7 +209,7 @@ if (typeof document !== 'undefined') {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"min-document":48}],9:[function(require,module,exports){
+},{"min-document":50}],9:[function(require,module,exports){
 "use strict";
 
 module.exports = function isObject(x) {
@@ -1650,7 +1650,6 @@ var view = require("./view");
 module.exports = function (utils) {
 
 	var tree, resultsNode, initial = true;
-
 	function render () {
 
 		if(initial){
@@ -1669,7 +1668,7 @@ module.exports = function (utils) {
 	function postData (query) {
 
 		var payload = {
-			memberId:  document.querySelector("#memberid").textContent,
+			memberId:  document.querySelector("#member-id").textContent,
 			date:      document.querySelector("#date-payment").value,
 			type:      document.querySelector("#type-payment").value,
 			reference: document.querySelector("#reference-payment").value,
@@ -1684,8 +1683,11 @@ module.exports = function (utils) {
 	};
 
 	try {
-		document.querySelector(".container-bottom").appendChild(render());
-	} catch (e) {}
+		document.querySelector(".enter-payment-section").appendChild(render());
+	} catch (e) {
+			console.log(e);
+
+	}
 };
 
 function _createOptions (payload) {
@@ -1703,29 +1705,42 @@ var h = require("virtual-dom/h");
 
 module.exports = function render (fn) {
 
-	return h("div.super-wrapper", [
-		renderInputs(["Date", "Type", "Reference", "Amount", "Notes"]),
-		h("div.input-wrapper-2", [
-			h("div.button#post-payment", {
-				onclick: fn
-			}, "Enter")
-		]),
-		h("div.input-wrapper-2", [
-			h("div.button", "Close")
-		])
-	]);
+	var inputs = [{
+		placeholder: "Payment date",
+		id: "date-payment"
+	}, {
+		placeholder: "Type",
+		id: "type-payment"
+	}, {
+		placeholder: "Reference",
+		id: "reference-payment"
+	}, {
+		placeholder: "Amount £",
+		id: "amount-payment"
+	}, {
+		placeholder: "Notes",
+		id: "notes-payment"
+	}];
+
+	return h("div.container", renderInputs(inputs));
 
 	function renderInputs (content) {
 
-		return content.map(function (elm) {
+		var inputs = content.map(function (elm) {
 
-			return h("div.input-wrapper-2", [
-				h("p", elm + ":"),
-				h("input#" + elm.toLowerCase() + "-payment", {
-					type: "text"
-				})
-			]);
+			var cl = (elm.placeholder === "Notes") ? "input-two" : "input-one";
+
+			return h("input." + cl + "#" + elm.id, {
+				placeholder: elm.placeholder
+			});
 		});
+
+		return inputs.concat([
+			h("button.button-two.button-a", "Close"),
+			h("button.button-one.button-b", {
+				onclick: fn
+			}, "Enter payment")
+		]);
 	}
 }
 },{"virtual-dom/h":3}],36:[function(require,module,exports){
@@ -1757,7 +1772,7 @@ module.exports = function (utils) {
 	function postData (query) {
 
 		var payload = {
-			memberId:    document.querySelector("#memberid").textContent,
+			memberId:    document.querySelector("#member-id").textContent,
 			description: "Donation",
 			amount:      document.querySelector("#payment-amount").value,
 			notes:       document.querySelector("#donation-notes").value
@@ -1770,7 +1785,7 @@ module.exports = function (utils) {
 	};
 
 	try {
-		document.querySelector(".container-controls").appendChild(render());
+		document.querySelector(".add-donation-section").appendChild(render());
 	} catch (e) {}
 };
 
@@ -1789,16 +1804,19 @@ var h = require("virtual-dom/h");
 
 module.exports = function (fn) {
 
-	return h("div.donation-payment", [
-		h("p", "Amount: "),
-		h("input#payment-amount", {type: "text"}),
-		h("div.textarea-wrap", [
-			h("p", "Notes: "),
-			h("textarea#donation-notes")
+	return h("div.container-1", [
+		h("p", "Add donation"),
+		h("div.gbp", [
+			h("input.input-three#payment-amount", {
+				placeholder: "Amount"
+			})
 		]),
-		h("div.button",{
+		h("button.button-two.right", {
 			onclick: fn
-		}, "Add")
+		}, "Add"),
+		h("input.input-four#donation-notes", {
+			placeholder: "Optional note"
+		})
 	]);
 };
 },{"virtual-dom/h":3}],38:[function(require,module,exports){
@@ -1832,7 +1850,7 @@ module.exports = function (utils) {
 		return function () {
 
 			var payload = {
-				memberId:    document.querySelector("#memberid").textContent
+				memberId:    document.querySelector("#member-id").textContent
 			};
 
 			var value = document.querySelector("#payment-amount").value;
@@ -1848,7 +1866,7 @@ module.exports = function (utils) {
 	};
 
 	try {
-		document.querySelector(".container-controls").appendChild(render());
+		document.querySelector(".refund-section").appendChild(render());
 	} catch (e) {}
 };
 
@@ -1867,21 +1885,21 @@ var h = require("virtual-dom/h");
 
 module.exports = function (fn) {
 
-	return h("div.subscription-payment", [
-		h("div.button", {
-			onclick: fn("charge")
-		}, "Advance Subscription"),
-		h("div.button", {
-			onclick: fn("refund")
-		}, "Refund"),
-		h("div.input-wrapper", [
-			h("p", "Amount: "),
-			h("input#payment-amount", {
-				type: "text"
+	return h("div.container-1", [
+		h("div.gbp", [
+			h("input.input-three#payment-amount", {
+				placeholder: "Amount"
 			})
+		]),
+		h("div.container-2", [
+			h("button.button-two.left.small-font", {
+				onclick: fn("charge")
+			}, "Advanced Sub"),
+			h("button.button-two.right", {
+				onclick: fn("refund")
+			}, "Refund")
 		])
-	]);
-
+	])
 };
 },{"virtual-dom/h":3}],40:[function(require,module,exports){
 "use strict";
@@ -1941,17 +1959,29 @@ module.exports = function (utils) {
 
 function _createOptions (item) {
 
+	try{
+		var id = document.querySelector("#memberid").textContent;
+	} catch(e) {
+		console.log("Erro: ", e);
+	}
+
 	return {
 		method: "GET",
-		url: "/api/" + item + "?memberId=" + document.querySelector("#memberid").textContent
+		url: "/api/" + item + "?memberId=" + id
 	}
 }
 
 function _render (initial, data, render) {
-	if (initial) {
-		document.querySelector(".container-payments").appendChild(render(data));
-	} else {
-		render(data);
+
+	try{
+
+		if (initial) {
+			document.querySelector(".container-payments").appendChild(render(data));
+		} else {
+			render(data);
+		}
+	} catch (e) {
+		console.log("fas: ", e);
 	}
 }
 },{"./view":41}],41:[function(require,module,exports){
@@ -2021,19 +2051,24 @@ var view = require("./view");
 
 module.exports = function (utils) {
 
-
 	var tree, resultsNode, initial = true;
-	var status = document.querySelector("#memberstatus").textContent;
+
+	try{
+
+		var status = document.querySelector("#member-status").textContent;
+	}catch (e){
+		console.log("status: ", e);
+	}
 
 	function render () {
 
 		if(initial){
-			tree        = view(status, deleteMember, reactivate);
+			tree        = view(status, updateType, deleteMember, reactivate);
 			resultsNode = utils.createElement(tree);
 			initial     = false;
 			return resultsNode;
 		} else {
-			var newResults = view(status, deleteMember, reactivate);
+			var newResults = view(status, updateType, deleteMember, reactivate);
 			var patches    = utils.diff(tree, newResults);
 			resultsNode    = utils.patch(resultsNode, patches);
 			tree           = resultsNode;
@@ -2042,9 +2077,26 @@ module.exports = function (utils) {
 
 
 	try {
-		document.querySelector(".container-controls").appendChild(render());
-	} catch (e) {}
+		var cont = document.querySelector(".actions-container");
+		cont.insertBefore(render(), cont.firstChild);
+	} catch (e) {
 
+
+		console.log(e);
+	}
+
+	function updateType () {
+		var selectElm = document.querySelector("#member-type");
+
+		var payload = {
+			membershipType: selectElm.options[selectElm.selectedIndex].value
+		};
+		
+		utils.request(_createOptions(payload), function (e, h, b) {
+
+			location.reload();
+		});
+	}
 
 	function deleteMember () {
 
@@ -2072,14 +2124,13 @@ module.exports = function (utils) {
 
 			location.reload();
 		});
-
 	}
 
 	function _createOptions (payload) {
 
 		return {
 			method: "PUT",
-			url: "/api/members/" + document.querySelector("#memberid").textContent,
+			url: "/api/members/" + document.querySelector("#member-id").textContent,
 			json: payload
 		};
 	}
@@ -2090,7 +2141,7 @@ module.exports = function (utils) {
 
 var h = require("virtual-dom/h");
 
-module.exports = function (status, deleteFn, reactivateFn) {
+module.exports = function (status, updateType, deleteFn, reactivateFn) {
 
 	var deletionReasons = [{
 			value:      "deceased",
@@ -2119,30 +2170,61 @@ module.exports = function (status, deleteFn, reactivateFn) {
 		}
 	];
 
+	var memberTypes = [{
+			value: "annual-single",
+			description: "Annual Single"
+		}, {
+			value: "annual-double",
+			description: "Annual Double"
+		},{
+			value: "annual-family",
+			description: "Annual Family"
+		},{
+			value: "life-single",
+			description: "Life Single"
+		},{
+			value: "life-double",
+			description: "Life Double"
+		},{
+			value: "group-annual",
+			description: "Group Annual"
+		},{
+			value: "corporate-annual",
+			description: "Corporate Annual"
+		}
+	];
 
-	return h("div.member-buttons", [
-		h("div.button#newmember-button", [
-			h("a", {
-				href: "/addmember"
-			}, "Save changes")
-		]),
-		renderStatus(status)
-	]);
+
+	return h("div#status-controls", [
+			renderType(),
+			renderStatus(status)
+		]);
+
+
+
+	function renderType () {
+		return h("div.member-type-section", [
+			h("select#member-type", renderOptions("Change Type", memberTypes)),
+			h("button.button-two.m-l-15",{
+				onclick: updateType
+			}, "Save")
+		])
+	}
 
 
 	function renderStatus (status) {
 
-		var active = h("div#delete", [
-			h("select#deletion-reason", renderOptions(deletionReasons)),
-			h("div#maintenance-button.button", {
+		var active = h("div.delete-section", [
+			h("select#deletion-reason", renderOptions("Deletion reason", deletionReasons)),
+			h("button.button-two.button-c.m-l-15.red", {
 				onclick: deleteFn
-			}, "Delete member")
+			}, "Delete")
 		]);
 
-		var deleted = h("div#active", [
-			h("div#maintenance-button.button", {
+		var deleted = h("div.delete-section", [
+			h("button.button-two.button-c.m-l-15.red", {
 				onclick: reactivateFn
-			},  "Reactivate member")
+			},  "Reactivate")
 		]);
 
 		if(status === "active"){
@@ -2150,17 +2232,16 @@ module.exports = function (status, deleteFn, reactivateFn) {
 		}else{
 			return deleted;
 		}
-
 	}
 
-	function renderOptions(reasons){
+	function renderOptions(placeholder, reasons){
 
 		var options = [
 			h("option", {
 				value: "",
 				disabled: true,
 				selected: true
-			},"Deletion reason")
+			}, placeholder)
 		];
 
 		return options.concat(
@@ -2207,9 +2288,11 @@ module.exports = function (utils) {
 
 		utils.request(_createOptions(utils.clean.object(query)), function (e, h, b) {
 
+			var members = JSON.parse(b);
+
 			// refarctor this
 			if (initial) {
-				document.querySelector(".container-content").appendChild(render(JSON.parse(b)));
+				document.querySelector("#search-container-content").appendChild(render(members));
 			} else {
 				render(JSON.parse(b));
 			}
@@ -2226,48 +2309,6 @@ module.exports = function (utils) {
 
 	return;
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 function _createQuery(query) {
 
@@ -2295,56 +2336,51 @@ var h = require("virtual-dom/h");
 
 module.exports = function (data) {
 
-	return h("div.container-results", [
-		h("div.table-results", [
-			h("div.table-headers", [
-				h("div.header", [
-					h("p", "Name")
-				]),
-				h("div.header", [
-					h("p", "Title")
-				]),
-				h("div.header", [
-					h("p", "Initials")
-				]),
-				h("div.header", [
-					h("p", "First Name(s)")
-				]),
-				h("div.header", [
-					h("p", "Last subscription")
-				]),
-				h("div.header", [
-					h("p", "Payment")
-				])
+
+
+
+
+	return h("div#search-results", [
+
+		h("div.table-section-member", [
+			h("div.col-1", [
+				h("p", "Name")
+			]),
+			h("div.col-2", [
+				h("p", "Title")
+			]),
+			h("div.col-3", [
+				h("p", "Initials")
+			]),
+			h("div.col-4", [
+				h("p", "Subscription")
+			]),
+			h("div.col-5", [
+				h("p", "Payment")
 			])
 		]),
-		h("div.table-rows", [
-			decide(data)
-		])
+		decide(data)
 	]);
 
 	function renderRows (data) {
 		
 		return data.map(function (result){
 
-			return h("div.table-row", [
+			return h("div.table-section-member.content", [
 				h("a", {href: "/members/" + result.id}, [
-					h("div.header", [
-						h("p", result.lastName)
+					h("div.col-1", [
+						h("p", result.firstName + " " + result.lastName)
 					]),
-					h("div.header", [
+					h("div.col-2", [
 						h("p", result.title)
 					]),
-					h("div.header", [
+					h("div.col-3", [
 						h("p", result.initials)
 					]),
-					h("div.header", [
-						h("p", result.firstName)
+					h("div.col-4", [
+						h("p", result.membershipType)
 					]),
-					h("div.header", [
-						h("p", result.subscription)
-					]),
-					h("div.header", [
+					h("div.col-5", [
 						h("p", result.subscriptionAmount)
 					])
 				])
@@ -2367,6 +2403,67 @@ module.exports = function (data) {
 	}
 };
 },{"virtual-dom/h":3}],46:[function(require,module,exports){
+"use strict";
+
+var view  = require("./view");
+
+module.exports = function (utils) {
+	
+	var tree, resultsNode, initial = true;
+
+	function render () {
+
+		// abstract this into single shared function
+		if(initial){
+			tree        = view();
+			resultsNode = utils.createElement(tree);
+			initial     = false;
+			return resultsNode;
+		} else {
+			var newResults = view();
+			var patches    = utils.diff(tree, newResults);
+			resultsNode    = utils.patch(resultsNode, patches);
+			tree           = resultsNode;
+		}
+	};
+
+	try {
+		document.querySelector(".container-controls").appendChild(render());
+	} catch (e) {}
+
+		var elem = document.querySelector('#upload');
+		utils.upload(elem, {type: "text"}, function (err, file) {
+
+			console.log("file: ",file);
+
+			var opts = {
+				method: "POST",
+				uri: "/api/upload?type=payments",
+				body: file[0].target.result
+			};
+
+			utils.request(opts, function (e, h, b){
+
+				console.log(b);
+			});
+		});
+	return;
+};
+},{"./view":47}],47:[function(require,module,exports){
+"use strict";
+
+
+var h = require("virtual-dom/h");
+
+
+module.exports = function (fn) {
+
+	return h("input#upload", {
+		type: "file"
+	});
+
+}
+},{"virtual-dom/h":3}],48:[function(require,module,exports){
 ;(function () {
 	"use strict";
 
@@ -2376,29 +2473,37 @@ module.exports = function (data) {
 		diff:          require('virtual-dom/diff'),
 		patch:         require('virtual-dom/patch'),
 		createElement: require('virtual-dom/create-element'),
-		request:       require("./services/request.js")
+		request:       require("./services/request.js"),
+		upload:        require("upload-element")
 	};
 
 	// components
-	var search       = require("./components/search/index")(utils);
-	var payment      = require("./components/addpayment/index")(utils);
-	var viewPay      = require("./components/displaypayments/index")(utils);
-	var status       = require("./components/memberstatus/index")(utils);
-	var subscription = require("./components/chargesubscriptions/index")(utils);
-	var donation     = require("./components/chargedonations/index")(utils);
+	try{
+		var search       = require("./components/search/index")(utils);
+		var status       = require("./components/memberstatus/index")(utils);
+		var payment      = require("./components/addpayment/index")(utils);
+		var viewPay      = require("./components/displaypayments/index")(utils);
+		console.log("oj")
+		var subscription = require("./components/chargesubscriptions/index")(utils);
+		var donation     = require("./components/chargedonations/index")(utils);
+		var upload       = require("./components/uploadcsv/index")(utils);
+	} catch (e){
+		console.log("fdas: ", e)
+	}
+
 
 	// var displayMember = require("./pages/displaymember.js")(utils);
 	viewPay.getData();
 }());
-},{"./components/addpayment/index":34,"./components/chargedonations/index":36,"./components/chargesubscriptions/index":38,"./components/displaypayments/index":40,"./components/memberstatus/index":42,"./components/search/index":44,"./services/request.js":47,"d-bap":49,"torf":52,"virtual-dom/create-element":1,"virtual-dom/diff":2,"virtual-dom/patch":11}],47:[function(require,module,exports){
+},{"./components/addpayment/index":34,"./components/chargedonations/index":36,"./components/chargesubscriptions/index":38,"./components/displaypayments/index":40,"./components/memberstatus/index":42,"./components/search/index":44,"./components/uploadcsv/index":46,"./services/request.js":49,"d-bap":51,"torf":54,"upload-element":56,"virtual-dom/create-element":1,"virtual-dom/diff":2,"virtual-dom/patch":11}],49:[function(require,module,exports){
 "use strict";
 
 var request = require("xhr");
 
 module.exports = request;
-},{"xhr":54}],48:[function(require,module,exports){
+},{"xhr":57}],50:[function(require,module,exports){
 
-},{}],49:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 "use strict";
 
 var is = require("torf");
@@ -2454,7 +2559,7 @@ function _clone (obj){
   return temp;
 }
 
-},{"torf":50}],50:[function(require,module,exports){
+},{"torf":52}],52:[function(require,module,exports){
 'use strict';
 
 
@@ -2528,7 +2633,7 @@ function checkEmail (email, regexp){
 		return false;
 	};
 };
-},{"is-number":51}],51:[function(require,module,exports){
+},{"is-number":53}],53:[function(require,module,exports){
 /*!
  * is-number <https://github.com/jonschlinkert/is-number>
  *
@@ -2544,11 +2649,50 @@ module.exports = function isNumber(n) {
     || n === 0;
 };
 
-},{}],52:[function(require,module,exports){
-arguments[4][50][0].apply(exports,arguments)
-},{"dup":50,"is-number":53}],53:[function(require,module,exports){
-arguments[4][51][0].apply(exports,arguments)
-},{"dup":51}],54:[function(require,module,exports){
+},{}],54:[function(require,module,exports){
+arguments[4][52][0].apply(exports,arguments)
+},{"dup":52,"is-number":55}],55:[function(require,module,exports){
+arguments[4][53][0].apply(exports,arguments)
+},{"dup":53}],56:[function(require,module,exports){
+module.exports = function (elem, opts, cb) {
+    if (typeof opts === 'function') {
+        cb = opts;
+        opts = {};
+    }
+    if (typeof opts === 'string') opts = { type: opts };
+    
+    elem.addEventListener('change', function (ev) {
+        if (elem.files.length === 0) return cb(null, []);
+        
+        var reader = new FileReader;
+        var index = 0;
+        var results = [];
+        
+        reader.addEventListener('load', function (e) {
+            results.push({
+                file: elem.files[index],
+                target: e.target
+            });
+            index ++;
+            if (index === elem.files.length) cb(null, results)
+            else read(index)
+        });
+        read(index);
+        
+        function read (index) {
+            var file = elem.files[index];
+            if (opts.type === 'text') {
+                reader.readAsText(file);
+            }
+            else if (opts.type === 'url') {
+                reader.readAsDataURL(file);
+            }
+            else reader.readAsArrayBuffer(file);
+        }
+    });
+};
+
+},{}],57:[function(require,module,exports){
 "use strict";
 var window = require("global/window")
 var once = require("once")
@@ -2720,7 +2864,7 @@ function createXHR(options, callback) {
 
 function noop() {}
 
-},{"global/window":55,"once":56,"parse-headers":60}],55:[function(require,module,exports){
+},{"global/window":58,"once":59,"parse-headers":63}],58:[function(require,module,exports){
 (function (global){
 if (typeof window !== "undefined") {
     module.exports = window;
@@ -2733,7 +2877,7 @@ if (typeof window !== "undefined") {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],56:[function(require,module,exports){
+},{}],59:[function(require,module,exports){
 module.exports = once
 
 once.proto = once(function () {
@@ -2754,7 +2898,7 @@ function once (fn) {
   }
 }
 
-},{}],57:[function(require,module,exports){
+},{}],60:[function(require,module,exports){
 var isFunction = require('is-function')
 
 module.exports = forEach
@@ -2802,7 +2946,7 @@ function forEachObject(object, iterator, context) {
     }
 }
 
-},{"is-function":58}],58:[function(require,module,exports){
+},{"is-function":61}],61:[function(require,module,exports){
 module.exports = isFunction
 
 var toString = Object.prototype.toString
@@ -2819,7 +2963,7 @@ function isFunction (fn) {
       fn === window.prompt))
 };
 
-},{}],59:[function(require,module,exports){
+},{}],62:[function(require,module,exports){
 
 exports = module.exports = trim;
 
@@ -2835,7 +2979,7 @@ exports.right = function(str){
   return str.replace(/\s*$/, '');
 };
 
-},{}],60:[function(require,module,exports){
+},{}],63:[function(require,module,exports){
 var trim = require('trim')
   , forEach = require('for-each')
   , isArray = function(arg) {
@@ -2867,4 +3011,4 @@ module.exports = function (headers) {
 
   return result
 }
-},{"for-each":57,"trim":59}]},{},[46]);
+},{"for-each":60,"trim":62}]},{},[48]);

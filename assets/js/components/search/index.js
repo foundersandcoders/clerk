@@ -31,9 +31,11 @@ module.exports = function (utils) {
 
 		utils.request(_createOptions(utils.clean.object(query)), function (e, h, b) {
 
+			var members = JSON.parse(b);
+
 			// refarctor this
 			if (initial) {
-				document.querySelector(".container-content").appendChild(render(JSON.parse(b)));
+				document.querySelector("#search-container-content").appendChild(render(members));
 			} else {
 				render(JSON.parse(b));
 			}
@@ -50,48 +52,6 @@ module.exports = function (utils) {
 
 	return;
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 function _createQuery(query) {
 

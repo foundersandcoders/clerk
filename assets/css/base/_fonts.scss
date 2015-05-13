@@ -1,0 +1,20 @@
+
+
+p {
+	font-weight: 200;
+	font-size: 24px;
+}
+
+@media (max-width: 1700px) {
+	p {
+		font-weight: 200;
+		font-size: 22px;
+	}
+}
+
+@media (max-width: 1500px) {
+	p {
+		font-weight: 200;
+		font-size: 19px;
+	}
+}

@@ -2,7 +2,7 @@
 
 var h = require("virtual-dom/h");
 
-module.exports = function (status, deleteFn, reactivateFn) {
+module.exports = function (status, updateType, deleteFn, reactivateFn) {
 
 	var deletionReasons = [{
 			value:      "deceased",
@@ -31,30 +31,61 @@ module.exports = function (status, deleteFn, reactivateFn) {
 		}
 	];
 
+	var memberTypes = [{
+			value: "annual-single",
+			description: "Annual Single"
+		}, {
+			value: "annual-double",
+			description: "Annual Double"
+		},{
+			value: "annual-family",
+			description: "Annual Family"
+		},{
+			value: "life-single",
+			description: "Life Single"
+		},{
+			value: "life-double",
+			description: "Life Double"
+		},{
+			value: "group-annual",
+			description: "Group Annual"
+		},{
+			value: "corporate-annual",
+			description: "Corporate Annual"
+		}
+	];
 
-	return h("div.member-buttons", [
-		h("div.button#newmember-button", [
-			h("a", {
-				href: "/addmember"
-			}, "Save changes")
-		]),
-		renderStatus(status)
-	]);
+
+	return h("div#status-controls", [
+			renderType(),
+			renderStatus(status)
+		]);
+
+
+
+	function renderType () {
+		return h("div.member-type-section", [
+			h("select#member-type", renderOptions("Change Type", memberTypes)),
+			h("button.button-two.m-l-15",{
+				onclick: updateType
+			}, "Save")
+		])
+	}
 
 
 	function renderStatus (status) {
 
-		var active = h("div#delete", [
-			h("select#deletion-reason", renderOptions(deletionReasons)),
-			h("div#maintenance-button.button", {
+		var active = h("div.delete-section", [
+			h("select#deletion-reason", renderOptions("Deletion reason", deletionReasons)),
+			h("button.button-two.button-c.m-l-15.red", {
 				onclick: deleteFn
-			}, "Delete member")
+			}, "Delete")
 		]);
 
-		var deleted = h("div#active", [
-			h("div#maintenance-button.button", {
+		var deleted = h("div.delete-section", [
+			h("button.button-two.button-c.m-l-15.red", {
 				onclick: reactivateFn
-			},  "Reactivate member")
+			},  "Reactivate")
 		]);
 
 		if(status === "active"){
@@ -62,17 +93,16 @@ module.exports = function (status, deleteFn, reactivateFn) {
 		}else{
 			return deleted;
 		}
-
 	}
 
-	function renderOptions(reasons){
+	function renderOptions(placeholder, reasons){
 
 		var options = [
 			h("option", {
 				value: "",
 				disabled: true,
 				selected: true
-			},"Deletion reason")
+			}, placeholder)
 		];
 
 		return options.concat(

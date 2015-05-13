@@ -57,12 +57,13 @@ parseCSV("payments", "payments.csv", bluprintPayments, function () {
 	console.log("Payment in: payments.txt");
 });
 
-parseCSV("members", "activeMembers.csv", bluprintMembers, function () {
+// parseCSV("members", "activeMembers.csv", bluprintMembers, function () {
 
-	console.log("Active members in: activeMembers.txt");
-});
+// 	console.log("Active members in: activeMembers.txt");
+// });
 
-parseCSV("members", "deletedMembers.csv", bluprintMembers, function () {
+// parseCSV("members", "deletedMembers.csv", bluprintMembers, function () {
 
-	console.log("Deleted members in deletedMembers");
-});
+// 	console.log("Deleted members in deletedMembers");
+// });
+

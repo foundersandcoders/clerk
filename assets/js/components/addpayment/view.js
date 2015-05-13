@@ -4,28 +4,41 @@ var h = require("virtual-dom/h");
 
 module.exports = function render (fn) {
 
-	return h("div.super-wrapper", [
-		renderInputs(["Date", "Type", "Reference", "Amount", "Notes"]),
-		h("div.input-wrapper-2", [
-			h("div.button#post-payment", {
-				onclick: fn
-			}, "Enter")
-		]),
-		h("div.input-wrapper-2", [
-			h("div.button", "Close")
-		])
-	]);
+	var inputs = [{
+		placeholder: "Payment date",
+		id: "date-payment"
+	}, {
+		placeholder: "Type",
+		id: "type-payment"
+	}, {
+		placeholder: "Reference",
+		id: "reference-payment"
+	}, {
+		placeholder: "Amount £",
+		id: "amount-payment"
+	}, {
+		placeholder: "Notes",
+		id: "notes-payment"
+	}];
+
+	return h("div.container", renderInputs(inputs));
 
 	function renderInputs (content) {
 
-		return content.map(function (elm) {
+		var inputs = content.map(function (elm) {
 
-			return h("div.input-wrapper-2", [
-				h("p", elm + ":"),
-				h("input#" + elm.toLowerCase() + "-payment", {
-					type: "text"
-				})
-			]);
+			var cl = (elm.placeholder === "Notes") ? "input-two" : "input-one";
+
+			return h("input." + cl + "#" + elm.id, {
+				placeholder: elm.placeholder
+			});
 		});
+
+		return inputs.concat([
+			h("button.button-two.button-a", "Close"),
+			h("button.button-one.button-b", {
+				onclick: fn
+			}, "Enter payment")
+		]);
 	}
 }

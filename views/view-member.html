@@ -1,231 +1,95 @@
-<style type="text/css">
-
-    .container-large {
-        width: 100%;
-        height: 94%;
-        padding: 2%;
-    }
-
-    .button {
-        width: 9em;
-        height: 4em;
-        margin: 1em auto;
-        line-height: 4em;
-        text-align: center;
-        border: 1px solid pink;
-        border-radius: 2px;
-    }
-
-    .container-content {
-        float: left;
-        width: 70%;
-        height: 80%;
-    }
-
-    .container-controls {
-        float: left;
-        width: 28%; 
-        margin-left: 2%;
-        height: 80%;
-        border-left: 1px solid #aaa;
-    }
-
-    .button:hover {
-        background-color: #f45;
-    }
-
-    .container-bottom {
-        width: 100%;
-        height: 20%;
-        clear: both;
-        border-top: 1px solid #aaa;
-    }
-
-    .container-member {
-        width: 100%;
-        overflow: auto;
-        height: 40%;
-    }
-
-    .container-payments {
-        overflow: auto;
-        width: 100%;
-        border-left: 1px solid #aaa;
-        border-top: 1px solid #aaa;
-        border-right: 1px solid #aaa;
-        height: 60%;
-    }
-
-
-    .input-wrapper {
-        width: 100%;
-        overflow: auto;
-    }
-
-    #payment-amount {
-        width: 70%;
-        margin-left: 15%;
-        height: 2em;
-    }
-
-    .member-buttons {
-        overflow: auto;
-        height: 30%;
-    }
-
-    .donation-payment {
-        padding-top: 5%;
-        height: 35%;
-        overflow: auto;
-    }
-
-    #donation-notes {
-        height: 5em;
-        font-size: 15px;
-    }
-
-    .textarea-wrap {
-        width: 100%;
-        padding: 0 15%;
-    }
-
-    .subscription-payment {
-        height: 35%;
-        overflow: auto;
-    }
-
-   .info-section {
-        float: left;
-        width: 33.3333333333333333%;
-        height: 100%;
-        padding: 2%;
-        font-size: 1.2em;
-    }
-
-    .info-section p {
-        margin-bottom: 0.5em;
-    }
-
-    .table-headers {
-        overflow: auto;
-        border-bottom: 1px solid #aaa;
-        height: 7%;
-    }
-
-    .table-rows {
-        overflow-y: scroll;
-        height: 93%;
-    }
-
-    .table-row {
-        border-bottom: 1px solid #ddd;
-        overflow: auto;
-    }
-
-    .table-row:hover {
-        cursor: pointer;
-    }
-
-    .header {
-        float: left;
-        width: 12.5%;
-        height: 2em;
-        text-align: left;
-        line-height: 2em;
-        padding-left: 20px;
-    }
-
-    .input-wrapper-2 {
-        margin-left: 1.5%;
-        float: left;
-
-    }
-
-    .super-wrapper {
-        overflow: auto;
-        padding-top: 5%;
-    }
-</style>
-
-
-<div class="container-large">
-
-    
-    <div class="container-content">
-
-        
-        <div class="container-member">
-            
-            <div class="info-section" id="personal-info">
-                
-                <p>Title: Mr.</p>
-                
-                <p>First name: Besart</p>
-                
-                <p>Initials: Bes</p>
-                
-                <p>Last name: Hoxhaj</p>
-                
-                <p>Birthday: 21/11/1990</p>
-                
-                <p>Primary email: besartshyti@foundersandcoders.org</p>
-                
-                <p>Secondary email: besartshyti@gma.omc</p>
-                
-                <p>Email bounced: NO!</p>
-                
-                <p>Online: yes</p>
-                
-                <p>Notes: Hello world</p>
+<div class="full-screen-fixed">
+    <nav></nav>
+    <div class="overall-container">
+        <div class="content-container">
+            <div class="individual-section">
+                <div class="col-1">
+                    <p>col 1</p>
+                </div>
+                <div class="col-2">
+                    <p>col 2</p>
+                </div>
+                <div class="col-3">
+                    <p>col 3</p>
+                </div>
             </div>
-            
-            <div class="info-section" id="contact-info">
-                
-                <p>Address: Globe Town</p>
-                
-                <p>27 YE5 G4</p>
-                
-                <p>Roman Road</p>
-                
-                <p>Deliverer: Globe Town</p>
-                
-                <p>Home phone: 748 548732</p>
-                
-                <p>Work phone: 748 548732</p>
-                
-                <p>Mobile phone: 748 548732</p>        
+            <div class="table-section-individual">
+                <div class="col-1">
+                    <p>Date</p>
+                </div>
+                <div class="col-2">
+                    <p>Description</p>
+                </div>
+                <div class="col-3">
+                    <p>Cost £</p>
+                </div>
+                <div class="col-4">
+                    <p>Due £</p>
+                </div>
+                <div class="col-5">
+                    <p>Reference</p>
+                </div>
+                <div class="col-6">
+                    <p>Notes</p>
+                </div>
+                <div class="col-7">
+                    <p>Delete</p>
+                </div>
             </div>
-            
-            <div class="info-section" id="membership-info">
-                
-                <p>Membership type: Life</p>
-                
-                <p>Date joined: 21/11/2014</p>
-                
-                <p>Date membershipt change: 21/11/2015</p>
-                
-                <p>Life membership date paid: 21/11/2016</p>
-                
-                <p>Gift aid: Yes</p>
-                
-                <p>Date gift aid signed: yesterday</p>
-                
-                <p>Date gift aid cancelled: tomorrow</p>
-                
-                <p>Paid by standing order: Maybe</p>
-                
-                <p>Paid by standing order: Maybe</p>
+            <div class="table-section-individual-content">
+                <div class="col-1">
+                    <p>Date</p>
+                </div>
+                <div class="col-2">
+                    <p>Description</p>
+                </div>
+                <div class="col-3">
+                    <p>Cost £</p>
+                </div>
+                <div class="col-4">
+                    <p>Due £</p>
+                </div>
+                <div class="col-5">
+                    <p>Reference</p>
+                </div>
+                <div class="col-6">
+                    <p>Notes</p>
+                </div>
+                <div class="col-7">
+                    <p>Delete</p>
+                </div>
+            </div>
+            <div class="table-section-individual-content">
+                <div class="col-1">
+                    <p>Date</p>
+                </div>
+                <div class="col-2">
+                    <p>Description</p>
+                </div>
+                <div class="col-3">
+                    <p>Cost £</p>
+                </div>
+                <div class="col-4">
+                    <p>Due £</p>
+                </div>
+                <div class="col-5">
+                    <p>Reference</p>
+                </div>
+                <div class="col-6">
+                    <p>Notes</p>
+                </div>
+                <div class="col-7">
+                    <p>Delete</p>
+                </div>
             </div>
         </div>
-        
-        <div class="container-payments"></div>
+        <div class="actions-container">
+            <div class="refund-section"></div>
+            <div class="add-donation-section"></div>
+        </div>
     </div>
-
-    
-    <div class="container-controls"></div>
-    
-    <div class="container-bottom"></div>
-    
-    <p id="memberid" style="display:none;">{{member.id}}</p>
-    <p id="memberstatus" style="display:none;">{{member.status}}</p>
+    <div class="enter-payment-section"></div>
+    <p id="member-id" style="display:none">{{member.id}}</p>
+    <p id="member-status" style="display:none">{{member.status}}</p>
+    <p id="member-type" style="display:none">{{member.membershipType}}</p>
 </div>

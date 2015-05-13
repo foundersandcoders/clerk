@@ -7,7 +7,6 @@ var view = require("./view");
 module.exports = function (utils) {
 
 	var tree, resultsNode, initial = true;
-
 	function render () {
 
 		if(initial){
@@ -26,7 +25,7 @@ module.exports = function (utils) {
 	function postData (query) {
 
 		var payload = {
-			memberId:  document.querySelector("#memberid").textContent,
+			memberId:  document.querySelector("#member-id").textContent,
 			date:      document.querySelector("#date-payment").value,
 			type:      document.querySelector("#type-payment").value,
 			reference: document.querySelector("#reference-payment").value,
@@ -41,8 +40,11 @@ module.exports = function (utils) {
 	};
 
 	try {
-		document.querySelector(".container-bottom").appendChild(render());
-	} catch (e) {}
+		document.querySelector(".enter-payment-section").appendChild(render());
+	} catch (e) {
+			console.log(e);
+
+	}
 };
 
 function _createOptions (payload) {

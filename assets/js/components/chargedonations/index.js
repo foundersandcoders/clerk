@@ -26,7 +26,7 @@ module.exports = function (utils) {
 	function postData (query) {
 
 		var payload = {
-			memberId:    document.querySelector("#memberid").textContent,
+			memberId:    document.querySelector("#member-id").textContent,
 			description: "Donation",
 			amount:      document.querySelector("#payment-amount").value,
 			notes:       document.querySelector("#donation-notes").value
@@ -39,7 +39,7 @@ module.exports = function (utils) {
 	};
 
 	try {
-		document.querySelector(".container-controls").appendChild(render());
+		document.querySelector(".add-donation-section").appendChild(render());
 	} catch (e) {}
 };
 

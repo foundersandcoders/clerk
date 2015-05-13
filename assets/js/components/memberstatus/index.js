@@ -6,19 +6,24 @@ var view = require("./view");
 
 module.exports = function (utils) {
 
-
 	var tree, resultsNode, initial = true;
-	var status = document.querySelector("#memberstatus").textContent;
+
+	try{
+
+		var status = document.querySelector("#member-status").textContent;
+	}catch (e){
+		console.log("status: ", e);
+	}
 
 	function render () {
 
 		if(initial){
-			tree        = view(status, deleteMember, reactivate);
+			tree        = view(status, updateType, deleteMember, reactivate);
 			resultsNode = utils.createElement(tree);
 			initial     = false;
 			return resultsNode;
 		} else {
-			var newResults = view(status, deleteMember, reactivate);
+			var newResults = view(status, updateType, deleteMember, reactivate);
 			var patches    = utils.diff(tree, newResults);
 			resultsNode    = utils.patch(resultsNode, patches);
 			tree           = resultsNode;
@@ -27,9 +32,26 @@ module.exports = function (utils) {
 
 
 	try {
-		document.querySelector(".container-controls").appendChild(render());
-	} catch (e) {}
+		var cont = document.querySelector(".actions-container");
+		cont.insertBefore(render(), cont.firstChild);
+	} catch (e) {
 
+
+		console.log(e);
+	}
+
+	function updateType () {
+		var selectElm = document.querySelector("#member-type");
+
+		var payload = {
+			membershipType: selectElm.options[selectElm.selectedIndex].value
+		};
+		
+		utils.request(_createOptions(payload), function (e, h, b) {
+
+			location.reload();
+		});
+	}
 
 	function deleteMember () {
 
@@ -57,14 +79,13 @@ module.exports = function (utils) {
 
 			location.reload();
 		});
-
 	}
 
 	function _createOptions (payload) {
 
 		return {
 			method: "PUT",
-			url: "/api/members/" + document.querySelector("#memberid").textContent,
+			url: "/api/members/" + document.querySelector("#member-id").textContent,
 			json: payload
 		};
 	}

@@ -1,29 +1,21 @@
-<div class="container-large">
-
+<div class="new-member-container">
     <h1>New Member Form</h1>
-
-    <form action="/api/members" method="post">
+    <form action="/members" method="post">
 
         <div class="topSectionDividor">
-            <ul>
-                <li><h2>1. Profile</h2></li>
-            </ul>
+            <h2>1. Profile</h2>
         </div>
 
         <div class="innerSectionContainer">
             <div class="inner-section-divider-medium">
-                <div class="couterContainer">
-                    <h3>Member id</h3>
-                </div>
-                <input id="id" class="short" name="id" placeholder="Membership id">
+                <h3>Member id</h3>
+                <input id="id" class="short" name="id">
             </div>
         </div>
 
         <div class="innerSectionContainer">
             <div class="inner-section-divider-medium">
-                <div class="couterContainer">
-                    <h3>Full name*</h3>
-                </div>
+                <h3>Full name*</h3>
                 <input id="first-name" class="short" name="firstName" placeholder="First name">
             </div>
         </div>
@@ -39,7 +31,7 @@
                 <div class="couterContainer">
                     <h3>Title</h3>
                 </div>
-                <input id="title" class="short" name="title" placeholder="Title">
+                <input id="title" class="short" name="title">
             </div>
         </div>
 
@@ -53,9 +45,7 @@
         </div>
 
         <div class="topSectionDividor">
-            <ul>
-                <li><h2>2. Address</h2></li>
-            </ul>
+            <h2>2. Address</h2>
         </div>
 
         <div class="innerSectionContainer">
@@ -90,24 +80,20 @@
                 <div class="couterContainer">
                     <h3>County</h3>
                 </div>
-                <input id="county" class="short-relative left" name="county" placeholder="County name">
-                <input id="postcode"class="short-relative right" name="postcode" placeholder="Postcode">
+                <input id="county" class="short-relative" name="county" placeholder="County name">
+                <input id="postcode"class="short-relative" name="postcode" placeholder="Postcode">
             </div>
         </div>
 
         <div class="innerSectionContainer">
             <div class="inner-section-divider-medium">
-                <div class="couterContainer">
-                    <h3>Deliverer</h3>
-                </div>
-                <input id="deliverer" class="short" name="deliverer" placeholder="Deliverer">
+                <h3>Deliverer</h3>
+                <input id="deliverer" class="short" name="deliverer">
             </div>
         </div>
 
         <div class="topSectionDividor">
-            <ul>
-                <li><h2>3. Contact online</h2></li>
-            </ul>
+                <h2>3. Contact online</h2>
         </div>
 
         <div class="innerSectionContainer">
@@ -115,7 +101,7 @@
                 <div class="couterContainer">
                     <h3>Home phone</h3>
                 </div>
-                <input id="homePhone" class="short" name="homePhone" placeholder="Home phone">
+                <input id="homePhone" class="short" name="homePhone">
             </div>
         </div>
 
@@ -124,7 +110,7 @@
                 <div class="couterContainer">
                     <h3>Mobile phone</h3>
                 </div>
-                <input id="mobilePhone" class="short" name="mobilePhone" placeholder="Mobile phone">
+                <input id="mobilePhone" class="short" name="mobilePhone">
             </div>
         </div>
 
@@ -133,7 +119,7 @@
                 <div class="couterContainer">
                     <h3>Work phone</h3>
                 </div>
-                <input id="mobilePhone" class="short" name="workPhone" placeholder="Work phone">
+                <input id="mobilePhone" class="short" name="workPhone">
             </div>
         </div>
 
@@ -142,7 +128,7 @@
                 <div class="couterContainer">
                     <h3>Contact primary email</h3>
                 </div>
-                <input id="email1" class="short" name="email1" placeholder="Primary email">
+                <input id="email1" class="short" name="email1">
             </div>
         </div>
 
@@ -151,16 +137,20 @@
                 <div class="couterContainer">
                     <h3>Contact secondary email</h3>
                 </div>
-                <input id="email2" class="short" name="email2" placeholder="Secondary email">
+                <input id="email2" class="short" name="email2">
             </div>
         </div>
 
 
         <div class="innerSectionContainer">
             <div class="inner-section-divider-medium">
-                <div class="couterContainer">
-                    <h3>Email bounced?</h3>
+                <!-- <h3 class="left">Email bounced?</h3> -->
+
+                 <div class="checkbox">
+                    <input id="check1" type="checkbox" name="check1" value="check1">
+                    <label for="check1"><h3 class="left">Email bounced?</h3></label>
                 </div>
+
                 <input type="checkbox" name="emailBounced" value="true">
                 <!-- <select name="emailBounced" class="short" style="color:#ccc;">
                     <option class="meta" value="" disabled="" selected="">Click to select</option>
@@ -171,9 +161,7 @@
         </div>
 
         <div class="topSectionDividor">
-            <ul>
-                <li><h2>4. Membership</h2></li>
-            </ul>
+            <h2>4. Membership</h2>
         </div>
 
 
@@ -224,17 +212,15 @@
 
 
         <div class="topSectionDividor">
-            <ul>
-                <li><h2>5. Gift aid</h2></li>
-            </ul>
+            <h2>5. Gift aid</h2>
         </div>
 
         <div class="innerSectionContainer">
             <div class="inner-section-divider-medium">
-                <div class="couterContainer">
-                    <h3>Gift aid</h3>
+                <div class="checkbox">
+                    <input id="check2" type="checkbox" name="check2" value="check2">
+                    <label for="check2"><h3 class="left">Gift aid</h3></label>
                 </div>
-                <input type="checkbox" name="giftAid" value="true">
                 <!-- <select name="giftAid" class="short" style="color:#ccc;">
                     <option class="meta" value="" disabled="" selected="">Click to select</option>
                     <option value="true">Yes</option>
@@ -262,17 +248,15 @@
         </div>
 
         <div class="topSectionDividor">
-            <ul>
-                <li><h2>6. Payment info</h2></li>
-            </ul>
+            <h2>6. Payment info</h2>
         </div>
 
         <div class="innerSectionContainer">
             <div class="inner-section-divider-medium">
-                <div class="couterContainer">
-                    <h3>Pays by standing order</h3>
+                <div class="checkbox">
+                    <input id="check3" type="checkbox" name="check3" value="check3">
+                    <label for="check3"><h3 class="left">Pays by standing order</h3></label>
                 </div>
-                <input type="checkbox" name="standingOrder" value="true">
                 <!-- <select name="standingOrder" class="short" style="color:#ccc;">
                     <option class="meta" value="" disabled="" selected="">Click to select</option>
                     <option value="true">Yes</option>
@@ -283,17 +267,15 @@
 
 
         <div class="topSectionDividor">
-            <ul>
-                <li><h2>7. Other</h2></li>
-            </ul>
+            <h2>7. Other</h2>
         </div>
 
         <div class="innerSectionContainer">
             <div class="inner-section-divider-medium">
-                <div class="couterContainer">
-                    <h3>Online Member</h3>
+                 <div class="checkbox">
+                    <input id="check4" type="checkbox" name="check4" value="check4">
+                    <label for="check4"><h3 class="left">Online Member</h3></label>
                 </div>
-                <input type="checkbox" name="onlineMember" value="true">
                 <!-- <select name="onlineMember" class="short" style="color:#ccc;">
                     <option class="meta" value="" disabled="" selected="">Click to select</option>
                     <option value="yes">Yes</option>
@@ -312,16 +294,13 @@
         </div>
 
         <div class="topSectionDividor">
-            <ul>
-                <li><h2>8. Close</h2></li>
-            </ul>
+            <h2>8. Close</h2>
         </div>
-
         <div class="innerSectionContainer">
             <div class="inner-section-divider-medium">
-                <button id="create-member-btn" class="btn-primary left btn-standard-width" type="submit">Save</button>
+                <button id="create-member-btn" class="button-one left" type="submit">Save</button>
                 <a href="javascript:history.back();">
-                    <button id="cancel_person" class="btn-secondary right btn-standard-width">Cancel</button>
+                    <button id="cancel_person" class="button-two right">Cancel</button>
                 </a>
             </div>
         </div>

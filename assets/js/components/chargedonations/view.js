@@ -4,15 +4,18 @@ var h = require("virtual-dom/h");
 
 module.exports = function (fn) {
 
-	return h("div.donation-payment", [
-		h("p", "Amount: "),
-		h("input#payment-amount", {type: "text"}),
-		h("div.textarea-wrap", [
-			h("p", "Notes: "),
-			h("textarea#donation-notes")
+	return h("div.container-1", [
+		h("p", "Add donation"),
+		h("div.gbp", [
+			h("input.input-three#payment-amount", {
+				placeholder: "Amount"
+			})
 		]),
-		h("div.button",{
+		h("button.button-two.right", {
 			onclick: fn
-		}, "Add")
+		}, "Add"),
+		h("input.input-four#donation-notes", {
+			placeholder: "Optional note"
+		})
 	]);
 };
