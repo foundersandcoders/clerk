@@ -35,7 +35,7 @@ module.exports = function (utils) {
 
 			// refarctor this
 			if (initial) {
-				document.querySelector("#search-container-content").appendChild(render(members));
+				document.querySelector("#search-result").appendChild(render(members));
 			} else {
 				render(JSON.parse(b));
 			}

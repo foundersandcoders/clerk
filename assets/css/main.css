@@ -269,53 +269,121 @@ nav {
   height: 60%;
   background-color: #fff;
   margin: 10px;
-  padding: 10px;
-  margin-top: 0;
-  display: flex;
-  overflow: scroll; }
-  .table-section-individual .col-1 {
-    width: 20%;
-    min-height: 100px;
-    border-right: 1px solid #ededed; }
-  .table-section-individual .col-2 {
-    width: 20%;
-    min-height: 100px;
-    border-right: 1px solid #ededed; }
-  .table-section-individual .col-3 {
-    width: 20%;
-    min-height: 100px;
-    border-right: 1px solid #ededed; }
-  .table-section-individual .col-4 {
-    width: 20%;
-    min-height: 100px;
-    border-right: 1px solid #ededed; }
-  .table-section-individual .col-5 {
-    width: 20%;
-    min-height: 100px;
-    border-right: 1px solid #ededed; }
-  .table-section-individual .col-6 {
-    width: 20%;
-    min-height: 100px;
-    border-right: 1px solid #ededed; }
-  .table-section-individual .col-7 {
-    width: 20%;
-    min-height: 100px; }
-
-.table-section-member {
-  width: 80%;
-  background-color: #fff;
-  display: flex;
   padding: 10px; }
-  .table-section-member .col-1 {
-    width: 20%; }
-  .table-section-member .col-2 {
-    width: 20%; }
-  .table-section-member .col-3 {
-    width: 20%; }
-  .table-section-member .col-4 {
-    width: 20%; }
-  .table-section-member .col-5 {
-    width: 30%; }
+  .table-section-individual .table-section-individual-header {
+    display: flex;
+    width: 100%;
+    height: 60px; }
+    .table-section-individual .table-section-individual-header .col-1 {
+      width: 20%;
+      border-right: 1px solid #ededed; }
+    .table-section-individual .table-section-individual-header .col-2 {
+      width: 20%;
+      border-right: 1px solid #ededed; }
+    .table-section-individual .table-section-individual-header .col-3 {
+      width: 20%;
+      border-right: 1px solid #ededed; }
+    .table-section-individual .table-section-individual-header .col-4 {
+      width: 20%;
+      border-right: 1px solid #ededed; }
+    .table-section-individual .table-section-individual-header .col-5 {
+      width: 20%;
+      border-right: 1px solid #ededed; }
+    .table-section-individual .table-section-individual-header .col-6 {
+      width: 20%;
+      border-right: 1px solid #ededed; }
+    .table-section-individual .table-section-individual-header .col-7 {
+      width: 20%; }
+  .table-section-individual .table-section-individual-rows {
+    height: 31em;
+    overflow: scroll; }
+    .table-section-individual .table-section-individual-rows .row {
+      display: flex;
+      width: 100%;
+      height: 60px; }
+      .table-section-individual .table-section-individual-rows .row p {
+        font-size: 20px; }
+      .table-section-individual .table-section-individual-rows .row .col-1 {
+        width: 20%;
+        border-right: 1px solid #ededed; }
+      .table-section-individual .table-section-individual-rows .row .col-2 {
+        width: 20%;
+        border-right: 1px solid #ededed; }
+      .table-section-individual .table-section-individual-rows .row .col-3 {
+        width: 20%;
+        border-right: 1px solid #ededed; }
+      .table-section-individual .table-section-individual-rows .row .col-4 {
+        width: 20%;
+        border-right: 1px solid #ededed; }
+      .table-section-individual .table-section-individual-rows .row .col-5 {
+        width: 20%;
+        border-right: 1px solid #ededed; }
+      .table-section-individual .table-section-individual-rows .row .col-6 {
+        width: 20%;
+        border-right: 1px solid #ededed; }
+      .table-section-individual .table-section-individual-rows .row .col-7 {
+        width: 20%; }
+
+#search-result {
+  width: 80%;
+  max-width: 1000px; }
+  #search-result .search-table-section-member {
+    width: 100%;
+    background-color: #fff;
+    padding: 10px; }
+    #search-result .search-table-section-member .search-table-section-member-header {
+      width: 100%;
+      display: flex;
+      height: 60px; }
+      #search-result .search-table-section-member .search-table-section-member-header .col-1 {
+        width: 30%;
+        border-right: 1px solid #ededed; }
+      #search-result .search-table-section-member .search-table-section-member-header .col-2 {
+        width: 10%;
+        border-right: 1px solid #ededed; }
+      #search-result .search-table-section-member .search-table-section-member-header .col-3 {
+        width: 10%;
+        border-right: 1px solid #ededed; }
+      #search-result .search-table-section-member .search-table-section-member-header .col-4 {
+        width: 20%;
+        border-right: 1px solid #ededed; }
+      #search-result .search-table-section-member .search-table-section-member-header .col-5 {
+        width: 40%; }
+    #search-result .search-table-section-member .search-table-section-member-rows {
+      max-height: 300px;
+      overflow-y: scroll; }
+      #search-result .search-table-section-member .search-table-section-member-rows a {
+        text-decoration: none;
+        color: inherit; }
+      #search-result .search-table-section-member .search-table-section-member-rows .row {
+        width: 100%;
+        display: flex;
+        height: 35px;
+        line-height: 35px;
+        text-align: left; }
+        #search-result .search-table-section-member .search-table-section-member-rows .row p {
+          font-size: 18px; }
+        #search-result .search-table-section-member .search-table-section-member-rows .row .col-1 {
+          padding-left: 8px;
+          width: 30%;
+          border-right: 1px solid #ededed; }
+        #search-result .search-table-section-member .search-table-section-member-rows .row .col-2 {
+          padding-left: 8px;
+          width: 10%;
+          border-right: 1px solid #ededed; }
+        #search-result .search-table-section-member .search-table-section-member-rows .row .col-3 {
+          padding-left: 8px;
+          width: 10%;
+          border-right: 1px solid #ededed; }
+        #search-result .search-table-section-member .search-table-section-member-rows .row .col-4 {
+          padding-left: 8px;
+          width: 20%;
+          border-right: 1px solid #ededed; }
+        #search-result .search-table-section-member .search-table-section-member-rows .row .col-5 {
+          padding-left: 8px;
+          width: 40%; }
+      #search-result .search-table-section-member .search-table-section-member-rows .row:hover {
+        background-color: #eee; }
 
 .actions-container {
   width: 20%;

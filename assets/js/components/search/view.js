@@ -4,13 +4,8 @@ var h = require("virtual-dom/h");
 
 module.exports = function (data) {
 
-
-
-
-
-	return h("div#search-results", [
-
-		h("div.table-section-member", [
+	return h("div.search-table-section-member", [
+		h("div.search-table-section-member-header", [
 			h("div.col-1", [
 				h("p", "Name")
 			]),
@@ -27,15 +22,17 @@ module.exports = function (data) {
 				h("p", "Payment")
 			])
 		]),
-		decide(data)
+		h("div.search-table-section-member-rows", [
+			decide(data)
+		])
 	]);
 
 	function renderRows (data) {
 		
 		return data.map(function (result){
 
-			return h("div.table-section-member.content", [
-				h("a", {href: "/members/" + result.id}, [
+			return h("a", {href: "/members/" + result.id}, [
+				h("div.row", [
 					h("div.col-1", [
 						h("p", result.firstName + " " + result.lastName)
 					]),
