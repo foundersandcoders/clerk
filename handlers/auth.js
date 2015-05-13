@@ -9,7 +9,7 @@ module.exports = function (request) {
   return {
     login: function (req, res) {
 
-      var url = "http://" + req.payload.email + ":" + req.payload.password;
+      var url = "https://" + req.payload.email + ":" + req.payload.password;
       url += "@" + authUrl + "/login";
 
       var opts = {
@@ -33,7 +33,7 @@ module.exports = function (request) {
 
       var opts = {
         method: "GET",
-        uri: "http://" + authUrl + "/logout",
+        uri: "https://" + authUrl + "/logout",
         headers: {
           authorization: req.auth.credentials.token
         }
@@ -56,7 +56,7 @@ module.exports = function (request) {
       }
       var opts = {
         method: "POST",
-        uri: "http://" + authUrl + "/signup",
+        uri: "https://" + authUrl + "/signup",
         body: req.payload
       }
 
