@@ -4,83 +4,40 @@
         <div class="content-container">
             <div class="individual-section">
                 <div class="col-1">
-                    <p>col 1</p>
+                    <p>{{member.id}}</p>
+                    <p>{{member.title}}&nbsp;{{member.firstName}}&nbsp;{{member.initials}}&nbsp;{{member.lastName}}</p>
+                    <p>{{member.birthday}}</p>
+                    <p><b>e1:</b> {{member.email1}}</p>
+                    <p><b>e2:</b> {{member.email2}}</p>
+                    <p><b>Bounced:</b> {{member.emailBounced}}</p>
+                    <p><b>Online:</b> {{member.onlineMember}}</p>
+                    <p><b>Status:</b> {{member.status}}</p>
+                    <p>{{member.deletionDate}}</p>
+                    <p>{{member.deletionReason}}</p>
                 </div>
                 <div class="col-2">
-                    <p>col 2</p>
+                    <p> {{member.address1}}<br>
+                        {{member.address2}}<br>
+                        {{member.address3}}<br>
+                        {{member.address4}}<br>
+                        {{member.county}}<br>
+                        {{member.postcode}}<br>
+                        {{member.deliverer}}<br>
+                    </p>
                 </div>
                 <div class="col-3">
-                    <p>col 3</p>
+                    <p>{{member.dateJoined}}</p>
+                    <p>{{member.membershipType}}</p>
+                    <p>{{member.dateTypeChanged}}</p>
+                    <p>{{member.lifePaymentDate}}</p>
+                    <p>GiftAid: {{member.giftAid}}</p>
+                    <p>{{member.dateGiftAidSigned}}</p>
+                    <p>{{member.dateGiftAidCancelled}}</p>
+                    <p>SO: {{member.standingOrder}}</p>
                 </div>
             </div>
-            <div class="table-section-individual">
-                <div class="col-1">
-                    <p>Date</p>
-                </div>
-                <div class="col-2">
-                    <p>Description</p>
-                </div>
-                <div class="col-3">
-                    <p>Cost £</p>
-                </div>
-                <div class="col-4">
-                    <p>Due £</p>
-                </div>
-                <div class="col-5">
-                    <p>Reference</p>
-                </div>
-                <div class="col-6">
-                    <p>Notes</p>
-                </div>
-                <div class="col-7">
-                    <p>Delete</p>
-                </div>
-            </div>
-            <div class="table-section-individual-content">
-                <div class="col-1">
-                    <p>Date</p>
-                </div>
-                <div class="col-2">
-                    <p>Description</p>
-                </div>
-                <div class="col-3">
-                    <p>Cost £</p>
-                </div>
-                <div class="col-4">
-                    <p>Due £</p>
-                </div>
-                <div class="col-5">
-                    <p>Reference</p>
-                </div>
-                <div class="col-6">
-                    <p>Notes</p>
-                </div>
-                <div class="col-7">
-                    <p>Delete</p>
-                </div>
-            </div>
-            <div class="table-section-individual-content">
-                <div class="col-1">
-                    <p>Date</p>
-                </div>
-                <div class="col-2">
-                    <p>Description</p>
-                </div>
-                <div class="col-3">
-                    <p>Cost £</p>
-                </div>
-                <div class="col-4">
-                    <p>Due £</p>
-                </div>
-                <div class="col-5">
-                    <p>Reference</p>
-                </div>
-                <div class="col-6">
-                    <p>Notes</p>
-                </div>
-                <div class="col-7">
-                    <p>Delete</p>
-                </div>
+            <div id="table-payments">
+
             </div>
         </div>
         <div class="actions-container">

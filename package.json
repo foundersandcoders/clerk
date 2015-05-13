@@ -52,6 +52,8 @@
     "hyperquest": "^1.2.0",
     "request": "^2.55.0",
     "torf": "^1.0.3",
+    "upload-element": "^1.0.1",
+    "virtual-dom": "^2.0.1",
     "xhr": "^2.0.1"
   }
 }

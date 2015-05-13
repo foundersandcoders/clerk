@@ -5,6 +5,8 @@ var view  = require("./view");
 
 
 module.exports = function (utils) {
+
+
 	var that = {};
 
 	var tree, resultsNode, initial = true;
@@ -31,6 +33,7 @@ module.exports = function (utils) {
 
 		utils.request(_createOptions("payments"), function (e, h, b) {
 
+      console.log("PAYMENTS", arguments);
 			store = store.concat(JSON.parse(b));
 			count += 1;
 
@@ -41,6 +44,8 @@ module.exports = function (utils) {
 
 		utils.request(_createOptions("charges"), function (e, h, b) {
 
+      console.log("CHARGES", arguments);
+			store = store.concat(JSON.parse(b));
 			store = store.concat(JSON.parse(b));
 			count += 1;
 
@@ -56,7 +61,7 @@ module.exports = function (utils) {
 function _createOptions (item) {
 
 	try{
-		var id = document.querySelector("#memberid").textContent;
+		var id = document.querySelector("#member-id").textContent;
 	} catch(e) {
 		console.log("Erro: ", e);
 	}
@@ -72,7 +77,7 @@ function _render (initial, data, render) {
 	try{
 
 		if (initial) {
-			document.querySelector(".container-payments").appendChild(render(data));
+			document.querySelector("#table-payments").appendChild(render(data));
 		} else {
 			render(data);
 		}
