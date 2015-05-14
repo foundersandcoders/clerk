@@ -11,6 +11,10 @@ module.exports = function () {
 		signup: function (req, res) {
 
 			return res.view("signup");
+		},
+		home: function (req, res) {
+
+			return res.view("home");
 		}
 	}
 };

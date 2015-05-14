@@ -26,7 +26,7 @@ module.exports = function (request) {
           req.auth.session.set({
             token: r.headers.authorization
           });
-          return res(r.body).code(r.statusCode);
+          return res.redirect("/admin");
         }
       });
     },
@@ -46,7 +46,7 @@ module.exports = function (request) {
           return res(e).code(500);
         } else {
           req.auth.session.clear();
-          return res(r);
+          return res.redirect("/login");
         }
       });
     },
