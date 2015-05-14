@@ -65,10 +65,15 @@ module.exports = function (status, updateType, deleteFn, reactivateFn) {
 
 	function renderType () {
 		return h("div.member-type-section", [
-			h("select#member-type", renderOptions("Change Type", memberTypes)),
-			h("button.button-two.m-l-15",{
-				onclick: updateType
-			}, "Save")
+			h("div.title-ctrl", [
+				h("p", "Change membership"),
+			]),
+			h("div.body-ctrl", [
+				h("select#member-type", renderOptions("Change Type", memberTypes)),
+				h("button.button-two.m-l-15",{
+					onclick: updateType
+				}, "Save")
+			])
 		])
 	}
 
@@ -76,16 +81,26 @@ module.exports = function (status, updateType, deleteFn, reactivateFn) {
 	function renderStatus (status) {
 
 		var active = h("div.delete-section", [
-			h("select#deletion-reason", renderOptions("Deletion reason", deletionReasons)),
-			h("button.button-two.button-c.m-l-15.red", {
-				onclick: deleteFn
-			}, "Delete")
+			h("div.title-ctrl", [
+				h("p", "Delete member"),
+			]),
+			h("div.body-ctrl", [
+				h("select#deletion-reason", renderOptions("Deletion reason", deletionReasons)),
+				h("button.button-two.button-c.m-l-15.red", {
+					onclick: deleteFn
+				}, "Delete")
+			])
 		]);
 
 		var deleted = h("div.delete-section", [
-			h("button.button-two.button-c.m-l-15.red", {
-				onclick: reactivateFn
-			},  "Reactivate")
+			h("div.title-ctrl", [
+				h("p", "Reactivate member"),
+			]),
+			h("div.body-ctrl", [
+				h("button.button-two.button-c.m-l-15.red", {
+					onclick: reactivateFn
+				},  "Reactivate")
+			])
 		]);
 
 		if(status === "active"){
