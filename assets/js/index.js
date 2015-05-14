@@ -21,7 +21,7 @@
 		var subscription = require("./components/chargesubscriptions/index")(utils);
 		var donation     = require("./components/chargedonations/index")(utils);
 		var upload       = require("./components/uploadcsv/index")(utils);
-		// var memberInfo   = require("./components/memberinfo/index")(utils);
+		var memberInfo   = require("./components/memberinfo/index")(utils);
 	} catch (e){
 		console.log("fdas: ", e)
 	}
@@ -29,4 +29,5 @@
 
 	// var displayMember = require("./pages/displaymember.js")(utils);
 	viewPay.getData();
+	memberInfo.getData();
 }());

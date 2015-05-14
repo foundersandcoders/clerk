@@ -4,7 +4,7 @@ var view  = require("./view");
 
 module.exports = function (utils) {
 	
-	console.log("Upload: ");
+	console.log("Upload:");
 
 	var tree, resultsNode, initial = true;
 
@@ -30,37 +30,48 @@ module.exports = function (utils) {
 		console.log("Upload: ", e);
 	}
 
-	var elemPay = document.querySelector('#upload-payments');
-	utils.upload(elemPay, {type: "text"}, function (err, file) {
+	try{
+		var elemPay = document.querySelector('#upload-payments');
+		utils.upload(elemPay, {type: "text"}, function (err, file) {
 
-		console.log("file: ",file);
+			console.log("file: ",file);
 
-		var opts = {
-			method: "POST",
-			uri: "/api/upload?type=payments",
-			body: file[0].target.result
-		};
+			var opts = {
+				method: "POST",
+				uri: "/api/upload?type=payments",
+				body: file[0].target.result
+			};
 
-		utils.request(opts, function (e, h, b){
+			utils.request(opts, function (e, h, b){
 
-			console.log(b);
+				console.log(b);
+			});
 		});
-	});
-	var elemMem = document.querySelector('#upload-members');
-	utils.upload(elemMem, {type: "text"}, function (err, file) {
+	}catch(e) {
+		console.log("err upload", e);
+	}
 
-		console.log("file: ",file);
 
-		var opts = {
-			method: "POST",
-			uri: "/api/upload?type=members",
-			body: file[0].target.result
-		};
+	try{
+		var elemMem = document.querySelector('#upload-members');
+		utils.upload(elemMem, {type: "text"}, function (err, file) {
 
-		utils.request(opts, function (e, h, b){
+			console.log("file: ",file);
 
-			console.log(b);
+			var opts = {
+				method: "POST",
+				uri: "/api/upload?type=members",
+				body: file[0].target.result
+			};
+
+			utils.request(opts, function (e, h, b){
+
+				console.log(b);
+			});
 		});
-	});
+	}catch(e){
+		console.log("err upload", e);
+	}
+
 	return;
 };

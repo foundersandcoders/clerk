@@ -48,7 +48,6 @@ module.exports = function (utils) {
 
 		utils.request(_createOptions("payments"), function (e, h, b) {
 
-      //console.log("PAYMENTS", arguments);
 			store = store.concat(JSON.parse(b));
 			count += 1;
 
@@ -59,7 +58,6 @@ module.exports = function (utils) {
 
 		utils.request(_createOptions("charges"), function (e, h, b) {
 
-   //   console.log("CHARGES", arguments);
 			store = store.concat(JSON.parse(b));
 			store = store.concat(JSON.parse(b));
 			count += 1;

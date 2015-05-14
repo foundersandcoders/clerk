@@ -209,7 +209,7 @@ if (typeof document !== 'undefined') {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"min-document":50}],9:[function(require,module,exports){
+},{"min-document":52}],9:[function(require,module,exports){
 "use strict";
 
 module.exports = function isObject(x) {
@@ -1960,7 +1960,6 @@ module.exports = function (utils) {
 
 		utils.request(_createOptions("payments"), function (e, h, b) {
 
-      //console.log("PAYMENTS", arguments);
 			store = store.concat(JSON.parse(b));
 			count += 1;
 
@@ -1971,7 +1970,6 @@ module.exports = function (utils) {
 
 		utils.request(_createOptions("charges"), function (e, h, b) {
 
-   //   console.log("CHARGES", arguments);
 			store = store.concat(JSON.parse(b));
 			store = store.concat(JSON.parse(b));
 			count += 1;
@@ -2085,6 +2083,229 @@ module.exports = function (data, refreshFn, deleteFn, utils) {
 "use strict";
 
 
+var view  = require("./view");
+
+
+module.exports = function (utils) {
+
+	var that = {};
+
+	var tree, resultsNode, initial = true;
+
+	that.render = function (data) {
+
+		if(initial){
+			tree        = view(data, utils);
+			resultsNode = utils.createElement(tree);
+			initial     = false;
+			return resultsNode;
+		} else {
+			var newResults = view(data, utils);
+			var patches    = utils.diff(tree, newResults);
+			resultsNode    = utils.patch(resultsNode, patches);
+			tree           = resultsNode;
+		}
+	};
+
+	that.getData = function () {
+
+		utils.request(_createOptions(), function (e, h, b) {
+
+			var member = JSON.parse(b);
+			try {
+				document.querySelector(".content-container").appendChild(that.render(member));
+			}catch (e){
+				console.log("Show data member", e);
+			}
+		});
+	};
+
+	return that;
+};
+
+function _createOptions () {
+
+	try{
+		var id = document.querySelector("#member-id").textContent;
+	} catch(e) {
+		console.log("Err _createOptions: ", e);
+	}
+
+	return {
+		method: "GET",
+		url: "/api/members/" + id
+	}
+}
+},{"./view":43}],43:[function(require,module,exports){
+"use strict";
+
+var h = require("virtual-dom/h");
+
+module.exports = function (data, utils) {
+
+
+
+	return h("div.individual-section", [
+		renderPersonalInfo(data),
+		// renderAddressInfo(data),
+		// renderMembership(data)
+	]);
+
+	function renderPersonalInfo (member) {
+
+		return h("div.col-1", [
+			h("h2", "Personal info"),
+			h("p", [
+				h("span.info", "Name: "),
+				h("span", fullName.call(member))
+			]),
+			h("p", [
+				h("span.info", "Member id: "),
+				h("span", member.id)
+			]),
+			check("Birthday: ", member.birthday),
+			checkEmail(member),
+			// if(member.email1 || member.email2) {
+			// 	h("p", [
+			// 		h("span.info", "Emails:"),
+			// 		if(member.email1){
+			// 			h("p", "Primary: " + member.email1)
+			// 		}
+			// 		if(member.email2){
+			// 			h("p", "Secondary: " + member.email2)
+			// 		}
+			// 	]),
+			// 	h("p", [
+			// 		h("span.info", "Bounced: "),
+			// 		h("span", (member.emailBounced) ? "Yes" : "No")
+			// 	]),
+			// }
+			// h("p", [
+			// 	h("span.info", "Online: "),
+			// 	h("span", (member.onlineMember) ? "Yes" : "No")
+			// ]),
+			// h("p", [
+			// 	h("span.info", "Status: "),
+			// 	h("span", member.status)
+			// ]),
+			// if(member.status === "deleted") {
+			// 	h("p", [
+			// 		h("span.info", "Deletion date: "),
+			// 		h("span", member.deletionDate)
+			// 	]),
+			// 	h("p", [
+			// 		h("span.info", "Deletion reason: "),
+			// 		h("span", member.deletionReason)
+			// 	]),
+			// }
+		]);
+	}
+
+	// function renderAddressInfo (member) {
+
+	// 	return h("div.col-2", [
+	// 		h("h2", "Address info"),
+	// 		if(member.address1)  {h("p", member.address1), }
+	// 		if(member.address2)  {h("p", member.address2), }
+	// 		if(member.address3)  {h("p", member.address3), }
+	// 		if(member.address4)  {h("p", member.address4), }
+	// 		if(member.county)    {h("p", member.county),   }
+	// 		if(member.postcode)  {h("p", member.postcode), }
+	// 		if(member.deliverer) {h("p", member.deliverer),}
+	// 	]);
+	// }
+
+	// function renderMembership (member) {
+		
+	// 	return h("div.col-3", [
+	// 		h("h2", "Membership info"),
+	// 		h("p", [
+	// 			h("span.info", "Date joined: "),
+	// 			h("span", utils.moment(member.dateJoined).format("DD-MM-YYYY"))
+	// 		]),
+	// 		h("p", [
+	// 			h("span.info", "Membership type: "),
+	// 			h("span", member.membershipType)
+	// 		]),
+	// 		// if the member choose from the beginning life
+	// 		if(member.membershipType === "life-double" || member.membershipType === "life-single") {
+	// 			h("p", [
+	// 				h("span.info", "Life payment date: "),
+	// 				h("span", member.lifePaymentDate)
+	// 			]),
+	// 		}
+	// 		// if the member changed from normal to life
+	// 		if(member.dateTypeChanged && (member.membershipType === "life-double" || member.membershipType === "life-single")) {
+	// 			h("p", [
+	// 				h("span.info", "Life payment date: "),
+	// 				h("span", member.lifePaymentDate)
+	// 			]),
+	// 			h("p", [
+	// 				h("span.info", "Membership changed date: "),
+	// 				h("span", member.dateTypeChanged)
+	// 			]),
+	// 		}
+	// 		if(member.giftAid){
+	// 			h("p", [
+	// 				h("span", "Gift Aid: "),
+	// 				h("p", "Signed: Yes"),
+	// 				h("p", "Signed date: " + utils.moment(member.dateGiftAidSigned)..format("DD-MM-YYYY")),
+	// 			]),
+	// 		}
+	// 		if(member.dateGiftAidCancelled) {
+	// 			h("p", "Cancelled: Yes"),
+	// 		}
+	// 		h("p", [
+	// 			h("span.info", "Standing order: "),
+	// 			h("span", member.standingOrder)
+	// 		])
+	// 	]);
+	// }
+
+	function check (name, elm) {
+		if(elm) {
+			return h("p", [
+				h("span.info", name),
+				h("span", elm)
+			])
+		}
+	}
+
+	function checkSingle (name, elm) {
+		if(elm){
+			return h("p", name + elm);
+		}
+	}
+
+	function checkEmail (member) {
+		if(member.email1 || member.email2) {
+			return h("p", [
+				h("span.info", "Emails:"),
+				checkSingle("Primary: ", member.email1),
+				checkSingle("Secondary: ", member.email2),
+			]),
+			h("p", [
+				h("span.info", "Bounced: "),
+				h("span", (member.emailBounced) ? "Yes" : "No")
+			]);
+		}
+	}
+
+	function fullName () {
+		var store = [];
+
+		if(utils.is.ok(this.title)    ) {store.push(this.title)}
+		if(utils.is.ok(this.firstName)) {store.push(this.firstName)}
+		if(utils.is.ok(this.initials) ) {store.push(this.initials)}
+		if(utils.is.ok(this.lastName) ) {store.push(this.lastName)}
+
+		return store.join(" ");
+	}
+};
+},{"virtual-dom/h":3}],44:[function(require,module,exports){
+"use strict";
+
+
 var view = require("./view");
 
 
@@ -2177,7 +2398,7 @@ module.exports = function (utils) {
 
 };
 
-},{"./view":43}],43:[function(require,module,exports){
+},{"./view":45}],45:[function(require,module,exports){
 "use strict";
 
 var h = require("virtual-dom/h");
@@ -2310,7 +2531,7 @@ module.exports = function (status, updateType, deleteFn, reactivateFn) {
 		);
 	}
 };
-},{"virtual-dom/h":3}],44:[function(require,module,exports){
+},{"virtual-dom/h":3}],46:[function(require,module,exports){
 "use strict";
 
 var view  = require("./view");
@@ -2389,7 +2610,7 @@ function _createOptions (query) {
 	}
 }
 
-},{"./view":45}],45:[function(require,module,exports){
+},{"./view":47}],47:[function(require,module,exports){
 "use strict";
 
 var h = require("virtual-dom/h");
@@ -2460,14 +2681,14 @@ module.exports = function (data) {
 	}
 };
 
-},{"virtual-dom/h":3}],46:[function(require,module,exports){
+},{"virtual-dom/h":3}],48:[function(require,module,exports){
 "use strict";
 
 var view  = require("./view");
 
 module.exports = function (utils) {
 	
-	console.log("Upload: ");
+	console.log("Upload:");
 
 	var tree, resultsNode, initial = true;
 
@@ -2493,41 +2714,52 @@ module.exports = function (utils) {
 		console.log("Upload: ", e);
 	}
 
-	var elemPay = document.querySelector('#upload-payments');
-	utils.upload(elemPay, {type: "text"}, function (err, file) {
+	try{
+		var elemPay = document.querySelector('#upload-payments');
+		utils.upload(elemPay, {type: "text"}, function (err, file) {
 
-		console.log("file: ",file);
+			console.log("file: ",file);
 
-		var opts = {
-			method: "POST",
-			uri: "/api/upload?type=payments",
-			body: file[0].target.result
-		};
+			var opts = {
+				method: "POST",
+				uri: "/api/upload?type=payments",
+				body: file[0].target.result
+			};
 
-		utils.request(opts, function (e, h, b){
+			utils.request(opts, function (e, h, b){
 
-			console.log(b);
+				console.log(b);
+			});
 		});
-	});
-	var elemMem = document.querySelector('#upload-members');
-	utils.upload(elemMem, {type: "text"}, function (err, file) {
+	}catch(e) {
+		console.log("err upload", e);
+	}
 
-		console.log("file: ",file);
 
-		var opts = {
-			method: "POST",
-			uri: "/api/upload?type=members",
-			body: file[0].target.result
-		};
+	try{
+		var elemMem = document.querySelector('#upload-members');
+		utils.upload(elemMem, {type: "text"}, function (err, file) {
 
-		utils.request(opts, function (e, h, b){
+			console.log("file: ",file);
 
-			console.log(b);
+			var opts = {
+				method: "POST",
+				uri: "/api/upload?type=members",
+				body: file[0].target.result
+			};
+
+			utils.request(opts, function (e, h, b){
+
+				console.log(b);
+			});
 		});
-	});
+	}catch(e){
+		console.log("err upload", e);
+	}
+
 	return;
 };
-},{"./view":47}],47:[function(require,module,exports){
+},{"./view":49}],49:[function(require,module,exports){
 "use strict";
 
 
@@ -2551,7 +2783,7 @@ module.exports = function (fn) {
 		])
 	]);
 }
-},{"virtual-dom/h":3}],48:[function(require,module,exports){
+},{"virtual-dom/h":3}],50:[function(require,module,exports){
 ;(function () {
 	"use strict";
 
@@ -2575,7 +2807,7 @@ module.exports = function (fn) {
 		var subscription = require("./components/chargesubscriptions/index")(utils);
 		var donation     = require("./components/chargedonations/index")(utils);
 		var upload       = require("./components/uploadcsv/index")(utils);
-		// var memberInfo   = require("./components/memberinfo/index")(utils);
+		var memberInfo   = require("./components/memberinfo/index")(utils);
 	} catch (e){
 		console.log("fdas: ", e)
 	}
@@ -2583,16 +2815,17 @@ module.exports = function (fn) {
 
 	// var displayMember = require("./pages/displaymember.js")(utils);
 	viewPay.getData();
+	memberInfo.getData();
 }());
-},{"./components/addpayment/index":34,"./components/chargedonations/index":36,"./components/chargesubscriptions/index":38,"./components/displaypayments/index":40,"./components/memberstatus/index":42,"./components/search/index":44,"./components/uploadcsv/index":46,"./services/request.js":49,"d-bap":51,"moment":54,"torf":55,"upload-element":57,"virtual-dom/create-element":1,"virtual-dom/diff":2,"virtual-dom/patch":11}],49:[function(require,module,exports){
+},{"./components/addpayment/index":34,"./components/chargedonations/index":36,"./components/chargesubscriptions/index":38,"./components/displaypayments/index":40,"./components/memberinfo/index":42,"./components/memberstatus/index":44,"./components/search/index":46,"./components/uploadcsv/index":48,"./services/request.js":51,"d-bap":53,"moment":56,"torf":57,"upload-element":59,"virtual-dom/create-element":1,"virtual-dom/diff":2,"virtual-dom/patch":11}],51:[function(require,module,exports){
 "use strict";
 
 var request = require("xhr");
 
 module.exports = request;
-},{"xhr":58}],50:[function(require,module,exports){
+},{"xhr":60}],52:[function(require,module,exports){
 
-},{}],51:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 "use strict";
 
 var is = require("torf");
@@ -2648,7 +2881,7 @@ function _clone (obj){
   return temp;
 }
 
-},{"torf":52}],52:[function(require,module,exports){
+},{"torf":54}],54:[function(require,module,exports){
 'use strict';
 
 
@@ -2722,7 +2955,7 @@ function checkEmail (email, regexp){
 		return false;
 	};
 };
-},{"is-number":53}],53:[function(require,module,exports){
+},{"is-number":55}],55:[function(require,module,exports){
 /*!
  * is-number <https://github.com/jonschlinkert/is-number>
  *
@@ -2738,7 +2971,7 @@ module.exports = function isNumber(n) {
     || n === 0;
 };
 
-},{}],54:[function(require,module,exports){
+},{}],56:[function(require,module,exports){
 //! moment.js
 //! version : 2.10.3
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
@@ -5850,11 +6083,11 @@ module.exports = function isNumber(n) {
     return _moment;
 
 }));
-},{}],55:[function(require,module,exports){
-arguments[4][52][0].apply(exports,arguments)
-},{"dup":52,"is-number":56}],56:[function(require,module,exports){
-arguments[4][53][0].apply(exports,arguments)
-},{"dup":53}],57:[function(require,module,exports){
+},{}],57:[function(require,module,exports){
+arguments[4][54][0].apply(exports,arguments)
+},{"dup":54,"is-number":58}],58:[function(require,module,exports){
+arguments[4][55][0].apply(exports,arguments)
+},{"dup":55}],59:[function(require,module,exports){
 module.exports = function (elem, opts, cb) {
     if (typeof opts === 'function') {
         cb = opts;
@@ -5893,7 +6126,7 @@ module.exports = function (elem, opts, cb) {
     });
 };
 
-},{}],58:[function(require,module,exports){
+},{}],60:[function(require,module,exports){
 "use strict";
 var window = require("global/window")
 var once = require("once")
@@ -6065,7 +6298,7 @@ function createXHR(options, callback) {
 
 function noop() {}
 
-},{"global/window":59,"once":60,"parse-headers":64}],59:[function(require,module,exports){
+},{"global/window":61,"once":62,"parse-headers":66}],61:[function(require,module,exports){
 (function (global){
 if (typeof window !== "undefined") {
     module.exports = window;
@@ -6078,7 +6311,7 @@ if (typeof window !== "undefined") {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],60:[function(require,module,exports){
+},{}],62:[function(require,module,exports){
 module.exports = once
 
 once.proto = once(function () {
@@ -6099,7 +6332,7 @@ function once (fn) {
   }
 }
 
-},{}],61:[function(require,module,exports){
+},{}],63:[function(require,module,exports){
 var isFunction = require('is-function')
 
 module.exports = forEach
@@ -6147,7 +6380,7 @@ function forEachObject(object, iterator, context) {
     }
 }
 
-},{"is-function":62}],62:[function(require,module,exports){
+},{"is-function":64}],64:[function(require,module,exports){
 module.exports = isFunction
 
 var toString = Object.prototype.toString
@@ -6164,7 +6397,7 @@ function isFunction (fn) {
       fn === window.prompt))
 };
 
-},{}],63:[function(require,module,exports){
+},{}],65:[function(require,module,exports){
 
 exports = module.exports = trim;
 
@@ -6180,7 +6413,7 @@ exports.right = function(str){
   return str.replace(/\s*$/, '');
 };
 
-},{}],64:[function(require,module,exports){
+},{}],66:[function(require,module,exports){
 var trim = require('trim')
   , forEach = require('for-each')
   , isArray = function(arg) {
@@ -6212,4 +6445,4 @@ module.exports = function (headers) {
 
   return result
 }
-},{"for-each":61,"trim":63}]},{},[48]);
+},{"for-each":63,"trim":65}]},{},[50]);

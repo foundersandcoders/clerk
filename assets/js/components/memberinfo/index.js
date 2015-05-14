@@ -13,12 +13,12 @@ module.exports = function (utils) {
 	that.render = function (data) {
 
 		if(initial){
-			tree        = view(data);
+			tree        = view(data, utils);
 			resultsNode = utils.createElement(tree);
 			initial     = false;
 			return resultsNode;
 		} else {
-			var newResults = view(data);
+			var newResults = view(data, utils);
 			var patches    = utils.diff(tree, newResults);
 			resultsNode    = utils.patch(resultsNode, patches);
 			tree           = resultsNode;
@@ -29,15 +29,14 @@ module.exports = function (utils) {
 
 		utils.request(_createOptions(), function (e, h, b) {
 
-			return that.render(JSON.parse(b));
+			var member = JSON.parse(b);
+			try {
+				document.querySelector(".content-container").appendChild(that.render(member));
+			}catch (e){
+				console.log("Show data member", e);
+			}
 		});
 	};
-
-	try {
-		document.querySelector(".content-container").appendChild(that.getData());
-	}catch (e){
-		console.log("Show data member", e);
-	}
 
 	return that;
 };
@@ -52,6 +51,6 @@ function _createOptions () {
 
 	return {
 		method: "GET",
-		url: "/api/member/" + id
+		url: "/api/members/" + id
 	}
 }
