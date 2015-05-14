@@ -52,7 +52,12 @@ module.exports = function (data) {
 				h("span.info", "Status: "),
 				h("span", member.status)
 			]),
-			if(member.status === "deleted")
+			if(member.status === "deleted") {
+				h("p", [
+					h("span.info", "Status: "),
+					h("span", member.status)
+				]),
+			}
 		]);
 	}
 
