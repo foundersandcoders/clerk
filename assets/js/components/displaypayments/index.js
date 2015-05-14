@@ -14,12 +14,12 @@ module.exports = function (utils) {
 	that.render = function (data) {
 
 		if(initial){
-			tree        = view(data, that.getData, that.deletePayment);
+			tree        = view(data, that.getData, that.deletePayment, utils);
 			resultsNode = utils.createElement(tree);
 			initial     = false;
 			return resultsNode;
 		} else {
-			var newResults = view(data, that.getData, that.deletePayment);
+			var newResults = view(data, that.getData, that.deletePayment, utils);
 			var patches    = utils.diff(tree, newResults);
 			resultsNode    = utils.patch(resultsNode, patches);
 			tree           = resultsNode;

@@ -8,7 +8,8 @@
 		patch:         require('virtual-dom/patch'),
 		createElement: require('virtual-dom/create-element'),
 		request:       require("./services/request.js"),
-		upload:        require("upload-element")
+		upload:        require("upload-element"),
+		moment:        require("moment")
 	};
 
 	// components
@@ -20,6 +21,7 @@
 		var subscription = require("./components/chargesubscriptions/index")(utils);
 		var donation     = require("./components/chargedonations/index")(utils);
 		var upload       = require("./components/uploadcsv/index")(utils);
+		// var memberInfo   = require("./components/memberinfo/index")(utils);
 	} catch (e){
 		console.log("fdas: ", e)
 	}
