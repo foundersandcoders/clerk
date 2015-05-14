@@ -21,6 +21,17 @@ module.exports = h
  * ECMAScript compliant, uniform cross-browser split method
  */
 
+<<<<<<< HEAD
+		var payload = {
+			memberId:   document.querySelector("#member-id").textContent,
+			date:       document.querySelector("#date-payment").value,
+			type:       document.querySelector("#type-payment").value,
+			reference:  document.querySelector("#reference-payment").value,
+			total:      document.querySelector("#amount-payment").value,
+			notes:      document.querySelector("#notes-payment").value,
+      collection: "payments"
+		};
+=======
 /**
  * Splits a string into an array of strings using a regex or string separator. Matches of the
  * separator are not included in the result array. However, if `separator` is a regex that contains
@@ -46,6 +57,7 @@ module.exports = h
  * // -> ['..', 'word', '1', ' ', 'word', '2', '..']
  */
 module.exports = (function split(undef) {
+>>>>>>> edf0389bacc9085f27dc44f3d0ff71548a527f47
 
   var nativeSplit = String.prototype.split,
     compliantExecNpcg = /()??/.exec("")[1] === undef,
@@ -118,16 +130,37 @@ module.exports = (function split(undef) {
     return output.length > limit ? output.slice(0, limit) : output;
   };
 
+<<<<<<< HEAD
+	try {
+		document.querySelector(".enter-payment-section").appendChild(render());
+	} catch (e) {
+		console.log(e);
+	}
+};
+=======
   return self;
 })();
 
 },{}],5:[function(require,module,exports){
 'use strict';
+>>>>>>> edf0389bacc9085f27dc44f3d0ff71548a527f47
 
 var OneVersionConstraint = require('individual/one-version');
 
+<<<<<<< HEAD
+	return {
+		method: "POST",
+		url: "/api/payments",
+		json: payload
+	};
+}
+
+},{"./view":"/home/william/projects/clerk/assets/js/components/addpayment/view.js"}],"/home/william/projects/clerk/assets/js/components/addpayment/view.js":[function(require,module,exports){
+"use strict";
+=======
 var MY_VERSION = '7';
 OneVersionConstraint('ev-store', MY_VERSION);
+>>>>>>> edf0389bacc9085f27dc44f3d0ff71548a527f47
 
 var hashKey = '__EV_STORE_KEY@' + MY_VERSION;
 
@@ -179,6 +212,15 @@ function OneVersion(moduleName, version, defaultValue) {
 
     var versionValue = Individual(enforceKey, version);
 
+<<<<<<< HEAD
+		var payload = {
+			memberId:    document.querySelector("#member-id").textContent,
+			description: "Donation",
+			total:       document.querySelector("#payment-amount").value,
+			notes:       document.querySelector("#donation-notes").value,
+      collection:  "charges"
+		};
+=======
     if (versionValue !== version) {
         throw new Error('Can only have one copy of ' +
             moduleName + '.\n' +
@@ -186,15 +228,23 @@ function OneVersion(moduleName, version, defaultValue) {
             ' installed.\n' +
             'This means you cannot install version ' + version);
     }
+>>>>>>> edf0389bacc9085f27dc44f3d0ff71548a527f47
 
     return Individual(key, defaultValue);
 }
 
+<<<<<<< HEAD
+      // this is a hack, it needs to be changed when we have parent components
+			location.reload();
+		});
+	};
+=======
 },{"./index.js":6}],8:[function(require,module,exports){
 (function (global){
 var topLevel = typeof global !== 'undefined' ? global :
     typeof window !== 'undefined' ? window : {}
 var minDoc = require('min-document');
+>>>>>>> edf0389bacc9085f27dc44f3d0ff71548a527f47
 
 if (typeof document !== 'undefined') {
     module.exports = document;
@@ -207,6 +257,14 @@ if (typeof document !== 'undefined') {
 
     module.exports = doccy;
 }
+<<<<<<< HEAD
+
+},{"./view":"/home/william/projects/clerk/assets/js/components/chargedonations/view.js"}],"/home/william/projects/clerk/assets/js/components/chargedonations/view.js":[function(require,module,exports){
+"use strict";
+
+var h = require("virtual-dom/h");
+=======
+>>>>>>> edf0389bacc9085f27dc44f3d0ff71548a527f47
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"min-document":50}],9:[function(require,module,exports){
@@ -260,9 +318,16 @@ function applyProperties(node, props, previous) {
     }
 }
 
+<<<<<<< HEAD
+			var payload = {
+				memberId:    document.querySelector("#member-id").textContent,
+        collection:  "charges"
+			};
+=======
 function removeProperty(node, propName, propValue, previous) {
     if (previous) {
         var previousValue = previous[propName]
+>>>>>>> edf0389bacc9085f27dc44f3d0ff71548a527f47
 
         if (!isHook(previousValue)) {
             if (propName === "attributes") {
@@ -284,20 +349,33 @@ function removeProperty(node, propName, propValue, previous) {
     }
 }
 
+<<<<<<< HEAD
+			payload.total       = (type === "charge") ? value          : 0 - Number(value);
+			payload.description = (type === "charge") ? "Subscription" : "Subscription refund";
+=======
 function patchObject(node, props, previous, propName, propValue) {
     var previousValue = previous ? previous[propName] : undefined
+>>>>>>> edf0389bacc9085f27dc44f3d0ff71548a527f47
 
     // Set attributes
     if (propName === "attributes") {
         for (var attrName in propValue) {
             var attrValue = propValue[attrName]
 
+<<<<<<< HEAD
+        // this is a hack, it needs to be changed when we have parent components
+			  location.reload();
+      });
+		}
+	};
+=======
             if (attrValue === undefined) {
                 node.removeAttribute(attrName)
             } else {
                 node.setAttribute(attrName, attrValue)
             }
         }
+>>>>>>> edf0389bacc9085f27dc44f3d0ff71548a527f47
 
         return
     }
@@ -308,9 +386,21 @@ function patchObject(node, props, previous, propName, propValue) {
         return
     }
 
+<<<<<<< HEAD
+	return {
+		method: "POST",
+		url: "/api/charges",
+		json: payload
+	};
+}
+
+},{"./view":"/home/william/projects/clerk/assets/js/components/chargesubscriptions/view.js"}],"/home/william/projects/clerk/assets/js/components/chargesubscriptions/view.js":[function(require,module,exports){
+"use strict";
+=======
     if (!isObject(node[propName])) {
         node[propName] = {}
     }
+>>>>>>> edf0389bacc9085f27dc44f3d0ff71548a527f47
 
     var replacer = propName === "style" ? "" : undefined
 
@@ -363,10 +453,42 @@ function createElement(vnode, opts) {
         doc.createElement(vnode.tagName) :
         doc.createElementNS(vnode.namespace, vnode.tagName)
 
+<<<<<<< HEAD
+		if(initial){
+			tree        = view(data, that.getData, that.deletePayment);
+			resultsNode = utils.createElement(tree);
+			initial     = false;
+			return resultsNode;
+		} else {
+			var newResults = view(data, that.getData, that.deletePayment);
+			var patches    = utils.diff(tree, newResults);
+			resultsNode    = utils.patch(resultsNode, patches);
+			tree           = resultsNode;
+		}
+	};
+
+  that.deletePayment = function (collection, id) {
+
+    return function () {
+      var opts = {
+        method: "DELETE",
+        url: "/api/" + collection + "/" + id
+      };
+
+      utils.request(opts, function (e, h, b) {
+        console.log(h);
+        that.getData();
+      });
+    }
+  };
+
+	that.getData = function () {
+=======
     var props = vnode.properties
     applyProperties(node, props)
 
     var children = vnode.children
+>>>>>>> edf0389bacc9085f27dc44f3d0ff71548a527f47
 
     for (var i = 0; i < children.length; i++) {
         var childNode = createElement(children[i], opts)
@@ -378,16 +500,34 @@ function createElement(vnode, opts) {
     return node
 }
 
+<<<<<<< HEAD
+      //console.log("PAYMENTS", arguments);
+			store = store.concat(JSON.parse(b));
+			count += 1;
+
+			if(count === 2){
+				_render(initial, store, that.render);
+			}
+		});
+=======
 },{"../vnode/handle-thunk.js":22,"../vnode/is-vnode.js":25,"../vnode/is-vtext.js":26,"../vnode/is-widget.js":27,"./apply-properties":12,"global/document":8}],14:[function(require,module,exports){
 // Maps a virtual DOM tree onto a real DOM tree in an efficient manner.
 // We don't want to read all of the DOM nodes in the tree so we use
 // the in-order tree indexing to eliminate recursion down certain branches.
 // We only recurse into a DOM node if we know that it contains a child of
 // interest.
+>>>>>>> edf0389bacc9085f27dc44f3d0ff71548a527f47
 
 var noChild = {}
 
+<<<<<<< HEAD
+   //   console.log("CHARGES", arguments);
+			store = store.concat(JSON.parse(b));
+			store = store.concat(JSON.parse(b));
+			count += 1;
+=======
 module.exports = domIndex
+>>>>>>> edf0389bacc9085f27dc44f3d0ff71548a527f47
 
 function domIndex(rootNode, tree, indices, nodes) {
     if (!indices || indices.length === 0) {
@@ -424,10 +564,14 @@ function recurse(rootNode, tree, indices, nodes, rootIndex) {
                     recurse(childNodes[i], vChild, indices, nodes, rootIndex)
                 }
 
+<<<<<<< HEAD
+module.exports = function (data, refreshFn, deleteFn) {
+=======
                 rootIndex = nextIndex
             }
         }
     }
+>>>>>>> edf0389bacc9085f27dc44f3d0ff71548a527f47
 
     return nodes
 }
@@ -443,9 +587,45 @@ function indexInRange(indices, left, right) {
     var currentIndex
     var currentItem
 
+<<<<<<< HEAD
+		return data.map(function (elm){
+      console.log(elm);
+			return h("div.row", [
+				h("div.col-1", [
+					h("p", elm.datePaid)
+				]),
+				h("div.col-2", [
+					h("p", elm.description)
+				]),
+				h("div.col-3", [
+					h("p", elm.total)
+				]),
+				h("div.col-4", [
+					h("p", "?")
+				]),
+				h("div.col-5", [
+					h("p", elm.reference)
+				]),
+				h("div.col-6", [
+					h("p", elm.notes)
+				]),
+				h("div.col-7", [
+					h("p", {
+            onclick: deleteFn(elm.collection, elm.id)
+					}, "x")
+				])
+			])
+		});
+	}
+};
+
+},{"virtual-dom/h":"/home/william/projects/clerk/node_modules/virtual-dom/h.js"}],"/home/william/projects/clerk/assets/js/components/memberstatus/index.js":[function(require,module,exports){
+"use strict";
+=======
     while (minIndex <= maxIndex) {
         currentIndex = ((maxIndex + minIndex) / 2) >> 0
         currentItem = indices[currentIndex]
+>>>>>>> edf0389bacc9085f27dc44f3d0ff71548a527f47
 
         if (minIndex === maxIndex) {
             return currentItem >= left && currentItem <= right
@@ -528,8 +708,15 @@ function insertNode(parentNode, vNode, renderOptions) {
     return parentNode
 }
 
+<<<<<<< HEAD
+      // this is a hack, it needs to be changed when we have parent components
+			location.reload();
+		});
+	}
+=======
 function stringPatch(domNode, leftVNode, vText, renderOptions) {
     var newNode
+>>>>>>> edf0389bacc9085f27dc44f3d0ff71548a527f47
 
     if (domNode.nodeType === 3) {
         domNode.replaceData(0, domNode.length, vText.text)

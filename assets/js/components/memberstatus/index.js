@@ -49,6 +49,7 @@ module.exports = function (utils) {
 
 		utils.request(_createOptions(payload), function (e, h, b) {
 
+      // this is a hack, it needs to be changed when we have parent components
 			location.reload();
 		});
 	}

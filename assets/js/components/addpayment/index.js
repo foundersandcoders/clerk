@@ -25,12 +25,13 @@ module.exports = function (utils) {
 	function postData (query) {
 
 		var payload = {
-			memberId:  document.querySelector("#member-id").textContent,
-			date:      document.querySelector("#date-payment").value,
-			type:      document.querySelector("#type-payment").value,
-			reference: document.querySelector("#reference-payment").value,
-			amount:    document.querySelector("#amount-payment").value,
-			notes:     document.querySelector("#notes-payment").value
+			memberId:   document.querySelector("#member-id").textContent,
+			date:       document.querySelector("#date-payment").value,
+			type:       document.querySelector("#type-payment").value,
+			reference:  document.querySelector("#reference-payment").value,
+			total:      document.querySelector("#amount-payment").value,
+			notes:      document.querySelector("#notes-payment").value,
+      collection: "payments"
 		};
 
 		utils.request(_createOptions(payload), function (e, h, b) {
@@ -42,8 +43,7 @@ module.exports = function (utils) {
 	try {
 		document.querySelector(".enter-payment-section").appendChild(render());
 	} catch (e) {
-			console.log(e);
-
+		console.log(e);
 	}
 };
 

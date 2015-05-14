@@ -28,18 +28,20 @@ module.exports = function (utils) {
 		return function () {
 
 			var payload = {
-				memberId:    document.querySelector("#member-id").textContent
+				memberId:    document.querySelector("#member-id").textContent,
+        collection:  "charges"
 			};
 
 			var value = document.querySelector("#payment-amount").value;
 
-			payload.amount      = (type === "charge") ? value          : 0 - Number(value);
+			payload.total       = (type === "charge") ? value          : 0 - Number(value);
 			payload.description = (type === "charge") ? "Subscription" : "Subscription refund";
 
 			utils.request(_createOptions(payload), function (e, h, b) {
 
-				render();
-			});
+        // this is a hack, it needs to be changed when we have parent components
+			  location.reload();
+      });
 		}
 	};
 

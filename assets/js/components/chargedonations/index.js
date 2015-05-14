@@ -28,13 +28,15 @@ module.exports = function (utils) {
 		var payload = {
 			memberId:    document.querySelector("#member-id").textContent,
 			description: "Donation",
-			amount:      document.querySelector("#payment-amount").value,
-			notes:       document.querySelector("#donation-notes").value
+			total:       document.querySelector("#payment-amount").value,
+			notes:       document.querySelector("#donation-notes").value,
+      collection:  "charges"
 		};
 
 		utils.request(_createOptions(payload), function (e, h, b) {
 
-			render();
+      // this is a hack, it needs to be changed when we have parent components
+			location.reload();
 		});
 	};
 

@@ -14,17 +14,32 @@ module.exports = function (utils) {
 	that.render = function (data) {
 
 		if(initial){
-			tree        = view(data);
+			tree        = view(data, that.getData, that.deletePayment);
 			resultsNode = utils.createElement(tree);
 			initial     = false;
 			return resultsNode;
 		} else {
-			var newResults = view(data);
+			var newResults = view(data, that.getData, that.deletePayment);
 			var patches    = utils.diff(tree, newResults);
 			resultsNode    = utils.patch(resultsNode, patches);
 			tree           = resultsNode;
 		}
 	};
+
+  that.deletePayment = function (collection, id) {
+
+    return function () {
+      var opts = {
+        method: "DELETE",
+        url: "/api/" + collection + "/" + id
+      };
+
+      utils.request(opts, function (e, h, b) {
+        console.log(h);
+        that.getData();
+      });
+    }
+  };
 
 	that.getData = function () {
 
@@ -33,7 +48,7 @@ module.exports = function (utils) {
 
 		utils.request(_createOptions("payments"), function (e, h, b) {
 
-      console.log("PAYMENTS", arguments);
+      //console.log("PAYMENTS", arguments);
 			store = store.concat(JSON.parse(b));
 			count += 1;
 
@@ -44,7 +59,7 @@ module.exports = function (utils) {
 
 		utils.request(_createOptions("charges"), function (e, h, b) {
 
-      console.log("CHARGES", arguments);
+   //   console.log("CHARGES", arguments);
 			store = store.concat(JSON.parse(b));
 			store = store.concat(JSON.parse(b));
 			count += 1;
