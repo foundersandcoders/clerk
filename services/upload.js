@@ -5,6 +5,7 @@ var request = require("request");
 var parse   = require("babyparse");
 var is      = require("torf");
 var config  = require("../config.js");
+var moment  = require("moment");
 
 
 module.exports = function () {
@@ -138,7 +139,7 @@ module.exports = function () {
 			}else if(type === "number"){
 				return parseInt(value);
 			}else if(type === "date"){
-				return new Date(value);
+        return moment(value, "DD-MM-YY").format();
 			}else if(type === "boolean"){
 				return value === "VERO" ? true : false;
 			}else if(type === "custom"){

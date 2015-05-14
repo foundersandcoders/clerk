@@ -340,7 +340,12 @@ var isVText = require("../vnode/is-vtext.js")
 var isWidget = require("../vnode/is-widget.js")
 var handleThunk = require("../vnode/handle-thunk.js")
 
+<<<<<<< HEAD
+var view  = require("./view");
+var moment = require("moment");
+=======
 module.exports = createElement
+>>>>>>> d7a4074dc0ec4be453bc0e9d1ec8f9fdc39487b7
 
 function createElement(vnode, opts) {
     var doc = opts ? opts.document || document : document
@@ -402,16 +407,39 @@ function recurse(rootNode, tree, indices, nodes, rootIndex) {
     nodes = nodes || {}
 
 
+<<<<<<< HEAD
+			if(count === 2){
+        store = store.sort(function (a, b) {
+          var diff = moment(a.datePaid) - moment(b.datePaid);
+          return (diff > 0) ? 1 : (diff === 0) ? 0 : -1;
+        });
+				_render(initial, store, that.render);
+			}
+		});
+=======
     if (rootNode) {
         if (indexInRange(indices, rootIndex, rootIndex)) {
             nodes[rootIndex] = rootNode
         }
+>>>>>>> d7a4074dc0ec4be453bc0e9d1ec8f9fdc39487b7
 
         var vChildren = tree.children
 
         if (vChildren) {
 
+<<<<<<< HEAD
+			if(count === 2){
+        store = store.sort(function (a, b) {
+          var diff = moment(a.datePaid) - moment(b.datePaid);
+          return (diff > 0) ? -1 : (diff === 0) ? 0 : 1;
+        });
+				_render(initial, store, that.render);
+			}
+		});
+	};
+=======
             var childNodes = rootNode.childNodes
+>>>>>>> d7a4074dc0ec4be453bc0e9d1ec8f9fdc39487b7
 
             for (var i = 0; i < tree.children.length; i++) {
                 rootIndex += 1
@@ -461,9 +489,14 @@ function indexInRange(indices, left, right) {
     return false;
 }
 
+<<<<<<< HEAD
+},{"./view":"/home/william/projects/clerk/assets/js/components/displaypayments/view.js","moment":"/home/william/projects/clerk/node_modules/moment/moment.js"}],"/home/william/projects/clerk/assets/js/components/displaypayments/view.js":[function(require,module,exports){
+"use strict";
+=======
 function ascending(a, b) {
     return a > b ? 1 : -1
 }
+>>>>>>> d7a4074dc0ec4be453bc0e9d1ec8f9fdc39487b7
 
 },{}],15:[function(require,module,exports){
 var applyProperties = require("./apply-properties")
