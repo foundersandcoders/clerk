@@ -578,7 +578,7 @@ div.gbp::before {
   max-width: 150px; }
 
 .overall-container-member {
-  position: fixed;
+  margin-top: 50px;
   left: 0;
   right: 0;
   top: 60px;
@@ -596,8 +596,7 @@ div.gbp::before {
   background-color: #fff;
   margin-bottom: 20px;
   padding: 20px;
-  display: flex;
-  margin-top: -80px; }
+  display: flex; }
   .search-container input {
     width: 25%;
     margin: 10px; }
