@@ -26,6 +26,10 @@ module.exports = function (Members) {
 				res.view("view-member", {member: r.body});
 			});
 		},
+		maintenance: function (req, res) {
+
+			return res.view("maintenance");
+		},
 		upload: function (req, res) {
 
 			// if query is payments

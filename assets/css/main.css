@@ -167,12 +167,70 @@ input[type=checkbox]:checked + label:before {
   text-align: center;
   line-height: 15px; }
 
+.fileUpload {
+  position: relative;
+  overflow: hidden;
+  margin: 10px;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 1em 2em;
+  background-color: #acc; }
+
+.fileUpload input.upload {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  padding: 0;
+  font-size: 20px;
+  cursor: pointer;
+  opacity: 0;
+  filter: alpha(opacity=0); }
+
 nav {
   width: 100%;
   background-color: #FFF;
   height: 60px;
   line-height: 150px; }
 
+.navigation {
+  list-style: none;
+  margin: 0;
+  background: white;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-flow: row wrap;
+  justify-content: flex-end; }
+
+.navigation a {
+  text-decoration: none;
+  display: block;
+  padding: 1em;
+  color: black; }
+
+.navigation a:hover {
+  background: #f4f4f7; }
+
+@media all and (max-width: 800px) {
+  .navigation {
+    justify-content: space-around; } }
+@media all and (max-width: 600px) {
+  .navigation {
+    -webkit-flex-flow: column wrap;
+    flex-flow: column wrap;
+    padding: 0; }
+
+  .navigation a {
+    text-align: center;
+    padding: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1); }
+
+  .navigation li:last-of-type a {
+    border-bottom: none; } }
 .left {
   float: left; }
 
@@ -188,6 +246,13 @@ nav {
 @media (max-width: 2000px) {
   .small-font {
     font-size: 10px; } }
+.container-small {
+  max-width: 320px;
+  margin: auto; }
+
+.container-large {
+  margin-top: 50px; }
+
 .new-member-container {
   background-color: #fff;
   width: 70%;
@@ -253,7 +318,13 @@ nav {
   height: 40%;
   background-color: #fff;
   margin: 10px;
-  display: flex; }
+  display: flex;
+  text-align: left;
+  padding: 20px; }
+  .individual-section p {
+    font-size: 15px;
+    margin-bottom: 5px;
+    margin-top: 5px; }
   .individual-section .col-1 {
     width: 40%;
     min-height: 100px; }
@@ -362,7 +433,7 @@ nav {
         line-height: 35px;
         text-align: left; }
         #search-result .search-table-section-member .search-table-section-member-rows .row p {
-          font-size: 18px; }
+          font-size: 15px; }
         #search-result .search-table-section-member .search-table-section-member-rows .row .col-1 {
           padding-left: 8px;
           width: 30%;
@@ -525,7 +596,8 @@ div.gbp::before {
   background-color: #fff;
   margin-bottom: 20px;
   padding: 20px;
-  display: flex; }
+  display: flex;
+  margin-top: -80px; }
   .search-container input {
     width: 25%;
     margin: 10px; }
@@ -563,7 +635,6 @@ div.gbp::before {
 
 body {
   font-family: "Helvetica";
-  padding: 50px 20px 0;
   background: #f4f4f7;
   color: #444;
   margin: 0; }

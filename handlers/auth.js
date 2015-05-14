@@ -2,6 +2,7 @@
 
 
 var authUrl = process.env.AUTH_URL || "0.0.0.0:8000";
+var protocol = (process.env.NODE_ENV === "staging") ? "https://" : "http://";
 
 
 module.exports = function (request) {
@@ -9,7 +10,7 @@ module.exports = function (request) {
   return {
     login: function (req, res) {
 
-      var url = "https://" + req.payload.email + ":" + req.payload.password;
+      var url = protocol + req.payload.email + ":" + req.payload.password;
       url += "@" + authUrl + "/login";
 
       var opts = {
@@ -33,7 +34,7 @@ module.exports = function (request) {
 
       var opts = {
         method: "GET",
-        uri: "https://" + authUrl + "/logout",
+        uri: protocol + authUrl + "/logout",
         headers: {
           authorization: req.auth.credentials.token
         }
@@ -56,7 +57,7 @@ module.exports = function (request) {
       }
       var opts = {
         method: "POST",
-        uri: "https://" + authUrl + "/signup",
+        uri: protocol + authUrl + "/signup",
         body: req.payload
       }
 
@@ -69,7 +70,7 @@ module.exports = function (request) {
           req.auth.session.set({
             token: r.headers.authorization
           });
-          return res(r.body).code(r.statusCode);
+          return res.redirect("/admin");
         }
       });
     }

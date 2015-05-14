@@ -15,7 +15,8 @@ module.exports = function (members) {
         if (e) {
           return res(e).code(500);
         } else {
-          return res(r.body).code(r.statusCode);
+          // return res(r.body).code(r.statusCode);
+          return res.redirect("/members/" + r.body.id);
         }
       });
     },
