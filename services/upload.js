@@ -27,19 +27,24 @@ module.exports = function () {
 				step: function (results) {
 
 					count += 1;
-					var subscription   = that._stamp(count, results.data[0], that._blue("sub"));
+
+          var subscription   = that._stamp(count, results.data[0], that._blue("sub"));
+          subscription.collection = "charges";
 					subscription.type  = "subscription";
 					subscription.total = subscription.subscription;
 
 					var donation   = that._stamp(count, results.data[0], that._blue("donation"));
+          donation.collection = "charges";
 					donation.type  = "donation";
 					donation.total = donation.donation;
 
 					var events   = that._stamp(count, results.data[0], that._blue("event"));
+          events.collection = "charges";
 					events.type  = "events";
 					events.total = events.events;
 
-					var payment       = that._stamp(count, results.data[0], that._blue("payment"));
+					var payment        = that._stamp(count, results.data[0], that._blue("payment"));
+          payment.collection = "payments";
 
 					var paymentHeader = {"index":{"_index":"clerk","_type":"payments"}};
 					var chargeHeader  = {"index":{"_index":"clerk","_type":"charges"}};
@@ -52,15 +57,15 @@ module.exports = function () {
 						console.log("Error: ", arguments);
 					});
 
-					if(donation.total){
+					if(donation.total && donation.total !== "0"){
 						connection.write(JSON.stringify(chargeHeader) + "\n");
 						connection.write(JSON.stringify(donation) + "\n");
 					}
-					if(events.total){
+					if(events.total && events.total !== "0"){
 						connection.write(JSON.stringify(chargeHeader) + "\n");
 						connection.write(JSON.stringify(events) + "\n");
 					}
-					if(subscription.total){
+					if(subscription.total && subscription.total !== "0"){
 						connection.write(JSON.stringify(chargeHeader) + "\n");
 						connection.write(JSON.stringify(subscription) + "\n");
 					}
@@ -149,13 +154,13 @@ module.exports = function () {
 				bluprintPayments = {
 					datePaid:      {remove:false, type: "date"},
 					memberId:      {remove:false, type: "string"},
-					subscription:  {remove:true, type: "number"},
-					donation:      {remove:true, type: "number"},
-					events:        {remove:true, type: "number"},
-					total:         {remove:false,  type: "number"},
+					subscription:  {remove:true,  type: "number"},
+					donation:      {remove:true,  type: "number"},
+					events:        {remove:true,  type: "number"},
+					total:         {remove:false, type: "number"},
 					difference:    {remove:true,  type: "number"},
 					typeCode:      {remove:false, type: "string"},
-					listReference: {remove:true, type: "string"},
+					listReference: {remove:false, type: "string"},
 					notes:         {remove:false, type: "string"},
 					deleted:       {remove:false, type: "boolean"}
 				};
