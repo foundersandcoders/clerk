@@ -32,30 +32,19 @@ module.exports = function (Members) {
 		},
 		upload: function (req, res) {
 
-			// if query is payments
-			// upload payments
-			// upload charges
-			// else if query is members and status is active
-			// upload active members
-			// else if query is members and status is deleted
-			// upload deleted members
-			console.log("Got your request");
-			console.log("pl:", req.payload);
 			if (req.query.type === "payments"){
 				serviceUpload.payments(req, function (message){
 
-					console.log(message);
 					return res(message);
 				});
 			} else if (req.query.type === "members") {
 				serviceUpload.members(req, function (message){
 
-					console.log(message);
 					return res(message);
 				});
 			}
 		},
-		
+
 	};
 
 	return that;
