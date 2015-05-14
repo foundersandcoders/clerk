@@ -2,6 +2,7 @@
 
 
 var view  = require("./view");
+var moment = require("moment");
 
 
 module.exports = function (utils) {
@@ -53,6 +54,10 @@ module.exports = function (utils) {
 			count += 1;
 
 			if(count === 2){
+        store = store.sort(function (a, b) {
+          var diff = moment(a.datePaid) - moment(b.datePaid);
+          return (diff > 0) ? 1 : (diff === 0) ? 0 : -1;
+        });
 				_render(initial, store, that.render);
 			}
 		});
@@ -65,6 +70,10 @@ module.exports = function (utils) {
 			count += 1;
 
 			if(count === 2){
+        store = store.sort(function (a, b) {
+          var diff = moment(a.datePaid) - moment(b.datePaid);
+          return (diff > 0) ? -1 : (diff === 0) ? 0 : 1;
+        });
 				_render(initial, store, that.render);
 			}
 		});
