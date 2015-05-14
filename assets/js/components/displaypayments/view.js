@@ -2,7 +2,7 @@
 
 var h = require("virtual-dom/h");
 
-module.exports = function (data) {
+module.exports = function (data, refreshFn, deleteFn) {
 
 
 	return h("div.table-section-individual", [
@@ -34,8 +34,8 @@ module.exports = function (data) {
 
 	function renderRows (data){
 
- 
 		return data.map(function (elm){
+      console.log(elm);
 			return h("div.row", [
 				h("div.col-1", [
 					h("p", elm.datePaid)
@@ -57,12 +57,10 @@ module.exports = function (data) {
 				]),
 				h("div.col-7", [
 					h("p", {
-						onclick: function () {
-							console.log(elm.id);
-						}
-					}, "X")
+            onclick: deleteFn(elm.collection, elm.id)
+					}, "x")
 				])
-			])		 
+			])
 		});
 	}
 };
