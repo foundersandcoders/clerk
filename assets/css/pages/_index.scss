@@ -68,6 +68,10 @@ $color: #ededed;
 		display: flex;
 		width: 100%;
 		height: 60px;
+		p {
+			font-size: 20px;
+			font-weight: bold;
+		}
 		.col-1 {
 			width: 20%;
 			border-right: 1px solid $color;
@@ -97,13 +101,13 @@ $color: #ededed;
 		}
 	}
 	.table-section-individual-rows {
-		height: 31em;
+		height: 25em;
 		overflow: scroll;
 		.row {
 			display: flex;
 			width: 100%;
 			height: 60px;
-			p {font-size: 20px;}
+			p {font-size: 15px;}
 			.col-1 {
 				width: 20%;
 				border-right: 1px solid $color;

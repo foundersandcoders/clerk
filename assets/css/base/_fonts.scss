@@ -1,8 +1,10 @@
-
-
 p {
 	font-weight: 200;
 	font-size: 24px;
+}
+
+h2 {
+	margin-bottom: 10px;
 }
 
 @media (max-width: 1700px) {
@@ -17,4 +19,8 @@ p {
 		font-weight: 200;
 		font-size: 19px;
 	}
+}
+
+.info {
+	font-weight: bold;
 }
