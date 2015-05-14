@@ -3,7 +3,7 @@
 var view  = require("./view");
 
 module.exports = function (utils) {
-	
+
 	var tree, resultsNode, initial = true;
 
 	function render (data) {
@@ -23,10 +23,13 @@ module.exports = function (utils) {
 	};
 	function getData (query) {
 
+    var selectStatus = document.querySelector("#member-status");
+
 		var query = {
 			id:       document.querySelector("#search-field-id").value,
 			email1:   document.querySelector("#search-field-email").value,
 			lastName: document.querySelector("#search-field-lastName").value,
+      status:   selectStatus.options[selectStatus.selectedIndex].value
 		};
 
 		utils.request(_createOptions(utils.clean.object(query)), function (e, h, b) {

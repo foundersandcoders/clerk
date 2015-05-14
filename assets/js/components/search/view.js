@@ -28,7 +28,7 @@ module.exports = function (data) {
 	]);
 
 	function renderRows (data) {
-		
+
 		return data.map(function (result){
 
 			return h("a", {href: "/members/" + result.id}, [
