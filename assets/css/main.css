@@ -1,4 +1,3 @@
-@charset "UTF-8";
 p {
   font-weight: 200;
   font-size: 24px; }
@@ -545,10 +544,8 @@ nav {
   margin-right: 10px; }
 
 .input-three {
-  float: right;
-  width: 81%;
-  margin-bottom: 9px;
-  float: right; }
+  width: 100%;
+  margin-bottom: 9px; }
 
 @media (max-width: 1110px) {
   .input-three {
@@ -560,16 +557,7 @@ nav {
   .input-three {
     width: 60%; } }
 div.gbp {
-  text-align: left;
-  width: 48%;
-  float: left; }
-
-div.gbp::before {
-  float: left;
-  content: "\00a3";
-  /* £ */
-  padding: 3px 4px 3px 3px;
-  margin-top: 9px; }
+  width: 100%; }
 
 .input-four {
   width: 100%;
@@ -585,6 +573,23 @@ div.gbp::before {
   width: 15%;
   float: right;
   max-width: 150px; }
+
+.full-width {
+  width: 100%; }
+
+.margin-top-10 {
+  margin-top: 10px; }
+
+#status-controls {
+  display: flex;
+  flex-direction: column;
+  flex: 1; }
+
+.refund-section {
+  flex: 1; }
+
+.add-donation-section {
+  flex: 1; }
 
 .overall-container-member {
   margin-top: 50px;

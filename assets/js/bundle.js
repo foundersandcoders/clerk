@@ -1811,12 +1811,12 @@ module.exports = function (fn) {
 				placeholder: "Amount"
 			})
 		]),
-		h("button.button-two.right", {
-			onclick: fn
-		}, "Add"),
 		h("input.input-four#donation-notes", {
 			placeholder: "Optional note"
-		})
+		}),
+		h("button.button-two.right.full-width.margin-top-10", {
+			onclick: fn
+		}, "Add")
 	]);
 };
 },{"virtual-dom/h":3}],38:[function(require,module,exports){

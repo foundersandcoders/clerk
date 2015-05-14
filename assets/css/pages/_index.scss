@@ -314,10 +314,8 @@ $color: #ededed;
 }
 
 .input-three {
-	float: right;
-	width: 81%;
+	width: 100%;
 	margin-bottom: 9px;
-	float: right;
 }
 
 @media (max-width: 1110px) {
@@ -339,16 +337,7 @@ $color: #ededed;
 }
 
 div.gbp {
-    text-align:left;
-    width: 48%;
-    float: left;
-}
-
-div.gbp::before {
-    float:left; 
-    content: "\00a3"; /* £ */
-    padding:3px 4px 3px 3px;
-    margin-top: 9px;
+    width: 100%;
 }
 
 .input-four {
@@ -367,6 +356,28 @@ div.gbp::before {
 	width: 15%;
 	float: right;
 	max-width: 150px;
+}
+
+.full-width {
+	width: 100%;
+}
+
+.margin-top-10 {
+	margin-top: 10px;
+}
+
+#status-controls {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+}
+
+.refund-section {
+	flex: 1;
+}
+
+.add-donation-section {
+	flex: 1;
 }
 
 .button-c {
