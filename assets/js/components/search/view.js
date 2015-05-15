@@ -3,7 +3,7 @@
 var h = require("virtual-dom/h");
 
 module.exports = function (data) {
-
+	console.log("ddd",data);
 	return h("div.search-table-section-member", [
 		h("div.search-table-section-member-header", [
 			h("div.col-1", [

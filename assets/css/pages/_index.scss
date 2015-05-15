@@ -140,7 +140,6 @@ $color: #ededed;
 }
 
 #search-result {
-	width: 80%;
 	max-width: 1000px;
 	.search-table-section-member {
 		width: 100%;
@@ -298,7 +297,7 @@ $color: #ededed;
 }
 
 .enter-payment-section {
-	bottom: 0;
+	bottom: 10px;
 	width: 100%;
 	height: 60px;
 	background-color: #FFF;
@@ -364,7 +363,7 @@ div.gbp {
 .button-b {
 	width: 15%;
 	float: right;
-	max-width: 150px;
+	max-width: 200px;
 }
 
 .full-width {

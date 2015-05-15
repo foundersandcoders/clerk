@@ -4,44 +4,17 @@
 var view = require("./view");
 
 
-module.exports = function (utils) {
+module.exports = function (utils, state) {
 
-	var tree, resultsNode, initial = true;
+	var that = {};
 
-	try{
+	that.render = function () {
 
-		var status = document.querySelector("#member-status").textContent;
-	}catch (e){
-		console.log("status: ", e);
-	}
-
-	function render () {
-
-		if(initial){
-			tree        = view(status, updateType, deleteMember, reactivate);
-			resultsNode = utils.createElement(tree);
-			initial     = false;
-			return resultsNode;
-		} else {
-			var newResults = view(status, updateType, deleteMember, reactivate);
-			var patches    = utils.diff(tree, newResults);
-			resultsNode    = utils.patch(resultsNode, patches);
-			tree           = resultsNode;
-		}
+		return view(state.member().status, that.updateType, that.deleteMember, that.reactivate);
 	};
 
-
-	try {
-		var cont = document.querySelector(".actions-container");
-		cont.insertBefore(render(), cont.firstChild);
-	} catch (e) {
-
-
-		console.log(e);
-	}
-
-	function updateType () {
-		var selectElm = document.querySelector("#member-type");
+	that.updateType = function () {
+		var selectElm = document.querySelector("select#member-type");
 
 		var payload = {
 			membershipType: selectElm.options[selectElm.selectedIndex].value
@@ -49,12 +22,13 @@ module.exports = function (utils) {
 
 		utils.request(_createOptions(payload), function (e, h, b) {
 
-      // this is a hack, it needs to be changed when we have parent components
-			location.reload();
+			var member = state.member();
+			member.membershipType = b.membershipType;
+			state.member.set(member);
 		});
 	}
 
-	function deleteMember () {
+	that.deleteMember = function () {
 
 		var selectElm = document.querySelector("#deletion-reason");
 
@@ -65,11 +39,13 @@ module.exports = function (utils) {
 
 		utils.request(_createOptions(payload), function (e, h, b) {
 
-			location.reload();
+			var member = state.member();
+			member.status = b.status;
+			state.member.set(member);
 		});
 	}
 
-	function reactivate () {
+	that.reactivate = function () {
 
 		var payload = {
 			deletionReason: [],
@@ -78,17 +54,26 @@ module.exports = function (utils) {
 
 		utils.request(_createOptions(payload), function (e, h, b) {
 
-			location.reload();
+			var member = state.member();
+			member.status = b.status;
+			state.member.set(member);
 		});
 	}
 
 	function _createOptions (payload) {
 
+		try {
+			var id = document.querySelector("#member-id").textContent
+		} catch (e) {
+			console.log("Error id: ", e);
+		}
+
 		return {
 			method: "PUT",
-			url: "/api/members/" + document.querySelector("#member-id").textContent,
+			url: "/api/members/" + id,
 			json: payload
 		};
 	}
 
+	return that;
 };

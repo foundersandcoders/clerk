@@ -4,45 +4,37 @@
 var view = require("./view");
 
 
-module.exports = function (utils) {
+module.exports = function (utils, state) {
 
-	var tree, resultsNode, initial = true;
+	var that = {};
 
-	function render () {
+	that.render = function () {
 
-		if(initial){
-			tree        = view(postData);
-			resultsNode = utils.createElement(tree);
-			initial     = false;
-			return resultsNode;
-		} else {
-			var newResults = view(postData);
-			var patches    = utils.diff(tree, newResults);
-			resultsNode    = utils.patch(resultsNode, patches);
-			tree           = resultsNode;
-		}
+		return view(that.postData);
 	};
 
-	function postData (query) {
+	that.postData = function (query) {
 
-		var payload = {
-			memberId:    document.querySelector("#member-id").textContent,
-			description: "Donation",
-			total:       document.querySelector("#payment-amount").value,
-			notes:       document.querySelector("#donation-notes").value,
-      collection:  "charges"
-		};
+		try {
+			var payload = {
+				memberId:    document.querySelector("#member-id").textContent,
+				description: "Donation",
+				total:       document.querySelector("#payment-amount").value,
+				notes:       document.querySelector("#donation-notes").value,
+				collection:  "charges"
+			};
+		} catch (e) {
+			console.log("Error post donation: ", e);
+		}
 
 		utils.request(_createOptions(payload), function (e, h, b) {
 
-      // this is a hack, it needs to be changed when we have parent components
-			location.reload();
+			var payments = state.payments().push(JSON.parse(b));
+			state.payments.set(payments);
 		});
 	};
 
-	try {
-		document.querySelector(".add-donation-section").appendChild(render());
-	} catch (e) {}
+	return that;
 };
 
 function _createOptions (payload) {

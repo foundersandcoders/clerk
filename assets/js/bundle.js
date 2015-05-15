@@ -209,7 +209,7 @@ if (typeof document !== 'undefined') {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"min-document":52}],9:[function(require,module,exports){
+},{"min-document":54}],9:[function(require,module,exports){
 "use strict";
 
 module.exports = function isObject(x) {
@@ -340,12 +340,7 @@ var isVText = require("../vnode/is-vtext.js")
 var isWidget = require("../vnode/is-widget.js")
 var handleThunk = require("../vnode/handle-thunk.js")
 
-<<<<<<< HEAD
-var view  = require("./view");
-var moment = require("moment");
-=======
 module.exports = createElement
->>>>>>> d7a4074dc0ec4be453bc0e9d1ec8f9fdc39487b7
 
 function createElement(vnode, opts) {
     var doc = opts ? opts.document || document : document
@@ -407,39 +402,16 @@ function recurse(rootNode, tree, indices, nodes, rootIndex) {
     nodes = nodes || {}
 
 
-<<<<<<< HEAD
-			if(count === 2){
-        store = store.sort(function (a, b) {
-          var diff = moment(a.datePaid) - moment(b.datePaid);
-          return (diff > 0) ? 1 : (diff === 0) ? 0 : -1;
-        });
-				_render(initial, store, that.render);
-			}
-		});
-=======
     if (rootNode) {
         if (indexInRange(indices, rootIndex, rootIndex)) {
             nodes[rootIndex] = rootNode
         }
->>>>>>> d7a4074dc0ec4be453bc0e9d1ec8f9fdc39487b7
 
         var vChildren = tree.children
 
         if (vChildren) {
 
-<<<<<<< HEAD
-			if(count === 2){
-        store = store.sort(function (a, b) {
-          var diff = moment(a.datePaid) - moment(b.datePaid);
-          return (diff > 0) ? -1 : (diff === 0) ? 0 : 1;
-        });
-				_render(initial, store, that.render);
-			}
-		});
-	};
-=======
             var childNodes = rootNode.childNodes
->>>>>>> d7a4074dc0ec4be453bc0e9d1ec8f9fdc39487b7
 
             for (var i = 0; i < tree.children.length; i++) {
                 rootIndex += 1
@@ -489,14 +461,9 @@ function indexInRange(indices, left, right) {
     return false;
 }
 
-<<<<<<< HEAD
-},{"./view":"/home/william/projects/clerk/assets/js/components/displaypayments/view.js","moment":"/home/william/projects/clerk/node_modules/moment/moment.js"}],"/home/william/projects/clerk/assets/js/components/displaypayments/view.js":[function(require,module,exports){
-"use strict";
-=======
 function ascending(a, b) {
     return a > b ? 1 : -1
 }
->>>>>>> d7a4074dc0ec4be453bc0e9d1ec8f9fdc39487b7
 
 },{}],15:[function(require,module,exports){
 var applyProperties = require("./apply-properties")
@@ -1680,35 +1647,31 @@ function appendPatch(apply, patch) {
 var view = require("./view");
 
 
-module.exports = function (utils) {
+module.exports = function (utils, state) {
+	
+	var that = {};
 
-	var tree, resultsNode, initial = true;
-	function render () {
+	that.render = function () {
 
-		if(initial){
-			tree        = view(postData);
-			resultsNode = utils.createElement(tree);
-			initial     = false;
-			return resultsNode;
-		} else {
-			var newResults = view(postData);
-			var patches    = utils.diff(tree, newResults);
-			resultsNode    = utils.patch(resultsNode, patches);
-			tree           = resultsNode;
-		}
+		return view(that.postData);
 	};
 
-	function postData (query) {
+	that.postData = function (query) {
 
-		var payload = {
-			memberId:   document.querySelector("#member-id").textContent,
-			date:       document.querySelector("#date-payment").value,
-			type:       document.querySelector("#type-payment").value,
-			reference:  document.querySelector("#reference-payment").value,
-			total:      document.querySelector("#amount-payment").value,
-			notes:      document.querySelector("#notes-payment").value,
-      collection: "payments"
-		};
+		try {
+
+			var payload = {
+				memberId:   document.querySelector("#member-id").textContent,
+				date:       document.querySelector("#date-payment").value,
+				type:       document.querySelector("#type-payment").value,
+				reference:  document.querySelector("#reference-payment").value,
+				total:      document.querySelector("#amount-payment").value,
+				notes:      document.querySelector("#notes-payment").value,
+	      		collection: "payments"
+			};
+		} catch (e) {
+			console.log("addpayment post: ", e);
+		}
 
 		utils.request(_createOptions(payload), function (e, h, b) {
 
@@ -1716,11 +1679,7 @@ module.exports = function (utils) {
 		});
 	};
 
-	try {
-		document.querySelector(".enter-payment-section").appendChild(render());
-	} catch (e) {
-		console.log(e);
-	}
+	return that;
 };
 
 function _createOptions (payload) {
@@ -1731,7 +1690,6 @@ function _createOptions (payload) {
 		json: payload
 	};
 }
-
 },{"./view":35}],35:[function(require,module,exports){
 "use strict";
 
@@ -1784,45 +1742,37 @@ module.exports = function render (fn) {
 var view = require("./view");
 
 
-module.exports = function (utils) {
+module.exports = function (utils, state) {
 
-	var tree, resultsNode, initial = true;
+	var that = {};
 
-	function render () {
+	that.render = function () {
 
-		if(initial){
-			tree        = view(postData);
-			resultsNode = utils.createElement(tree);
-			initial     = false;
-			return resultsNode;
-		} else {
-			var newResults = view(postData);
-			var patches    = utils.diff(tree, newResults);
-			resultsNode    = utils.patch(resultsNode, patches);
-			tree           = resultsNode;
-		}
+		return view(that.postData);
 	};
 
-	function postData (query) {
+	that.postData = function (query) {
 
-		var payload = {
-			memberId:    document.querySelector("#member-id").textContent,
-			description: "Donation",
-			total:       document.querySelector("#payment-amount").value,
-			notes:       document.querySelector("#donation-notes").value,
-      collection:  "charges"
-		};
+		try {
+			var payload = {
+				memberId:    document.querySelector("#member-id").textContent,
+				description: "Donation",
+				total:       document.querySelector("#payment-amount").value,
+				notes:       document.querySelector("#donation-notes").value,
+				collection:  "charges"
+			};
+		} catch (e) {
+			console.log("Error post donation: ", e);
+		}
 
 		utils.request(_createOptions(payload), function (e, h, b) {
 
-      // this is a hack, it needs to be changed when we have parent components
-			location.reload();
+			var payments = state.payments().push(JSON.parse(b));
+			state.payments.set(payments);
 		});
 	};
 
-	try {
-		document.querySelector(".add-donation-section").appendChild(render());
-	} catch (e) {}
+	return that;
 };
 
 function _createOptions (payload) {
@@ -1863,32 +1813,22 @@ module.exports = function (fn) {
 var view = require("./view");
 
 
-module.exports = function (utils) {
+module.exports = function (utils, state) {
 
-	var tree, resultsNode, initial = true;
+	var that = {};
 
-	function render () {
+	that.render = function () {
 
-		if(initial){
-			tree        = view(postData);
-			resultsNode = utils.createElement(tree);
-			initial     = false;
-			return resultsNode;
-		} else {
-			var newResults = view(postData);
-			var patches    = utils.diff(tree, newResults);
-			resultsNode    = utils.patch(resultsNode, patches);
-			tree           = resultsNode;
-		}
+		return view(that.postData);
 	};
 
-	function postData (type) {
+	that.postData = function (type) {
 
 		return function () {
 
 			var payload = {
 				memberId:    document.querySelector("#member-id").textContent,
-        collection:  "charges"
+       			collection:  "charges"
 			};
 
 			var value = document.querySelector("#payment-amount").value;
@@ -1898,15 +1838,13 @@ module.exports = function (utils) {
 
 			utils.request(_createOptions(payload), function (e, h, b) {
 
-        // this is a hack, it needs to be changed when we have parent components
-			  location.reload();
-      });
+				var payments = state.payments().push(JSON.parse(b));
+				state.payments.set(payments);
+			});
 		}
 	};
 
-	try {
-		document.querySelector(".refund-section").appendChild(render());
-	} catch (e) {}
+	return that;
 };
 
 function _createOptions (payload) {
@@ -1926,11 +1864,15 @@ var h = require("virtual-dom/h");
 module.exports = function (fn) {
 
 	return h("div.container-1", [
-		h("p", "Pay subscription"),
-		h("div.gbp", [
-			h("input.input-three#payment-amount", {
-				placeholder: "Amount"
-			})
+		h("div.title-ctrl", [
+			h("p", "Pay subscription"),
+		]),
+		h("div.body-ctrl", [
+			h("div.gbp", [
+				h("input.input-three#payment-amount", {
+					placeholder: "Amount"
+				})
+			]),
 		]),
 		h("div.container-2", [
 			h("button.button-two.left.small-font", {
@@ -1947,72 +1889,46 @@ module.exports = function (fn) {
 
 
 var view  = require("./view");
+var moment = require("moment");
 
 
-module.exports = function (utils) {
-
+module.exports = function (utils, state) {
 
 	var that = {};
 
-	var tree, resultsNode, initial = true;
+	that.render = function (payments) {
 
-	that.render = function (data) {
-
-		if(initial){
-			tree        = view(data, that.getData, that.deletePayment, utils);
-			resultsNode = utils.createElement(tree);
-			initial     = false;
-			return resultsNode;
-		} else {
-			var newResults = view(data, that.getData, that.deletePayment, utils);
-			var patches    = utils.diff(tree, newResults);
-			resultsNode    = utils.patch(resultsNode, patches);
-			tree           = resultsNode;
-		}
+		return view(payments, that.getData, that.deletePayment, utils);
 	};
 
-  that.deletePayment = function (collection, id) {
+	that.deletePayment = function (collection, id) {
 
-    return function () {
-      var opts = {
-        method: "DELETE",
-        url: "/api/" + collection + "/" + id
-      };
+	    return function () {
+			var opts = {
+				method: "DELETE",
+				url: "/api/" + collection + "/" + id
+			};
+			utils.request(opts, function (e, h, b) {
 
-      utils.request(opts, function (e, h, b) {
-        console.log(h);
-        that.getData();
-      });
-    }
-  };
+				that.getData();
+			});
+	    }
+	};
 
 	that.getData = function () {
 
-		var count = 0;
-		var store = [];
-
 		utils.request(_createOptions("payments"), function (e, h, b) {
 
-			store = store.concat(JSON.parse(b));
-			count += 1;
+			var payments = JSON.parse(b).sort(function (a, b) {
+				var diff = moment(a.datePaid) - moment(b.datePaid);
+				return (diff > 0) ? 1 : (diff === 0) ? 0 : -1;
+			});
 
-			if(count === 2){
-				_render(initial, store, that.render);
-			}
-		});
-
-		utils.request(_createOptions("charges"), function (e, h, b) {
-
-			store = store.concat(JSON.parse(b));
-			store = store.concat(JSON.parse(b));
-			count += 1;
-
-			if(count === 2){
-				_render(initial, store, that.render);
-			}
+			state.payments.set(payments);
 		});
 	};
 
+	that.getData();
 	return that;
 };
 
@@ -2029,22 +1945,7 @@ function _createOptions (item) {
 		url: "/api/" + item + "?memberId=" + id
 	}
 }
-
-function _render (initial, data, render) {
-
-	try{
-
-		if (initial) {
-			document.querySelector("#table-payments").appendChild(render(data));
-		} else {
-			render(data);
-		}
-	} catch (e) {
-		console.log("fas: ", e);
-	}
-}
-
-},{"./view":41}],41:[function(require,module,exports){
+},{"./view":41,"moment":58}],41:[function(require,module,exports){
 "use strict";
 
 var h = require("virtual-dom/h");
@@ -2119,25 +2020,13 @@ module.exports = function (data, refreshFn, deleteFn, utils) {
 var view  = require("./view");
 
 
-module.exports = function (utils) {
+module.exports = function (utils, state) {
 
 	var that = {};
 
-	var tree, resultsNode, initial = true;
+	that.render = function (member) {
 
-	that.render = function (data) {
-
-		if(initial){
-			tree        = view(data, utils);
-			resultsNode = utils.createElement(tree);
-			initial     = false;
-			return resultsNode;
-		} else {
-			var newResults = view(data, utils);
-			var patches    = utils.diff(tree, newResults);
-			resultsNode    = utils.patch(resultsNode, patches);
-			tree           = resultsNode;
-		}
+		return view(member, utils);
 	};
 
 	that.getData = function () {
@@ -2145,13 +2034,11 @@ module.exports = function (utils) {
 		utils.request(_createOptions(), function (e, h, b) {
 
 			var member = JSON.parse(b);
-			try {
-				document.querySelector(".content-container").appendChild(that.render(member));
-			}catch (e){
-				console.log("Show data member", e);
-			}
+			state.member.set(member);
 		});
 	};
+
+	that.getData();
 
 	return that;
 };
@@ -2176,12 +2063,10 @@ var h = require("virtual-dom/h");
 
 module.exports = function (data, utils) {
 
-
-
 	return h("div.individual-section", [
 		renderPersonalInfo(data),
-		// renderAddressInfo(data),
-		// renderMembership(data)
+		renderAddressInfo(data),
+		renderMembership(data)
 	]);
 
 	function renderPersonalInfo (member) {
@@ -2198,102 +2083,54 @@ module.exports = function (data, utils) {
 			]),
 			check("Birthday: ", member.birthday),
 			checkEmail(member),
-			// if(member.email1 || member.email2) {
-			// 	h("p", [
-			// 		h("span.info", "Emails:"),
-			// 		if(member.email1){
-			// 			h("p", "Primary: " + member.email1)
-			// 		}
-			// 		if(member.email2){
-			// 			h("p", "Secondary: " + member.email2)
-			// 		}
-			// 	]),
-			// 	h("p", [
-			// 		h("span.info", "Bounced: "),
-			// 		h("span", (member.emailBounced) ? "Yes" : "No")
-			// 	]),
-			// }
-			// h("p", [
-			// 	h("span.info", "Online: "),
-			// 	h("span", (member.onlineMember) ? "Yes" : "No")
-			// ]),
-			// h("p", [
-			// 	h("span.info", "Status: "),
-			// 	h("span", member.status)
-			// ]),
-			// if(member.status === "deleted") {
-			// 	h("p", [
-			// 		h("span.info", "Deletion date: "),
-			// 		h("span", member.deletionDate)
-			// 	]),
-			// 	h("p", [
-			// 		h("span.info", "Deletion reason: "),
-			// 		h("span", member.deletionReason)
-			// 	]),
-			// }
+			h("p", [
+				h("span.info", "Online: "),
+				h("span", (member.onlineMember) ? "Yes" : "No")
+			]),
+			h("p", [
+				h("span.info", "Status: "),
+				h("span", member.status)
+			]),
+			deletedInfo(member)
 		]);
 	}
 
-	// function renderAddressInfo (member) {
+	function renderAddressInfo (member) {
 
-	// 	return h("div.col-2", [
-	// 		h("h2", "Address info"),
-	// 		if(member.address1)  {h("p", member.address1), }
-	// 		if(member.address2)  {h("p", member.address2), }
-	// 		if(member.address3)  {h("p", member.address3), }
-	// 		if(member.address4)  {h("p", member.address4), }
-	// 		if(member.county)    {h("p", member.county),   }
-	// 		if(member.postcode)  {h("p", member.postcode), }
-	// 		if(member.deliverer) {h("p", member.deliverer),}
-	// 	]);
-	// }
+		return h("div.col-2", [
+			h("h2", "Address info"),
+			checkSingle("", member.address1),
+			checkSingle("", member.address2),
+			checkSingle("", member.address3),
+			checkSingle("", member.address4),
+			checkSingle("", member.county),
+			checkSingle("", member.postcode),
+			checkSingle("", member.deliverer)
+		]);
+	}
 
-	// function renderMembership (member) {
+	function renderMembership (member) {
 		
-	// 	return h("div.col-3", [
-	// 		h("h2", "Membership info"),
-	// 		h("p", [
-	// 			h("span.info", "Date joined: "),
-	// 			h("span", utils.moment(member.dateJoined).format("DD-MM-YYYY"))
-	// 		]),
-	// 		h("p", [
-	// 			h("span.info", "Membership type: "),
-	// 			h("span", member.membershipType)
-	// 		]),
-	// 		// if the member choose from the beginning life
-	// 		if(member.membershipType === "life-double" || member.membershipType === "life-single") {
-	// 			h("p", [
-	// 				h("span.info", "Life payment date: "),
-	// 				h("span", member.lifePaymentDate)
-	// 			]),
-	// 		}
-	// 		// if the member changed from normal to life
-	// 		if(member.dateTypeChanged && (member.membershipType === "life-double" || member.membershipType === "life-single")) {
-	// 			h("p", [
-	// 				h("span.info", "Life payment date: "),
-	// 				h("span", member.lifePaymentDate)
-	// 			]),
-	// 			h("p", [
-	// 				h("span.info", "Membership changed date: "),
-	// 				h("span", member.dateTypeChanged)
-	// 			]),
-	// 		}
-	// 		if(member.giftAid){
-	// 			h("p", [
-	// 				h("span", "Gift Aid: "),
-	// 				h("p", "Signed: Yes"),
-	// 				h("p", "Signed date: " + utils.moment(member.dateGiftAidSigned)..format("DD-MM-YYYY")),
-	// 			]),
-	// 		}
-	// 		if(member.dateGiftAidCancelled) {
-	// 			h("p", "Cancelled: Yes"),
-	// 		}
-	// 		h("p", [
-	// 			h("span.info", "Standing order: "),
-	// 			h("span", member.standingOrder)
-	// 		])
-	// 	]);
-	// }
+		return h("div.col-3", [
+			h("h2", "Membership info"),
+			h("p", [
+				h("span.info", "Date joined: "),
+				h("span", utils.moment(member.dateJoined).format("DD-MM-YYYY"))
+			]),
+			h("p", [
+				h("span.info", "Membership type: "),
+				h("span", member.membershipType)
+			]),
+			renderMembershipLife(member),
+			renderMembershipLifeChanged(member),
+			renderGiftAid(member),
+			renderDateGiftAidCancelled(member),
+			h("p", [
+				h("span.info", "Standing order: "),
+				h("span", member.standingOrder)
+			])
+		]);
+	}
 
 	function check (name, elm) {
 		if(elm) {
@@ -2315,11 +2152,62 @@ module.exports = function (data, utils) {
 			return h("p", [
 				h("span.info", "Emails:"),
 				checkSingle("Primary: ", member.email1),
-				checkSingle("Secondary: ", member.email2),
+				checkSingle("Secondary: ", member.email2)
 			]),
 			h("p", [
 				h("span.info", "Bounced: "),
 				h("span", (member.emailBounced) ? "Yes" : "No")
+			]);
+		}
+	}
+
+	function renderMembershipLifeChanged (member) {
+		if(member.dateTypeChanged && (member.membershipType === "life-double" || member.membershipType === "life-single")) {
+			return h("p", [
+				h("span.info", "Life payment date: "),
+				h("span", member.lifePaymentDate)
+			]),
+			h("p", [
+				h("span.info", "Membership changed date: "),
+				h("span", member.dateTypeChanged)
+			]);
+		}
+	}
+
+	function renderMembershipLife (member) {
+		if(member.membershipType === "life-double" || member.membershipType === "life-single") {
+			return h("p", [
+				h("span.info", "Life payment date: "),
+				h("span", member.lifePaymentDate)
+			]);
+		}
+	}
+
+	function renderGiftAid (member) {
+		if(member.giftAid){
+			return h("p", [
+				h("span", "Gift Aid: "),
+				h("p", "Signed: Yes"),
+				h("p", "Signed date: " + utils.moment(member.dateGiftAidSigned).format("DD-MM-YYYY"))
+			]);
+		}
+	}
+
+	function renderDateGiftAidCancelled (member) {
+		if(member.dateGiftAidCancelled) {
+			return h("p", "Cancelled: Yes");
+		}
+	}
+
+	function deletedInfo (member) {
+		if(member.status === "deleted") {
+			return h("p", [
+				h("span.info", "Deletion date: "),
+				h("span", member.deletionDate)
+			]),
+			h("p", [
+				h("span.info", "Deletion reason: "),
+				h("span", member.deletionReason)
 			]);
 		}
 	}
@@ -2342,44 +2230,17 @@ module.exports = function (data, utils) {
 var view = require("./view");
 
 
-module.exports = function (utils) {
+module.exports = function (utils, state) {
 
-	var tree, resultsNode, initial = true;
+	var that = {};
 
-	try{
+	that.render = function () {
 
-		var status = document.querySelector("#member-status").textContent;
-	}catch (e){
-		console.log("status: ", e);
-	}
-
-	function render () {
-
-		if(initial){
-			tree        = view(status, updateType, deleteMember, reactivate);
-			resultsNode = utils.createElement(tree);
-			initial     = false;
-			return resultsNode;
-		} else {
-			var newResults = view(status, updateType, deleteMember, reactivate);
-			var patches    = utils.diff(tree, newResults);
-			resultsNode    = utils.patch(resultsNode, patches);
-			tree           = resultsNode;
-		}
+		return view(state.member().status, that.updateType, that.deleteMember, that.reactivate);
 	};
 
-
-	try {
-		var cont = document.querySelector(".actions-container");
-		cont.insertBefore(render(), cont.firstChild);
-	} catch (e) {
-
-
-		console.log(e);
-	}
-
-	function updateType () {
-		var selectElm = document.querySelector("#member-type");
+	that.updateType = function () {
+		var selectElm = document.querySelector("select#member-type");
 
 		var payload = {
 			membershipType: selectElm.options[selectElm.selectedIndex].value
@@ -2387,12 +2248,13 @@ module.exports = function (utils) {
 
 		utils.request(_createOptions(payload), function (e, h, b) {
 
-      // this is a hack, it needs to be changed when we have parent components
-			location.reload();
+			var member = state.member();
+			member.membershipType = b.membershipType;
+			state.member.set(member);
 		});
 	}
 
-	function deleteMember () {
+	that.deleteMember = function () {
 
 		var selectElm = document.querySelector("#deletion-reason");
 
@@ -2403,11 +2265,13 @@ module.exports = function (utils) {
 
 		utils.request(_createOptions(payload), function (e, h, b) {
 
-			location.reload();
+			var member = state.member();
+			member.status = b.status;
+			state.member.set(member);
 		});
 	}
 
-	function reactivate () {
+	that.reactivate = function () {
 
 		var payload = {
 			deletionReason: [],
@@ -2416,21 +2280,29 @@ module.exports = function (utils) {
 
 		utils.request(_createOptions(payload), function (e, h, b) {
 
-			location.reload();
+			var member = state.member();
+			member.status = b.status;
+			state.member.set(member);
 		});
 	}
 
 	function _createOptions (payload) {
 
+		try {
+			var id = document.querySelector("#member-id").textContent
+		} catch (e) {
+			console.log("Error id: ", e);
+		}
+
 		return {
 			method: "PUT",
-			url: "/api/members/" + document.querySelector("#member-id").textContent,
+			url: "/api/members/" + id,
 			json: payload
 		};
 	}
 
+	return that;
 };
-
 },{"./view":45}],45:[function(require,module,exports){
 "use strict";
 
@@ -2567,60 +2439,38 @@ module.exports = function (status, updateType, deleteFn, reactivateFn) {
 },{"virtual-dom/h":3}],46:[function(require,module,exports){
 "use strict";
 
+
 var view  = require("./view");
 
-module.exports = function (utils) {
 
-	var tree, resultsNode, initial = true;
+module.exports = function (utils, state) {
 
-	function render (data) {
+	var that = {};
 
-		// abstract this into single shared function
-		if(initial){
-			tree        = view(data);
-			resultsNode = utils.createElement(tree);
-			initial     = false;
-			return resultsNode;
-		} else {
-			var newResults = view(data);
-			var patches    = utils.diff(tree, newResults);
-			resultsNode    = utils.patch(resultsNode, patches);
-			tree           = resultsNode;
-		}
+	that.render = function () {
+
+		return view(that.getData);
 	};
-	function getData (query) {
 
-    var selectStatus = document.querySelector("#member-status");
+	that.getData = function () {
+
+	    var selectStatus = document.querySelector("#member-status");
 
 		var query = {
 			id:       document.querySelector("#search-field-id").value,
 			email1:   document.querySelector("#search-field-email").value,
 			lastName: document.querySelector("#search-field-lastName").value,
-      status:   selectStatus.options[selectStatus.selectedIndex].value
+      		status:   selectStatus.options[selectStatus.selectedIndex].value
 		};
 
 		utils.request(_createOptions(utils.clean.object(query)), function (e, h, b) {
 
 			var members = JSON.parse(b);
-
-			// refarctor this
-			if (initial) {
-				document.querySelector("#search-result").appendChild(render(members));
-			} else {
-				render(JSON.parse(b));
-			}
+			state.members.set(members);
 		});
 	};
-
-	try {
-		document.querySelector("#search-button").addEventListener("click", function () {
-
-			getData();
-		});
-	} catch (e) {};
-
-
-	return;
+	
+	return that;
 };
 
 function _createQuery(query) {
@@ -2648,8 +2498,52 @@ function _createOptions (query) {
 
 var h = require("virtual-dom/h");
 
-module.exports = function (data) {
+module.exports = function (fn) {
 
+	return h("div.search-component", [
+		h("div.search-container", [
+			h("select#member-status", [
+				h("option", {
+					value: "active",
+					selected: true
+				}, "Active"),
+				h("option", {
+					value: "deleted",
+					selected: true
+				}, "Deleted")
+			]),
+			h("input.input-member#search-field-id",       {placeholder: "Membership number"}),
+			h("input.input-member#search-field-email",    {placeholder: "Email address"}),
+			h("input.input-member#search-field-lastName", {placeholder: "Surname"}),
+			h("button.button-two.member#search-button", {
+				onclick: fn
+			}, "Search")
+		])
+	]);
+};
+},{"virtual-dom/h":3}],48:[function(require,module,exports){
+"use strict";
+
+var view  = require("./view");
+
+module.exports = function (utils, state) {
+
+	var that = {};
+
+	that.render = function () {
+
+		return view(state.members());
+	};
+
+	return that;
+};
+},{"./view":49}],49:[function(require,module,exports){
+"use strict";
+
+var h = require("virtual-dom/h");
+
+module.exports = function (data) {
+	console.log("ddd",data);
 	return h("div.search-table-section-member", [
 		h("div.search-table-section-member-header", [
 			h("div.col-1", [
@@ -2714,108 +2608,6 @@ module.exports = function (data) {
 	}
 };
 
-},{"virtual-dom/h":3}],48:[function(require,module,exports){
-"use strict";
-
-var view  = require("./view");
-
-module.exports = function (utils) {
-	
-	console.log("Upload:");
-
-	var tree, resultsNode, initial = true;
-
-	function render () {
-
-		// abstract this into single shared function
-		if(initial){
-			tree        = view();
-			resultsNode = utils.createElement(tree);
-			initial     = false;
-			return resultsNode;
-		} else {
-			var newResults = view();
-			var patches    = utils.diff(tree, newResults);
-			resultsNode    = utils.patch(resultsNode, patches);
-			tree           = resultsNode;
-		}
-	};
-
-	try {
-		document.querySelector(".upload-container").appendChild(render());
-	} catch (e) {
-		console.log("Upload: ", e);
-	}
-
-	try{
-		var elemPay = document.querySelector('#upload-payments');
-		utils.upload(elemPay, {type: "text"}, function (err, file) {
-
-			console.log("file: ",file);
-
-			var opts = {
-				method: "POST",
-				uri: "/api/upload?type=payments",
-				body: file[0].target.result
-			};
-
-			utils.request(opts, function (e, h, b){
-
-				console.log(b);
-			});
-		});
-	}catch(e) {
-		console.log("err upload", e);
-	}
-
-
-	try{
-		var elemMem = document.querySelector('#upload-members');
-		utils.upload(elemMem, {type: "text"}, function (err, file) {
-
-			console.log("file: ",file);
-
-			var opts = {
-				method: "POST",
-				uri: "/api/upload?type=members",
-				body: file[0].target.result
-			};
-
-			utils.request(opts, function (e, h, b){
-
-				console.log(b);
-			});
-		});
-	}catch(e){
-		console.log("err upload", e);
-	}
-
-	return;
-};
-},{"./view":49}],49:[function(require,module,exports){
-"use strict";
-
-
-var h = require("virtual-dom/h");
-
-
-module.exports = function (fn) {
-
-	return h("div.uploads", [
-		h("div.fileUpload", [
-			h("span", "Upload members"),
-			h("input#upload-members.upload", {
-				type: "file"
-			})
-		]),
-		h("div.fileUpload", [
-			h("span", "Upload payments"),
-			h("input#upload-payments.upload", {
-				type: "file"
-			})
-		])
-	]);
-}
 },{"virtual-dom/h":3}],50:[function(require,module,exports){
 ;(function () {
 	"use strict";
@@ -2828,37 +2620,164 @@ module.exports = function (fn) {
 		createElement: require('virtual-dom/create-element'),
 		request:       require("./services/request.js"),
 		upload:        require("upload-element"),
-		moment:        require("moment")
+		moment:        require("moment"),
+		observ:        require("observ"),
+		observS:       require("observ-struct"),
+		observA:       require("observ-array"),
+		h:             require("virtual-dom/h")
 	};
 
-	// components
 	try{
-		var search       = require("./components/search/index")(utils);
-		var status       = require("./components/memberstatus/index")(utils);
-		var payment      = require("./components/addpayment/index")(utils);
-		var viewPay      = require("./components/displaypayments/index")(utils);
-		var subscription = require("./components/chargesubscriptions/index")(utils);
-		var donation     = require("./components/chargedonations/index")(utils);
-		var upload       = require("./components/uploadcsv/index")(utils);
-		var memberInfo   = require("./components/memberinfo/index")(utils);
+		require("./pages/adminhome.js")(utils);
+		require("./pages/viewmember.js")(utils);
 	} catch (e){
-		console.log("fdas: ", e)
+		console.log("Index: ", e)
+	}
+}());
+},{"./pages/adminhome.js":51,"./pages/viewmember.js":52,"./services/request.js":53,"d-bap":55,"moment":58,"observ":73,"observ-array":64,"observ-struct":71,"torf":74,"upload-element":76,"virtual-dom/create-element":1,"virtual-dom/diff":2,"virtual-dom/h":3,"virtual-dom/patch":11}],51:[function(require,module,exports){
+"use strict";
+
+var searchResultsComponent = require("../components/search/index.js");
+var searchBoxComponent     = require("../components/search-box/index.js");
+
+module.exports = function (utils) {
+
+	var tree, resultsNode, initial = true;
+
+	function view (state, searchResults, searchBox, h) {
+
+		return h("div#search-component", [
+			searchBox.render(),
+			h("div#search-result", [
+				searchResults.render(),
+			])
+		]);
 	}
 
+	var state = utils.observS({
+		members: utils.observ([])
+	});
 
-	// var displayMember = require("./pages/displaymember.js")(utils);
-	viewPay.getData();
-	memberInfo.getData();
-}());
-},{"./components/addpayment/index":34,"./components/chargedonations/index":36,"./components/chargesubscriptions/index":38,"./components/displaypayments/index":40,"./components/memberinfo/index":42,"./components/memberstatus/index":44,"./components/search/index":46,"./components/uploadcsv/index":48,"./services/request.js":51,"d-bap":53,"moment":56,"torf":57,"upload-element":59,"virtual-dom/create-element":1,"virtual-dom/diff":2,"virtual-dom/patch":11}],51:[function(require,module,exports){
+	state(function onchange () {
+
+		render();
+	});
+
+	var sr = searchResultsComponent(utils, state);
+	var sb = searchBoxComponent(utils, state);
+
+	function render () {
+
+		if(initial){
+			tree        = view(state, sr, sb, utils.h);
+			resultsNode = utils.createElement(tree);
+			initial     = false;
+			return resultsNode;
+		} else {
+			var newResults = view(state, sr, sb, utils.h);
+			var patches    = utils.diff(tree, newResults);
+			resultsNode    = utils.patch(resultsNode, patches);
+			tree           = resultsNode;
+		}
+	}
+
+	try {
+		document.querySelector(".overall-container-member").appendChild(render());
+	} catch (e) {
+		console.log("Search page err: ", e);
+	}
+};
+},{"../components/search-box/index.js":46,"../components/search/index.js":48}],52:[function(require,module,exports){
+"use strict";
+
+
+var addPaymentComponent         = require("../components/addpayment/index.js");
+var chargeDonationComponent     = require("../components/chargedonations/index.js");
+var chargeSubscriptionComponent = require("../components/chargesubscriptions/index.js");
+var displayPaymentsComponent    = require("../components/displaypayments/index.js");
+var memberInfoComponent         = require("../components/memberinfo/index.js");
+var memberStatusComponent       = require("../components/memberstatus/index.js");
+
+module.exports = function (utils) {
+
+	var tree, resultsNode, initial = true;
+
+	function view (state, addPayment, chargeDonation, chargeSubscription, displayPayments, memberInfo, memberStatus, h) {
+
+		return h("div#member-component", [
+			h("div.overall-container", [
+				h("div.content-container", [
+					h("div#member-info", [
+						memberInfo.render(state.member()),
+					]),
+					h("div#table-payments",[
+						displayPayments.render(state.payments())
+					])
+				]),
+				h("div.actions-container", [
+					memberStatus.render(),
+					h("div.refund-section", [
+						chargeSubscription.render()
+					]),
+					h("div.add-donation-section", [
+						chargeDonation.render()
+					])
+				])
+			]),
+			h("div.enter-payment-section", [
+				addPayment.render()
+			])
+		]);
+	}
+
+	var state = utils.observS({
+		member:   utils.observ({}),
+		payments: utils.observ([])
+	});
+
+	state(function onchange () {
+		console.log("RENDERING", arguments);
+
+		render();
+	});
+
+	var ap = addPaymentComponent(utils, state);
+	var cd = chargeDonationComponent(utils, state);
+	var cs = chargeSubscriptionComponent(utils, state);
+	var dp = displayPaymentsComponent(utils, state);
+	var mi = memberInfoComponent(utils, state);
+	var ms = memberStatusComponent(utils, state);
+
+	function render () {
+
+		if(initial){
+			tree        = view(state, ap, cd, cs, dp, mi, ms, utils.h);
+			resultsNode = utils.createElement(tree);
+			initial     = false;
+			return resultsNode;
+		} else {
+			var newResults = view(state, ap, cd, cs, dp, mi, ms, utils.h);
+			var patches    = utils.diff(tree, newResults);
+			resultsNode    = utils.patch(resultsNode, patches);
+			tree           = resultsNode;
+		}
+	}
+
+	try {
+		document.querySelector(".full-screen-fixed-members").appendChild(render());
+	} catch (e) {
+		console.log("View member page err: ", e);
+	}
+};
+},{"../components/addpayment/index.js":34,"../components/chargedonations/index.js":36,"../components/chargesubscriptions/index.js":38,"../components/displaypayments/index.js":40,"../components/memberinfo/index.js":42,"../components/memberstatus/index.js":44}],53:[function(require,module,exports){
 "use strict";
 
 var request = require("xhr");
 
 module.exports = request;
-},{"xhr":60}],52:[function(require,module,exports){
+},{"xhr":77}],54:[function(require,module,exports){
 
-},{}],53:[function(require,module,exports){
+},{}],55:[function(require,module,exports){
 "use strict";
 
 var is = require("torf");
@@ -2914,7 +2833,7 @@ function _clone (obj){
   return temp;
 }
 
-},{"torf":54}],54:[function(require,module,exports){
+},{"torf":56}],56:[function(require,module,exports){
 'use strict';
 
 
@@ -2988,7 +2907,7 @@ function checkEmail (email, regexp){
 		return false;
 	};
 };
-},{"is-number":55}],55:[function(require,module,exports){
+},{"is-number":57}],57:[function(require,module,exports){
 /*!
  * is-number <https://github.com/jonschlinkert/is-number>
  *
@@ -3004,7 +2923,7 @@ module.exports = function isNumber(n) {
     || n === 0;
 };
 
-},{}],56:[function(require,module,exports){
+},{}],58:[function(require,module,exports){
 //! moment.js
 //! version : 2.10.3
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
@@ -6116,11 +6035,927 @@ module.exports = function isNumber(n) {
     return _moment;
 
 }));
-},{}],57:[function(require,module,exports){
-arguments[4][54][0].apply(exports,arguments)
-},{"dup":54,"is-number":58}],58:[function(require,module,exports){
-arguments[4][55][0].apply(exports,arguments)
-},{"dup":55}],59:[function(require,module,exports){
+},{}],59:[function(require,module,exports){
+var setNonEnumerable = require("./lib/set-non-enumerable.js");
+
+module.exports = addListener
+
+function addListener(observArray, observ) {
+    var list = observArray._list
+
+    return observ(function (value) {
+        var valueList =  observArray().slice()
+        var index = list.indexOf(observ)
+
+        // This code path should never hit. If this happens
+        // there's a bug in the cleanup code
+        if (index === -1) {
+            var message = "observ-array: Unremoved observ listener"
+            var err = new Error(message)
+            err.list = list
+            err.index = index
+            err.observ = observ
+            throw err
+        }
+
+        valueList.splice(index, 1, value)
+        setNonEnumerable(valueList, "_diff", [ [index, 1, value] ])
+
+        observArray._observSet(valueList)
+    })
+}
+
+},{"./lib/set-non-enumerable.js":65}],60:[function(require,module,exports){
+var addListener = require('./add-listener.js')
+
+module.exports = applyPatch
+
+function applyPatch (valueList, args) {
+    var obs = this
+    var valueArgs = args.map(unpack)
+
+    valueList.splice.apply(valueList, valueArgs)
+    obs._list.splice.apply(obs._list, args)
+
+    var extraRemoveListeners = args.slice(2).map(function (observ) {
+        return typeof observ === "function" ?
+            addListener(obs, observ) :
+            null
+    })
+
+    extraRemoveListeners.unshift(args[0], args[1])
+    var removedListeners = obs._removeListeners.splice
+        .apply(obs._removeListeners, extraRemoveListeners)
+
+    removedListeners.forEach(function (removeObservListener) {
+        if (removeObservListener) {
+            removeObservListener()
+        }
+    })
+
+    return valueArgs
+}
+
+function unpack(value, index){
+    if (index === 0 || index === 1) {
+        return value
+    }
+    return typeof value === "function" ? value() : value
+}
+
+},{"./add-listener.js":59}],61:[function(require,module,exports){
+var ObservArray = require("./index.js")
+
+var slice = Array.prototype.slice
+
+var ARRAY_METHODS = [
+    "concat", "slice", "every", "filter", "forEach", "indexOf",
+    "join", "lastIndexOf", "map", "reduce", "reduceRight",
+    "some", "toString", "toLocaleString"
+]
+
+var methods = ARRAY_METHODS.map(function (name) {
+    return [name, function () {
+        var res = this._list[name].apply(this._list, arguments)
+
+        if (res && Array.isArray(res)) {
+            res = ObservArray(res)
+        }
+
+        return res
+    }]
+})
+
+module.exports = ArrayMethods
+
+function ArrayMethods(obs) {
+    obs.push = observArrayPush
+    obs.pop = observArrayPop
+    obs.shift = observArrayShift
+    obs.unshift = observArrayUnshift
+    obs.reverse = require("./array-reverse.js")
+    obs.sort = require("./array-sort.js")
+
+    methods.forEach(function (tuple) {
+        obs[tuple[0]] = tuple[1]
+    })
+    return obs
+}
+
+
+
+function observArrayPush() {
+    var args = slice.call(arguments)
+    args.unshift(this._list.length, 0)
+    this.splice.apply(this, args)
+
+    return this._list.length
+}
+function observArrayPop() {
+    return this.splice(this._list.length - 1, 1)[0]
+}
+function observArrayShift() {
+    return this.splice(0, 1)[0]
+}
+function observArrayUnshift() {
+    var args = slice.call(arguments)
+    args.unshift(0, 0)
+    this.splice.apply(this, args)
+
+    return this._list.length
+}
+
+
+function notImplemented() {
+    throw new Error("Pull request welcome")
+}
+
+},{"./array-reverse.js":62,"./array-sort.js":63,"./index.js":64}],62:[function(require,module,exports){
+var applyPatch = require("./apply-patch.js")
+var setNonEnumerable = require('./lib/set-non-enumerable.js')
+
+module.exports = reverse
+
+function reverse() {
+    var obs = this
+    var changes = fakeDiff(obs._list.slice().reverse())
+    var valueList = obs().slice().reverse()
+
+    var valueChanges = changes.map(applyPatch.bind(obs, valueList))
+
+    setNonEnumerable(valueList, "_diff", valueChanges)
+
+    obs._observSet(valueList)
+    return changes
+}
+
+function fakeDiff(arr) {
+    var _diff
+    var len = arr.length
+
+    if(len % 2) {
+        var midPoint = (len -1) / 2
+        var a = [0, midPoint].concat(arr.slice(0, midPoint))
+        var b = [midPoint +1, midPoint].concat(arr.slice(midPoint +1, len))
+        var _diff = [a, b]
+    } else {
+        _diff = [ [0, len].concat(arr) ]
+    }
+
+    return _diff
+}
+
+},{"./apply-patch.js":60,"./lib/set-non-enumerable.js":65}],63:[function(require,module,exports){
+var applyPatch = require("./apply-patch.js")
+var setNonEnumerable = require("./lib/set-non-enumerable.js")
+
+module.exports = sort
+
+function sort(compare) {
+    var obs = this
+    var list = obs._list.slice()
+
+    var unpacked = unpack(list)
+
+    var sorted = unpacked
+            .map(function(it) { return it.val })
+            .sort(compare)
+
+    var packed = repack(sorted, unpacked)
+
+    //fake diff - for perf
+    //adiff on 10k items === ~3200ms
+    //fake on 10k items === ~110ms
+    var changes = [ [ 0, packed.length ].concat(packed) ]
+
+    var valueChanges = changes.map(applyPatch.bind(obs, sorted))
+
+    setNonEnumerable(sorted, "_diff", valueChanges)
+
+    obs._observSet(sorted)
+    return changes
+}
+
+function unpack(list) {
+    var unpacked = []
+    for(var i = 0; i < list.length; i++) {
+        unpacked.push({
+            val: ("function" == typeof list[i]) ? list[i]() : list[i],
+            obj: list[i]
+        })
+    }
+    return unpacked
+}
+
+function repack(sorted, unpacked) {
+    var packed = []
+
+    while(sorted.length) {
+        var s = sorted.shift()
+        var indx = indexOf(s, unpacked)
+        if(~indx) packed.push(unpacked.splice(indx, 1)[0].obj)
+    }
+
+    return packed
+}
+
+function indexOf(n, h) {
+    for(var i = 0; i < h.length; i++) {
+        if(n === h[i].val) return i
+    }
+    return -1
+}
+
+},{"./apply-patch.js":60,"./lib/set-non-enumerable.js":65}],64:[function(require,module,exports){
+var Observ = require("observ")
+
+// circular dep between ArrayMethods & this file
+module.exports = ObservArray
+
+var splice = require("./splice.js")
+var put = require("./put.js")
+var set = require("./set.js")
+var transaction = require("./transaction.js")
+var ArrayMethods = require("./array-methods.js")
+var addListener = require("./add-listener.js")
+
+
+/*  ObservArray := (Array<T>) => Observ<
+        Array<T> & { _diff: Array }
+    > & {
+        splice: (index: Number, amount: Number, rest...: T) =>
+            Array<T>,
+        push: (values...: T) => Number,
+        filter: (lambda: Function, thisValue: Any) => Array<T>,
+        indexOf: (item: T, fromIndex: Number) => Number
+    }
+
+    Fix to make it more like ObservHash.
+
+    I.e. you write observables into it.
+        reading methods take plain JS objects to read
+        and the value of the array is always an array of plain
+        objsect.
+
+        The observ array instance itself would have indexed
+        properties that are the observables
+*/
+function ObservArray(initialList) {
+    // list is the internal mutable list observ instances that
+    // all methods on `obs` dispatch to.
+    var list = initialList
+    var initialState = []
+
+    // copy state out of initialList into initialState
+    list.forEach(function (observ, index) {
+        initialState[index] = typeof observ === "function" ?
+            observ() : observ
+    })
+
+    var obs = Observ(initialState)
+    obs.splice = splice
+
+    // override set and store original for later use
+    obs._observSet = obs.set
+    obs.set = set
+
+    obs.get = get
+    obs.getLength = getLength
+    obs.put = put
+    obs.transaction = transaction
+
+    // you better not mutate this list directly
+    // this is the list of observs instances
+    obs._list = list
+
+    var removeListeners = list.map(function (observ) {
+        return typeof observ === "function" ?
+            addListener(obs, observ) :
+            null
+    });
+    // this is a list of removal functions that must be called
+    // when observ instances are removed from `obs.list`
+    // not calling this means we do not GC our observ change
+    // listeners. Which causes rage bugs
+    obs._removeListeners = removeListeners
+
+    obs._type = "observ-array"
+    obs._version = "3"
+
+    return ArrayMethods(obs, list)
+}
+
+function get(index) {
+    return this._list[index]
+}
+
+function getLength() {
+    return this._list.length
+}
+
+},{"./add-listener.js":59,"./array-methods.js":61,"./put.js":67,"./set.js":68,"./splice.js":69,"./transaction.js":70,"observ":73}],65:[function(require,module,exports){
+module.exports = setNonEnumerable;
+
+function setNonEnumerable(object, key, value) {
+    Object.defineProperty(object, key, {
+        value: value,
+        writable: true,
+        configurable: true,
+        enumerable: false
+    });
+}
+
+},{}],66:[function(require,module,exports){
+function head (a) {
+  return a[0]
+}
+
+function last (a) {
+  return a[a.length - 1]
+}
+
+function tail(a) {
+  return a.slice(1)
+}
+
+function retreat (e) {
+  return e.pop()
+}
+
+function hasLength (e) {
+  return e.length
+}
+
+function any(ary, test) {
+  for(var i=0;i<ary.length;i++)
+    if(test(ary[i]))
+      return true
+  return false
+}
+
+function score (a) {
+  return a.reduce(function (s, a) {
+      return s + a.length + a[1] + 1
+  }, 0)
+}
+
+function best (a, b) {
+  return score(a) <= score(b) ? a : b
+}
+
+
+var _rules // set at the bottom  
+
+// note, naive implementation. will break on circular objects.
+
+function _equal(a, b) {
+  if(a && !b) return false
+  if(Array.isArray(a))
+    if(a.length != b.length) return false
+  if(a && 'object' == typeof a) {
+    for(var i in a)
+      if(!_equal(a[i], b[i])) return false
+    for(var i in b)
+      if(!_equal(a[i], b[i])) return false
+    return true
+  }
+  return a == b
+}
+
+function getArgs(args) {
+  return args.length == 1 ? args[0] : [].slice.call(args)
+}
+
+// return the index of the element not like the others, or -1
+function oddElement(ary, cmp) {
+  var c
+  function guess(a) {
+    var odd = -1
+    c = 0
+    for (var i = a; i < ary.length; i ++) {
+      if(!cmp(ary[a], ary[i])) {
+        odd = i, c++
+      }
+    }
+    return c > 1 ? -1 : odd
+  }
+  //assume that it is the first element.
+  var g = guess(0)
+  if(-1 != g) return g
+  //0 was the odd one, then all the other elements are equal
+  //else there more than one different element
+  guess(1)
+  return c == 0 ? 0 : -1
+}
+var exports = module.exports = function (deps, exports) {
+  var equal = (deps && deps.equal) || _equal
+  exports = exports || {} 
+  exports.lcs = 
+  function lcs() {
+    var cache = {}
+    var args = getArgs(arguments)
+    var a = args[0], b = args[1]
+
+    function key (a,b){
+      return a.length + ':' + b.length
+    }
+
+    //find length that matches at the head
+
+    if(args.length > 2) {
+      //if called with multiple sequences
+      //recurse, since lcs(a, b, c, d) == lcs(lcs(a,b), lcs(c,d))
+      args.push(lcs(args.shift(), args.shift()))
+      return lcs(args)
+    }
+    
+    //this would be improved by truncating input first
+    //and not returning an lcs as an intermediate step.
+    //untill that is a performance problem.
+
+    var start = 0, end = 0
+    for(var i = 0; i < a.length && i < b.length 
+      && equal(a[i], b[i])
+      ; i ++
+    )
+      start = i + 1
+
+    if(a.length === start)
+      return a.slice()
+
+    for(var i = 0;  i < a.length - start && i < b.length - start
+      && equal(a[a.length - 1 - i], b[b.length - 1 - i])
+      ; i ++
+    )
+      end = i
+
+    function recurse (a, b) {
+      if(!a.length || !b.length) return []
+      //avoid exponential time by caching the results
+      if(cache[key(a, b)]) return cache[key(a, b)]
+
+      if(equal(a[0], b[0]))
+        return [head(a)].concat(recurse(tail(a), tail(b)))
+      else { 
+        var _a = recurse(tail(a), b)
+        var _b = recurse(a, tail(b))
+        return cache[key(a,b)] = _a.length > _b.length ? _a : _b  
+      }
+    }
+    
+    var middleA = a.slice(start, a.length - end)
+    var middleB = b.slice(start, b.length - end)
+
+    return (
+      a.slice(0, start).concat(
+        recurse(middleA, middleB)
+      ).concat(a.slice(a.length - end))
+    )
+  }
+
+  // given n sequences, calc the lcs, and then chunk strings into stable and unstable sections.
+  // unstable chunks are passed to build
+  exports.chunk =
+  function (q, build) {
+    var q = q.map(function (e) { return e.slice() })
+    var lcs = exports.lcs.apply(null, q)
+    var all = [lcs].concat(q)
+
+    function matchLcs (e) {
+      if(e.length && !lcs.length || !e.length && lcs.length)
+        return false //incase the last item is null
+      return equal(last(e), last(lcs)) || ((e.length + lcs.length) === 0)
+    }
+
+    while(any(q, hasLength)) {
+      //if each element is at the lcs then this chunk is stable.
+      while(q.every(matchLcs) && q.every(hasLength))
+        all.forEach(retreat)
+      //collect the changes in each array upto the next match with the lcs
+      var c = false
+      var unstable = q.map(function (e) {
+        var change = []
+        while(!matchLcs(e)) {
+          change.unshift(retreat(e))
+          c = true
+        }
+        return change
+      })
+      if(c) build(q[0].length, unstable)
+    }
+  }
+
+  //calculate a diff this is only updates
+  exports.optimisticDiff =
+  function (a, b) {
+    var M = Math.max(a.length, b.length)
+    var m = Math.min(a.length, b.length)
+    var patch = []
+    for(var i = 0; i < M; i++)
+      if(a[i] !== b[i]) {
+        var cur = [i,0], deletes = 0
+        while(a[i] !== b[i] && i < m) {
+          cur[1] = ++deletes
+          cur.push(b[i++])
+        }
+        //the rest are deletes or inserts
+        if(i >= m) {
+          //the rest are deletes
+          if(a.length > b.length)
+            cur[1] += a.length - b.length
+          //the rest are inserts
+          else if(a.length < b.length)
+            cur = cur.concat(b.slice(a.length))
+        }
+        patch.push(cur)
+      }
+
+    return patch
+  }
+
+  exports.diff =
+  function (a, b) {
+    var optimistic = exports.optimisticDiff(a, b)
+    var changes = []
+    exports.chunk([a, b], function (index, unstable) {
+      var del = unstable.shift().length
+      var insert = unstable.shift()
+      changes.push([index, del].concat(insert))
+    })
+    return best(optimistic, changes)
+  }
+
+  exports.patch = function (a, changes, mutate) {
+    if(mutate !== true) a = a.slice(a)//copy a
+    changes.forEach(function (change) {
+      [].splice.apply(a, change)
+    })
+    return a
+  }
+
+  // http://en.wikipedia.org/wiki/Concestor
+  // me, concestor, you...
+  exports.merge = function () {
+    var args = getArgs(arguments)
+    var patch = exports.diff3(args)
+    return exports.patch(args[0], patch)
+  }
+
+  exports.diff3 = function () {
+    var args = getArgs(arguments)
+    var r = []
+    exports.chunk(args, function (index, unstable) {
+      var mine = unstable[0]
+      var insert = resolve(unstable)
+      if(equal(mine, insert)) return 
+      r.push([index, mine.length].concat(insert)) 
+    })
+    return r
+  }
+  exports.oddOneOut =
+    function oddOneOut (changes) {
+      changes = changes.slice()
+      //put the concestor first
+      changes.unshift(changes.splice(1,1)[0])
+      var i = oddElement(changes, equal)
+      if(i == 0) // concestor was different, 'false conflict'
+        return changes[1]
+      if (~i)
+        return changes[i] 
+    }
+  exports.insertMergeOverDelete = 
+    //i've implemented this as a seperate rule,
+    //because I had second thoughts about this.
+    function insertMergeOverDelete (changes) {
+      changes = changes.slice()
+      changes.splice(1,1)// remove concestor
+      
+      //if there is only one non empty change thats okay.
+      //else full confilct
+      for (var i = 0, nonempty; i < changes.length; i++)
+        if(changes[i].length) 
+          if(!nonempty) nonempty = changes[i]
+          else return // full conflict
+      return nonempty
+    }
+
+  var rules = (deps && deps.rules) || [exports.oddOneOut, exports.insertMergeOverDelete]
+
+  function resolve (changes) {
+    var l = rules.length
+    for (var i in rules) { // first
+      
+      var c = rules[i] && rules[i](changes)
+      if(c) return c
+    }
+    changes.splice(1,1) // remove concestor
+    //returning the conflicts as an object is a really bad idea,
+    // because == will not detect they are the same. and conflicts build.
+    // better to use
+    // '<<<<<<<<<<<<<'
+    // of course, i wrote this before i started on snob, so i didn't know that then.
+    /*var conflict = ['>>>>>>>>>>>>>>>>']
+    while(changes.length)
+      conflict = conflict.concat(changes.shift()).concat('============')
+    conflict.pop()
+    conflict.push          ('<<<<<<<<<<<<<<<')
+    changes.unshift       ('>>>>>>>>>>>>>>>')
+    return conflict*/
+    //nah, better is just to use an equal can handle objects
+    return {'?': changes}
+  }
+  return exports
+}
+exports(null, exports)
+
+},{}],67:[function(require,module,exports){
+var addListener = require("./add-listener.js")
+var setNonEnumerable = require("./lib/set-non-enumerable.js");
+
+module.exports = put
+
+// `obs.put` is a mutable implementation of `array[index] = value`
+// that mutates both `list` and the internal `valueList` that
+// is the current value of `obs` itself
+function put(index, value) {
+    var obs = this
+    var valueList = obs().slice()
+
+    var originalLength = valueList.length
+    valueList[index] = typeof value === "function" ? value() : value
+
+    obs._list[index] = value
+
+    // remove past value listener if was observ
+    var removeListener = obs._removeListeners[index]
+    if (removeListener){
+        removeListener()
+    }
+
+    // add listener to value if observ
+    obs._removeListeners[index] = typeof value === "function" ?
+        addListener(obs, value) :
+        null
+
+    // fake splice diff
+    var valueArgs = index < originalLength ? 
+        [index, 1, valueList[index]] :
+        [index, 0, valueList[index]]
+
+    setNonEnumerable(valueList, "_diff", [valueArgs])
+
+    obs._observSet(valueList)
+    return value
+}
+},{"./add-listener.js":59,"./lib/set-non-enumerable.js":65}],68:[function(require,module,exports){
+var applyPatch = require("./apply-patch.js")
+var setNonEnumerable = require("./lib/set-non-enumerable.js")
+var adiff = require("adiff")
+
+module.exports = set
+
+function set(rawList) {
+    if (!Array.isArray(rawList)) rawList = []
+
+    var obs = this
+    var changes = adiff.diff(obs._list, rawList)
+    var valueList = obs().slice()
+
+    var valueChanges = changes.map(applyPatch.bind(obs, valueList))
+
+    setNonEnumerable(valueList, "_diff", valueChanges)
+
+    obs._observSet(valueList)
+    return changes
+}
+
+},{"./apply-patch.js":60,"./lib/set-non-enumerable.js":65,"adiff":66}],69:[function(require,module,exports){
+var slice = Array.prototype.slice
+
+var addListener = require("./add-listener.js")
+var setNonEnumerable = require("./lib/set-non-enumerable.js");
+
+module.exports = splice
+
+// `obs.splice` is a mutable implementation of `splice()`
+// that mutates both `list` and the internal `valueList` that
+// is the current value of `obs` itself
+function splice(index, amount) {
+    var obs = this
+    var args = slice.call(arguments, 0)
+    var valueList = obs().slice()
+
+    // generate a list of args to mutate the internal
+    // list of only obs
+    var valueArgs = args.map(function (value, index) {
+        if (index === 0 || index === 1) {
+            return value
+        }
+
+        // must unpack observables that we are adding
+        return typeof value === "function" ? value() : value
+    })
+
+    valueList.splice.apply(valueList, valueArgs)
+    // we remove the observs that we remove
+    var removed = obs._list.splice.apply(obs._list, args)
+
+    var extraRemoveListeners = args.slice(2).map(function (observ) {
+        return typeof observ === "function" ?
+            addListener(obs, observ) :
+            null
+    })
+    extraRemoveListeners.unshift(args[0], args[1])
+    var removedListeners = obs._removeListeners.splice
+        .apply(obs._removeListeners, extraRemoveListeners)
+
+    removedListeners.forEach(function (removeObservListener) {
+        if (removeObservListener) {
+            removeObservListener()
+        }
+    })
+
+    setNonEnumerable(valueList, "_diff", [valueArgs])
+
+    obs._observSet(valueList)
+    return removed
+}
+
+},{"./add-listener.js":59,"./lib/set-non-enumerable.js":65}],70:[function(require,module,exports){
+module.exports = transaction
+
+function transaction (func) {
+    var obs = this
+    var rawList = obs._list.slice()
+
+    if (func(rawList) !== false){ // allow cancel
+        return obs.set(rawList)
+    }
+
+}
+},{}],71:[function(require,module,exports){
+var Observ = require("observ")
+var extend = require("xtend")
+
+var blackList = {
+    "length": "Clashes with `Function.prototype.length`.\n",
+    "name": "Clashes with `Function.prototype.name`.\n",
+    "_diff": "_diff is reserved key of observ-struct.\n",
+    "_type": "_type is reserved key of observ-struct.\n",
+    "_version": "_version is reserved key of observ-struct.\n"
+}
+var NO_TRANSACTION = {}
+
+function setNonEnumerable(object, key, value) {
+    Object.defineProperty(object, key, {
+        value: value,
+        writable: true,
+        configurable: true,
+        enumerable: false
+    })
+}
+
+/* ObservStruct := (Object<String, Observ<T>>) =>
+    Object<String, Observ<T>> &
+        Observ<Object<String, T> & {
+            _diff: Object<String, Any>
+        }>
+
+*/
+module.exports = ObservStruct
+
+function ObservStruct(struct) {
+    var keys = Object.keys(struct)
+
+    var initialState = {}
+    var currentTransaction = NO_TRANSACTION
+    var nestedTransaction = NO_TRANSACTION
+
+    keys.forEach(function (key) {
+        if (blackList.hasOwnProperty(key)) {
+            throw new Error("cannot create an observ-struct " +
+                "with a key named '" + key + "'.\n" +
+                blackList[key]);
+        }
+
+        var observ = struct[key]
+        initialState[key] = typeof observ === "function" ?
+            observ() : observ
+    })
+
+    var obs = Observ(initialState)
+    keys.forEach(function (key) {
+        var observ = struct[key]
+        obs[key] = observ
+
+        if (typeof observ === "function") {
+            observ(function (value) {
+                if (nestedTransaction === value) {
+                    return
+                }
+
+                var state = extend(obs())
+                state[key] = value
+                var diff = {}
+                diff[key] = value && value._diff ?
+                    value._diff : value
+
+                setNonEnumerable(state, "_diff", diff)
+                currentTransaction = state
+                obs.set(state)
+                currentTransaction = NO_TRANSACTION
+            })
+        }
+    })
+    var _set = obs.set
+    obs.set = function trackDiff(value) {
+        if (currentTransaction === value) {
+            return _set(value)
+        }
+
+        var newState = extend(value)
+        setNonEnumerable(newState, "_diff", value)
+        _set(newState)
+    }
+
+    obs(function (newState) {
+        if (currentTransaction === newState) {
+            return
+        }
+
+        keys.forEach(function (key) {
+            var observ = struct[key]
+            var newObservValue = newState[key]
+
+            if (typeof observ === "function" &&
+                observ() !== newObservValue
+            ) {
+                nestedTransaction = newObservValue
+                observ.set(newState[key])
+                nestedTransaction = NO_TRANSACTION
+            }
+        })
+    })
+
+    obs._type = "observ-struct"
+    obs._version = "5"
+
+    return obs
+}
+
+},{"observ":73,"xtend":72}],72:[function(require,module,exports){
+module.exports = extend
+
+function extend() {
+    var target = {}
+
+    for (var i = 0; i < arguments.length; i++) {
+        var source = arguments[i]
+
+        for (var key in source) {
+            if (source.hasOwnProperty(key)) {
+                target[key] = source[key]
+            }
+        }
+    }
+
+    return target
+}
+
+},{}],73:[function(require,module,exports){
+module.exports = Observable
+
+function Observable(value) {
+    var listeners = []
+    value = value === undefined ? null : value
+
+    observable.set = function (v) {
+        value = v
+        listeners.forEach(function (f) {
+            f(v)
+        })
+    }
+
+    return observable
+
+    function observable(listener) {
+        if (!listener) {
+            return value
+        }
+
+        listeners.push(listener)
+
+        return function remove() {
+            listeners.splice(listeners.indexOf(listener), 1)
+        }
+    }
+}
+
+},{}],74:[function(require,module,exports){
+arguments[4][56][0].apply(exports,arguments)
+},{"dup":56,"is-number":75}],75:[function(require,module,exports){
+arguments[4][57][0].apply(exports,arguments)
+},{"dup":57}],76:[function(require,module,exports){
 module.exports = function (elem, opts, cb) {
     if (typeof opts === 'function') {
         cb = opts;
@@ -6159,7 +6994,7 @@ module.exports = function (elem, opts, cb) {
     });
 };
 
-},{}],60:[function(require,module,exports){
+},{}],77:[function(require,module,exports){
 "use strict";
 var window = require("global/window")
 var once = require("once")
@@ -6331,7 +7166,7 @@ function createXHR(options, callback) {
 
 function noop() {}
 
-},{"global/window":61,"once":62,"parse-headers":66}],61:[function(require,module,exports){
+},{"global/window":78,"once":79,"parse-headers":83}],78:[function(require,module,exports){
 (function (global){
 if (typeof window !== "undefined") {
     module.exports = window;
@@ -6344,7 +7179,7 @@ if (typeof window !== "undefined") {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],62:[function(require,module,exports){
+},{}],79:[function(require,module,exports){
 module.exports = once
 
 once.proto = once(function () {
@@ -6365,7 +7200,7 @@ function once (fn) {
   }
 }
 
-},{}],63:[function(require,module,exports){
+},{}],80:[function(require,module,exports){
 var isFunction = require('is-function')
 
 module.exports = forEach
@@ -6413,7 +7248,7 @@ function forEachObject(object, iterator, context) {
     }
 }
 
-},{"is-function":64}],64:[function(require,module,exports){
+},{"is-function":81}],81:[function(require,module,exports){
 module.exports = isFunction
 
 var toString = Object.prototype.toString
@@ -6430,7 +7265,7 @@ function isFunction (fn) {
       fn === window.prompt))
 };
 
-},{}],65:[function(require,module,exports){
+},{}],82:[function(require,module,exports){
 
 exports = module.exports = trim;
 
@@ -6446,7 +7281,7 @@ exports.right = function(str){
   return str.replace(/\s*$/, '');
 };
 
-},{}],66:[function(require,module,exports){
+},{}],83:[function(require,module,exports){
 var trim = require('trim')
   , forEach = require('for-each')
   , isArray = function(arg) {
@@ -6478,4 +7313,4 @@ module.exports = function (headers) {
 
   return result
 }
-},{"for-each":63,"trim":65}]},{},[50]);
+},{"for-each":80,"trim":82}]},{},[50]);

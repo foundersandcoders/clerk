@@ -4,32 +4,22 @@
 var view = require("./view");
 
 
-module.exports = function (utils) {
+module.exports = function (utils, state) {
 
-	var tree, resultsNode, initial = true;
+	var that = {};
 
-	function render () {
+	that.render = function () {
 
-		if(initial){
-			tree        = view(postData);
-			resultsNode = utils.createElement(tree);
-			initial     = false;
-			return resultsNode;
-		} else {
-			var newResults = view(postData);
-			var patches    = utils.diff(tree, newResults);
-			resultsNode    = utils.patch(resultsNode, patches);
-			tree           = resultsNode;
-		}
+		return view(that.postData);
 	};
 
-	function postData (type) {
+	that.postData = function (type) {
 
 		return function () {
 
 			var payload = {
 				memberId:    document.querySelector("#member-id").textContent,
-        collection:  "charges"
+       			collection:  "charges"
 			};
 
 			var value = document.querySelector("#payment-amount").value;
@@ -39,15 +29,13 @@ module.exports = function (utils) {
 
 			utils.request(_createOptions(payload), function (e, h, b) {
 
-        // this is a hack, it needs to be changed when we have parent components
-			  location.reload();
-      });
+				var payments = state.payments().push(JSON.parse(b));
+				state.payments.set(payments);
+			});
 		}
 	};
 
-	try {
-		document.querySelector(".refund-section").appendChild(render());
-	} catch (e) {}
+	return that;
 };
 
 function _createOptions (payload) {

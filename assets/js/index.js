@@ -9,25 +9,17 @@
 		createElement: require('virtual-dom/create-element'),
 		request:       require("./services/request.js"),
 		upload:        require("upload-element"),
-		moment:        require("moment")
+		moment:        require("moment"),
+		observ:        require("observ"),
+		observS:       require("observ-struct"),
+		observA:       require("observ-array"),
+		h:             require("virtual-dom/h")
 	};
 
-	// components
 	try{
-		var search       = require("./components/search/index")(utils);
-		var status       = require("./components/memberstatus/index")(utils);
-		var payment      = require("./components/addpayment/index")(utils);
-		var viewPay      = require("./components/displaypayments/index")(utils);
-		var subscription = require("./components/chargesubscriptions/index")(utils);
-		var donation     = require("./components/chargedonations/index")(utils);
-		var upload       = require("./components/uploadcsv/index")(utils);
-		var memberInfo   = require("./components/memberinfo/index")(utils);
+		require("./pages/adminhome.js")(utils);
+		require("./pages/viewmember.js")(utils);
 	} catch (e){
-		console.log("fdas: ", e)
+		console.log("Index: ", e)
 	}
-
-
-	// var displayMember = require("./pages/displaymember.js")(utils);
-	viewPay.getData();
-	memberInfo.getData();
 }());

@@ -4,35 +4,31 @@
 var view = require("./view");
 
 
-module.exports = function (utils) {
+module.exports = function (utils, state) {
+	
+	var that = {};
 
-	var tree, resultsNode, initial = true;
-	function render () {
+	that.render = function () {
 
-		if(initial){
-			tree        = view(postData);
-			resultsNode = utils.createElement(tree);
-			initial     = false;
-			return resultsNode;
-		} else {
-			var newResults = view(postData);
-			var patches    = utils.diff(tree, newResults);
-			resultsNode    = utils.patch(resultsNode, patches);
-			tree           = resultsNode;
-		}
+		return view(that.postData);
 	};
 
-	function postData (query) {
+	that.postData = function (query) {
 
-		var payload = {
-			memberId:   document.querySelector("#member-id").textContent,
-			date:       document.querySelector("#date-payment").value,
-			type:       document.querySelector("#type-payment").value,
-			reference:  document.querySelector("#reference-payment").value,
-			total:      document.querySelector("#amount-payment").value,
-			notes:      document.querySelector("#notes-payment").value,
-      collection: "payments"
-		};
+		try {
+
+			var payload = {
+				memberId:   document.querySelector("#member-id").textContent,
+				date:       document.querySelector("#date-payment").value,
+				type:       document.querySelector("#type-payment").value,
+				reference:  document.querySelector("#reference-payment").value,
+				total:      document.querySelector("#amount-payment").value,
+				notes:      document.querySelector("#notes-payment").value,
+	      		collection: "payments"
+			};
+		} catch (e) {
+			console.log("addpayment post: ", e);
+		}
 
 		utils.request(_createOptions(payload), function (e, h, b) {
 
@@ -40,11 +36,7 @@ module.exports = function (utils) {
 		});
 	};
 
-	try {
-		document.querySelector(".enter-payment-section").appendChild(render());
-	} catch (e) {
-		console.log(e);
-	}
+	return that;
 };
 
 function _createOptions (payload) {

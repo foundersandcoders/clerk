@@ -4,25 +4,13 @@
 var view  = require("./view");
 
 
-module.exports = function (utils) {
+module.exports = function (utils, state) {
 
 	var that = {};
 
-	var tree, resultsNode, initial = true;
+	that.render = function (member) {
 
-	that.render = function (data) {
-
-		if(initial){
-			tree        = view(data, utils);
-			resultsNode = utils.createElement(tree);
-			initial     = false;
-			return resultsNode;
-		} else {
-			var newResults = view(data, utils);
-			var patches    = utils.diff(tree, newResults);
-			resultsNode    = utils.patch(resultsNode, patches);
-			tree           = resultsNode;
-		}
+		return view(member, utils);
 	};
 
 	that.getData = function () {
@@ -30,13 +18,11 @@ module.exports = function (utils) {
 		utils.request(_createOptions(), function (e, h, b) {
 
 			var member = JSON.parse(b);
-			try {
-				document.querySelector(".content-container").appendChild(that.render(member));
-			}catch (e){
-				console.log("Show data member", e);
-			}
+			state.member.set(member);
 		});
 	};
+
+	that.getData();
 
 	return that;
 };

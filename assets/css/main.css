@@ -404,7 +404,6 @@ nav {
         width: 20%; }
 
 #search-result {
-  width: 80%;
   max-width: 1000px; }
   #search-result .search-table-section-member {
     width: 100%;
@@ -531,7 +530,7 @@ nav {
     margin-bottom: 10px; }
 
 .enter-payment-section {
-  bottom: 0;
+  bottom: 10px;
   width: 100%;
   height: 60px;
   background-color: #FFF;
@@ -580,7 +579,7 @@ div.gbp {
 .button-b {
   width: 15%;
   float: right;
-  max-width: 150px; }
+  max-width: 200px; }
 
 .full-width {
   width: 100%; }
@@ -619,7 +618,6 @@ div.gbp {
 
 .search-container {
   height: auto;
-  width: 80%;
   max-width: 1000px;
   background-color: #fff;
   margin-bottom: 20px;
