@@ -7,7 +7,7 @@ module.exports = function (fn) {
 	return h("div.container-1", [
 		h("p", "Add donation"),
 		h("div.gbp", [
-			h("input.input-three#payment-amount", {
+			h("input.input-three#donation-amount", {
 				placeholder: "Amount"
 			})
 		]),

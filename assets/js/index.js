@@ -19,6 +19,7 @@
 	try{
 		require("./pages/adminhome.js")(utils);
 		require("./pages/viewmember.js")(utils);
+		require("./components/uploadcsv/index.js")(utils);
 	} catch (e){
 		console.log("Index: ", e)
 	}

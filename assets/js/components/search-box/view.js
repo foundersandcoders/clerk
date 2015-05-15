@@ -12,8 +12,7 @@ module.exports = function (fn) {
 					selected: true
 				}, "Active"),
 				h("option", {
-					value: "deleted",
-					selected: true
+					value: "deleted"
 				}, "Deleted")
 			]),
 			h("input.input-member#search-field-id",       {placeholder: "Membership number"}),

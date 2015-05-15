@@ -30,15 +30,35 @@ module.exports = function (utils, state) {
 
 	that.getData = function () {
 
+		var store = [];
+		var count = 0;
+
 		utils.request(_createOptions("payments"), function (e, h, b) {
 
-			console.log(b);
-			var payments = JSON.parse(b).sort(function (a, b) {
-				var diff = moment(a.datePaid) - moment(b.datePaid);
-				return (diff > 0) ? 1 : (diff === 0) ? 0 : -1;
-			});
+			store = store.concat(JSON.parse(b));
+			count += 1;
 
-			state.payments.set(payments);
+			if(count === 2) {
+				store.sort(function (a, b) {
+					var diff = moment(a.datePaid) - moment(b.datePaid);
+					return (diff > 0) ? -1 : (diff === 0) ? 0 : 1;
+				});
+				state.payments.set(store);
+			}
+		});
+
+		utils.request(_createOptions("charges"), function (e, h, b) {
+
+			store = store.concat(JSON.parse(b));
+			count += 1;
+
+			if(count === 2) {
+				store.sort(function (a, b) {
+					var diff = moment(a.datePaid) - moment(b.datePaid);
+					return (diff > 0) ? -1 : (diff === 0) ? 0 : 1;
+				});
+				state.payments.set(store);
+			}
 		});
 	};
 

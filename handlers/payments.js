@@ -9,6 +9,7 @@ module.exports = function (payments) {
 
       payments.create(clean.object(req.payload), req.auth.credentials.token, function (e, r) {
 
+        console.log(r.body)
         if (e) {
           return res(e).code(500);
         } else {

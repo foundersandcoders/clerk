@@ -14,10 +14,13 @@ module.exports = function (data, refreshFn, deleteFn, utils) {
 				h("p", "Description")
 			]),
 			h("div.col-3", [
-				h("p", "Cost £")
+				h("p", "Charges")
+			]),
+			h("div.col-3", [
+				h("p", "Payments")
 			]),
 			h("div.col-4", [
-				h("p", "Due £")
+				h("p", "Balance Due")
 			]),
 			h("div.col-5", [
 				h("p", "Reference")
@@ -38,19 +41,22 @@ module.exports = function (data, refreshFn, deleteFn, utils) {
 
 			return h("div.row", [
 				h("div.col-1", [
-					h("p", utils.moment(elm.datePaid).format("DD-MM-YYYY"))
+					h("p", utils.moment(elm.date).format("DD-MM-YYYY"))
 				]),
 				h("div.col-2", [
 					h("p", elm.description)
 				]),
 				h("div.col-3", [
-					h("p", elm.total)
+					h("p", (elm.collection === "charges") ? elm.total : "")
+				]),
+				h("div.col-3", [
+					h("p", (elm.collection === "payments") ? elm.total : "")
 				]),
 				h("div.col-4", [
 					h("p", "?")
 				]),
 				h("div.col-5", [
-					h("p", elm.reference)
+					h("p", elm.listReference)
 				]),
 				h("div.col-6", [
 					h("p", elm.notes)

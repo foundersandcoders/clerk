@@ -17,9 +17,10 @@ module.exports = function (utils, state) {
 
 		try {
 			var payload = {
+				date: 		 utils.moment(),
 				memberId:    document.querySelector("#member-id").textContent,
 				description: "Donation",
-				total:       document.querySelector("#payment-amount").value,
+				total:       document.querySelector("#donation-amount").value,
 				notes:       document.querySelector("#donation-notes").value,
 				collection:  "charges"
 			};
@@ -30,7 +31,7 @@ module.exports = function (utils, state) {
 		utils.request(_createOptions(payload), function (e, h, b) {
 
 			var payments = state.payments();
-			payments.push(b);
+			payments.unshift(b);
 			state.payments.set(payments);
 		});
 	};

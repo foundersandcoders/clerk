@@ -10,7 +10,7 @@ module.exports = function (fn) {
 		]),
 		h("div.body-ctrl", [
 			h("div.gbp", [
-				h("input.input-three#payment-amount", {
+				h("input.input-three#subscription-amount", {
 					placeholder: "Amount"
 				})
 			]),

@@ -33,7 +33,7 @@ module.exports = function (utils, state) {
 		utils.request(_createOptions(payload), function (e, h, b) {
 
 			var payments = state.payments();
-			payments.push(b);
+			payments.unshift(b);
 			state.payments.set(payments);
 		});
 	};

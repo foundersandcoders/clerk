@@ -47,7 +47,7 @@ module.exports = function (utils) {
 
 	state(function onchange () {
 		console.log("RENDERING", arguments);
-
+		console.log(state());
 		render();
 	});
 

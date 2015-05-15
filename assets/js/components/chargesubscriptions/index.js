@@ -18,19 +18,20 @@ module.exports = function (utils, state) {
 		return function () {
 
 			var payload = {
+				date: 		 utils.moment(),
 				memberId:    document.querySelector("#member-id").textContent,
        			collection:  "charges"
 			};
 
-			var value = document.querySelector("#payment-amount").value;
+			var value = document.querySelector("#subscription-amount").value;
 
-			payload.total       = (type === "charge") ? value          : 0 - Number(value);
+			payload.total       = (type === "charge") ? value          : String(0 - Number(value));
 			payload.description = (type === "charge") ? "Subscription" : "Subscription refund";
 
 			utils.request(_createOptions(payload), function (e, h, b) {
 
 				var payments = state.payments();
-				payments.push(b);
+				payments.unshift(b);
 				state.payments.set(payments);
 			});
 		}

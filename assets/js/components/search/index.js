@@ -5,10 +5,15 @@ var view  = require("./view");
 module.exports = function (utils, state) {
 
 	var that = {};
+	var cc = false;
 
 	that.render = function () {
 
-		return view(state.members());
+		if (cc) {
+			return view(state.members());
+		} else {
+			cc = true;
+		}
 	};
 
 	return that;

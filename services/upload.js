@@ -29,44 +29,49 @@ module.exports = function () {
 
 					count += 1;
 
-          var subscription   = that._stamp(count, results.data[0], that._blue("sub"));
-          subscription.collection = "charges";
-					subscription.type  = "subscription";
-					subscription.total = subscription.subscription;
+          			var subscription         = that._stamp(count, results.data[0], that._blue("sub"));
+          			subscription.collection  = "charges";
+					subscription.type        = "subscription";
+					subscription.total       = subscription.subscription;
+					subscription.description = "Subscription";
 
-					var donation   = that._stamp(count, results.data[0], that._blue("donation"));
-          donation.collection = "charges";
-					donation.type  = "donation";
-					donation.total = donation.donation;
+					var donation             = that._stamp(count, results.data[0], that._blue("donation"));
+          			donation.collection      = "charges";
+					donation.type            = "donation";
+					donation.total           = donation.donation;
+					donation.description = "Donation";
 
-					var events   = that._stamp(count, results.data[0], that._blue("event"));
-          events.collection = "charges";
-					events.type  = "events";
-					events.total = events.events;
+					var events               = that._stamp(count, results.data[0], that._blue("event"));
+          			events.collection        = "charges";
+					events.type              = "events";
+					events.total             = events.events;
+					events.description = "Event";
 
-					var payment        = that._stamp(count, results.data[0], that._blue("payment"));
-          payment.collection = "payments";
+					var payment              = that._stamp(count, results.data[0], that._blue("payment"));
+          			payment.collection       = "payments";
+          			payment.description      = "Payment by " + payment.typeCode.split(" - ")[1];
 
 					var paymentHeader = {"index":{"_index":"clerk","_type":"payments"}};
 					var chargeHeader  = {"index":{"_index":"clerk","_type":"charges"}};
 
 
-					connection.write(JSON.stringify(paymentHeader) + "\n");
-					connection.write(JSON.stringify(payment) + "\n");
-
+					if(donation.total && donation.total.toString() !== "0"){
+						connection.write(JSON.stringify(paymentHeader) + "\n");
+						connection.write(JSON.stringify(payment) + "\n");
+					}
 					connection.on("error", function (){
 						console.log("Error: ", arguments);
 					});
 
-					if(donation.total && donation.total !== "0"){
+					if(donation.total && donation.total.toString() !== "0"){
 						connection.write(JSON.stringify(chargeHeader) + "\n");
 						connection.write(JSON.stringify(donation) + "\n");
 					}
-					if(events.total && events.total !== "0"){
+					if(events.total && events.total.toString() !== "0"){
 						connection.write(JSON.stringify(chargeHeader) + "\n");
 						connection.write(JSON.stringify(events) + "\n");
 					}
-					if(subscription.total && subscription.total !== "0"){
+					if(subscription.total && subscription.total.toString() !== "0"){
 						connection.write(JSON.stringify(chargeHeader) + "\n");
 						connection.write(JSON.stringify(subscription) + "\n");
 					}
@@ -153,7 +158,7 @@ module.exports = function () {
 			if (type === "payment") {
 
 				bluprintPayments = {
-					datePaid:      {remove:false, type: "date"},
+					date:          {remove:false, type: "date"},
 					memberId:      {remove:false, type: "string"},
 					subscription:  {remove:true,  type: "number"},
 					donation:      {remove:true,  type: "number"},
@@ -168,7 +173,7 @@ module.exports = function () {
 			} else if (type === "sub") {
 
 				bluprintPayments = {
-					datePaid:      {remove:false, type: "date"},
+					date:          {remove:false, type: "date"},
 					memberId:      {remove:false, type: "string"},
 					subscription:  {remove:false, type: "number"},
 					donation:      {remove:true, type: "number"},
@@ -176,13 +181,13 @@ module.exports = function () {
 					total:         {remove:true,  type: "number"},
 					difference:    {remove:true,  type: "number"},
 					typeCode:      {remove:true, type: "string"},
-					listReference: {remove:true, type: "string"},
-					notes:         {remove:true, type: "string"},
+					listReference: {remove:false, type: "string"},
+					notes:         {remove:false, type: "string"},
 					deleted:       {remove:false, type: "boolean"}
 				};
 			} else if (type === "donation") {
 				bluprintPayments = {
-					datePaid:      {remove:false, type: "date"},
+					date:          {remove:false, type: "date"},
 					memberId:      {remove:false, type: "string"},
 					subscription:  {remove:true, type: "number"},
 					donation:      {remove:false, type: "number"},
@@ -190,13 +195,13 @@ module.exports = function () {
 					total:         {remove:true,  type: "number"},
 					difference:    {remove:true,  type: "number"},
 					typeCode:      {remove:true, type: "string"},
-					listReference: {remove:true, type: "string"},
-					notes:         {remove:true, type: "string"},
+					listReference: {remove:false, type: "string"},
+					notes:         {remove:false, type: "string"},
 					deleted:       {remove:false, type: "boolean"}
 				};
 			} else if (type === "event") {
 				bluprintPayments = {
-					datePaid:      {remove:false, type: "date"},
+					date:          {remove:false, type: "date"},
 					memberId:      {remove:false, type: "string"},
 					subscription:  {remove:true, type: "number"},
 					donation:      {remove:true, type: "number"},
@@ -204,8 +209,8 @@ module.exports = function () {
 					total:         {remove:true,  type: "number"},
 					difference:    {remove:true,  type: "number"},
 					typeCode:      {remove:true, type: "string"},
-					listReference: {remove:true, type: "string"},
-					notes:         {remove:true, type: "string"},
+					listReference: {remove:false, type: "string"},
+					notes:         {remove:false, type: "string"},
 					deleted:       {remove:false, type: "boolean"}
 				};
 			}else if (type === "member") {

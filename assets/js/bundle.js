@@ -209,7 +209,7 @@ if (typeof document !== 'undefined') {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"min-document":54}],9:[function(require,module,exports){
+},{"min-document":56}],9:[function(require,module,exports){
 "use strict";
 
 module.exports = function isObject(x) {
@@ -1676,7 +1676,7 @@ module.exports = function (utils, state) {
 		utils.request(_createOptions(payload), function (e, h, b) {
 
 			var payments = state.payments();
-			payments.push(b);
+			payments.unshift(b);
 			state.payments.set(payments);
 		});
 	};
@@ -1757,9 +1757,10 @@ module.exports = function (utils, state) {
 
 		try {
 			var payload = {
+				date: 		 utils.moment(),
 				memberId:    document.querySelector("#member-id").textContent,
 				description: "Donation",
-				total:       document.querySelector("#payment-amount").value,
+				total:       document.querySelector("#donation-amount").value,
 				notes:       document.querySelector("#donation-notes").value,
 				collection:  "charges"
 			};
@@ -1770,7 +1771,7 @@ module.exports = function (utils, state) {
 		utils.request(_createOptions(payload), function (e, h, b) {
 
 			var payments = state.payments();
-			payments.push(b);
+			payments.unshift(b);
 			state.payments.set(payments);
 		});
 	};
@@ -1797,7 +1798,7 @@ module.exports = function (fn) {
 	return h("div.container-1", [
 		h("p", "Add donation"),
 		h("div.gbp", [
-			h("input.input-three#payment-amount", {
+			h("input.input-three#donation-amount", {
 				placeholder: "Amount"
 			})
 		]),
@@ -1830,19 +1831,20 @@ module.exports = function (utils, state) {
 		return function () {
 
 			var payload = {
+				date: 		 utils.moment(),
 				memberId:    document.querySelector("#member-id").textContent,
        			collection:  "charges"
 			};
 
-			var value = document.querySelector("#payment-amount").value;
+			var value = document.querySelector("#subscription-amount").value;
 
-			payload.total       = (type === "charge") ? value          : 0 - Number(value);
+			payload.total       = (type === "charge") ? value          : String(0 - Number(value));
 			payload.description = (type === "charge") ? "Subscription" : "Subscription refund";
 
 			utils.request(_createOptions(payload), function (e, h, b) {
 
 				var payments = state.payments();
-				payments.push(b);
+				payments.unshift(b);
 				state.payments.set(payments);
 			});
 		}
@@ -1873,7 +1875,7 @@ module.exports = function (fn) {
 		]),
 		h("div.body-ctrl", [
 			h("div.gbp", [
-				h("input.input-three#payment-amount", {
+				h("input.input-three#subscription-amount", {
 					placeholder: "Amount"
 				})
 			]),
@@ -1921,15 +1923,35 @@ module.exports = function (utils, state) {
 
 	that.getData = function () {
 
+		var store = [];
+		var count = 0;
+
 		utils.request(_createOptions("payments"), function (e, h, b) {
 
-			console.log(b);
-			var payments = JSON.parse(b).sort(function (a, b) {
-				var diff = moment(a.datePaid) - moment(b.datePaid);
-				return (diff > 0) ? 1 : (diff === 0) ? 0 : -1;
-			});
+			store = store.concat(JSON.parse(b));
+			count += 1;
 
-			state.payments.set(payments);
+			if(count === 2) {
+				store.sort(function (a, b) {
+					var diff = moment(a.datePaid) - moment(b.datePaid);
+					return (diff > 0) ? -1 : (diff === 0) ? 0 : 1;
+				});
+				state.payments.set(store);
+			}
+		});
+
+		utils.request(_createOptions("charges"), function (e, h, b) {
+
+			store = store.concat(JSON.parse(b));
+			count += 1;
+
+			if(count === 2) {
+				store.sort(function (a, b) {
+					var diff = moment(a.datePaid) - moment(b.datePaid);
+					return (diff > 0) ? -1 : (diff === 0) ? 0 : 1;
+				});
+				state.payments.set(store);
+			}
 		});
 	};
 
@@ -1950,7 +1972,7 @@ function _createOptions (item) {
 		url: "/api/" + item + "?memberId=" + id
 	}
 }
-},{"./view":41,"moment":58}],41:[function(require,module,exports){
+},{"./view":41,"moment":60}],41:[function(require,module,exports){
 "use strict";
 
 var h = require("virtual-dom/h");
@@ -1967,10 +1989,13 @@ module.exports = function (data, refreshFn, deleteFn, utils) {
 				h("p", "Description")
 			]),
 			h("div.col-3", [
-				h("p", "Cost £")
+				h("p", "Charges")
+			]),
+			h("div.col-3", [
+				h("p", "Payments")
 			]),
 			h("div.col-4", [
-				h("p", "Due £")
+				h("p", "Balance Due")
 			]),
 			h("div.col-5", [
 				h("p", "Reference")
@@ -1991,19 +2016,22 @@ module.exports = function (data, refreshFn, deleteFn, utils) {
 
 			return h("div.row", [
 				h("div.col-1", [
-					h("p", utils.moment(elm.datePaid).format("DD-MM-YYYY"))
+					h("p", utils.moment(elm.date).format("DD-MM-YYYY"))
 				]),
 				h("div.col-2", [
 					h("p", elm.description)
 				]),
 				h("div.col-3", [
-					h("p", elm.total)
+					h("p", (elm.collection === "charges") ? elm.total : "")
+				]),
+				h("div.col-3", [
+					h("p", (elm.collection === "payments") ? elm.total : "")
 				]),
 				h("div.col-4", [
 					h("p", "?")
 				]),
 				h("div.col-5", [
-					h("p", elm.reference)
+					h("p", elm.listReference)
 				]),
 				h("div.col-6", [
 					h("p", elm.notes)
@@ -2513,8 +2541,7 @@ module.exports = function (fn) {
 					selected: true
 				}, "Active"),
 				h("option", {
-					value: "deleted",
-					selected: true
+					value: "deleted"
 				}, "Deleted")
 			]),
 			h("input.input-member#search-field-id",       {placeholder: "Membership number"}),
@@ -2534,10 +2561,15 @@ var view  = require("./view");
 module.exports = function (utils, state) {
 
 	var that = {};
+	var cc = false;
 
 	that.render = function () {
 
-		return view(state.members());
+		if (cc) {
+			return view(state.members());
+		} else {
+			cc = true;
+		}
 	};
 
 	return that;
@@ -2614,6 +2646,108 @@ module.exports = function (data) {
 };
 
 },{"virtual-dom/h":3}],50:[function(require,module,exports){
+"use strict";
+
+var view  = require("./view");
+
+module.exports = function (utils) {
+	
+	console.log("Upload:");
+
+	var tree, resultsNode, initial = true;
+
+	function render () {
+
+		// abstract this into single shared function
+		if(initial){
+			tree        = view();
+			resultsNode = utils.createElement(tree);
+			initial     = false;
+			return resultsNode;
+		} else {
+			var newResults = view();
+			var patches    = utils.diff(tree, newResults);
+			resultsNode    = utils.patch(resultsNode, patches);
+			tree           = resultsNode;
+		}
+	};
+
+	try {
+		document.querySelector(".upload-container").appendChild(render());
+	} catch (e) {
+		console.log("Upload: ", e);
+	}
+
+	try{
+		var elemPay = document.querySelector('#upload-payments');
+		utils.upload(elemPay, {type: "text"}, function (err, file) {
+
+			console.log("file: ",file);
+
+			var opts = {
+				method: "POST",
+				uri: "/api/upload?type=payments",
+				body: file[0].target.result
+			};
+
+			utils.request(opts, function (e, h, b){
+
+				console.log(b);
+			});
+		});
+	}catch(e) {
+		console.log("err upload", e);
+	}
+
+
+	try{
+		var elemMem = document.querySelector('#upload-members');
+		utils.upload(elemMem, {type: "text"}, function (err, file) {
+
+			console.log("file: ",file);
+
+			var opts = {
+				method: "POST",
+				uri: "/api/upload?type=members",
+				body: file[0].target.result
+			};
+
+			utils.request(opts, function (e, h, b){
+
+				console.log(b);
+			});
+		});
+	}catch(e){
+		console.log("err upload", e);
+	}
+
+	return;
+};
+},{"./view":51}],51:[function(require,module,exports){
+"use strict";
+
+
+var h = require("virtual-dom/h");
+
+
+module.exports = function (fn) {
+
+	return h("div.uploads", [
+		h("div.fileUpload", [
+			h("span", "Upload members"),
+			h("input#upload-members.upload", {
+				type: "file"
+			})
+		]),
+		h("div.fileUpload", [
+			h("span", "Upload payments"),
+			h("input#upload-payments.upload", {
+				type: "file"
+			})
+		])
+	]);
+}
+},{"virtual-dom/h":3}],52:[function(require,module,exports){
 ;(function () {
 	"use strict";
 
@@ -2635,11 +2769,12 @@ module.exports = function (data) {
 	try{
 		require("./pages/adminhome.js")(utils);
 		require("./pages/viewmember.js")(utils);
+		require("./components/uploadcsv/index.js")(utils);
 	} catch (e){
 		console.log("Index: ", e)
 	}
 }());
-},{"./pages/adminhome.js":51,"./pages/viewmember.js":52,"./services/request.js":53,"d-bap":55,"moment":58,"observ":73,"observ-array":64,"observ-struct":71,"torf":74,"upload-element":76,"virtual-dom/create-element":1,"virtual-dom/diff":2,"virtual-dom/h":3,"virtual-dom/patch":11}],51:[function(require,module,exports){
+},{"./components/uploadcsv/index.js":50,"./pages/adminhome.js":53,"./pages/viewmember.js":54,"./services/request.js":55,"d-bap":57,"moment":60,"observ":75,"observ-array":66,"observ-struct":73,"torf":76,"upload-element":78,"virtual-dom/create-element":1,"virtual-dom/diff":2,"virtual-dom/h":3,"virtual-dom/patch":11}],53:[function(require,module,exports){
 "use strict";
 
 var searchResultsComponent = require("../components/search/index.js");
@@ -2692,7 +2827,7 @@ module.exports = function (utils) {
 		console.log("Search page err: ", e);
 	}
 };
-},{"../components/search-box/index.js":46,"../components/search/index.js":48}],52:[function(require,module,exports){
+},{"../components/search-box/index.js":46,"../components/search/index.js":48}],54:[function(require,module,exports){
 "use strict";
 
 
@@ -2742,7 +2877,7 @@ module.exports = function (utils) {
 
 	state(function onchange () {
 		console.log("RENDERING", arguments);
-
+		console.log(state());
 		render();
 	});
 
@@ -2774,15 +2909,15 @@ module.exports = function (utils) {
 		console.log("View member page err: ", e);
 	}
 };
-},{"../components/addpayment/index.js":34,"../components/chargedonations/index.js":36,"../components/chargesubscriptions/index.js":38,"../components/displaypayments/index.js":40,"../components/memberinfo/index.js":42,"../components/memberstatus/index.js":44}],53:[function(require,module,exports){
+},{"../components/addpayment/index.js":34,"../components/chargedonations/index.js":36,"../components/chargesubscriptions/index.js":38,"../components/displaypayments/index.js":40,"../components/memberinfo/index.js":42,"../components/memberstatus/index.js":44}],55:[function(require,module,exports){
 "use strict";
 
 var request = require("xhr");
 
 module.exports = request;
-},{"xhr":77}],54:[function(require,module,exports){
+},{"xhr":79}],56:[function(require,module,exports){
 
-},{}],55:[function(require,module,exports){
+},{}],57:[function(require,module,exports){
 "use strict";
 
 var is = require("torf");
@@ -2838,7 +2973,7 @@ function _clone (obj){
   return temp;
 }
 
-},{"torf":56}],56:[function(require,module,exports){
+},{"torf":58}],58:[function(require,module,exports){
 'use strict';
 
 
@@ -2912,7 +3047,7 @@ function checkEmail (email, regexp){
 		return false;
 	};
 };
-},{"is-number":57}],57:[function(require,module,exports){
+},{"is-number":59}],59:[function(require,module,exports){
 /*!
  * is-number <https://github.com/jonschlinkert/is-number>
  *
@@ -2928,7 +3063,7 @@ module.exports = function isNumber(n) {
     || n === 0;
 };
 
-},{}],58:[function(require,module,exports){
+},{}],60:[function(require,module,exports){
 //! moment.js
 //! version : 2.10.3
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
@@ -6040,7 +6175,7 @@ module.exports = function isNumber(n) {
     return _moment;
 
 }));
-},{}],59:[function(require,module,exports){
+},{}],61:[function(require,module,exports){
 var setNonEnumerable = require("./lib/set-non-enumerable.js");
 
 module.exports = addListener
@@ -6070,7 +6205,7 @@ function addListener(observArray, observ) {
     })
 }
 
-},{"./lib/set-non-enumerable.js":65}],60:[function(require,module,exports){
+},{"./lib/set-non-enumerable.js":67}],62:[function(require,module,exports){
 var addListener = require('./add-listener.js')
 
 module.exports = applyPatch
@@ -6108,7 +6243,7 @@ function unpack(value, index){
     return typeof value === "function" ? value() : value
 }
 
-},{"./add-listener.js":59}],61:[function(require,module,exports){
+},{"./add-listener.js":61}],63:[function(require,module,exports){
 var ObservArray = require("./index.js")
 
 var slice = Array.prototype.slice
@@ -6175,7 +6310,7 @@ function notImplemented() {
     throw new Error("Pull request welcome")
 }
 
-},{"./array-reverse.js":62,"./array-sort.js":63,"./index.js":64}],62:[function(require,module,exports){
+},{"./array-reverse.js":64,"./array-sort.js":65,"./index.js":66}],64:[function(require,module,exports){
 var applyPatch = require("./apply-patch.js")
 var setNonEnumerable = require('./lib/set-non-enumerable.js')
 
@@ -6210,7 +6345,7 @@ function fakeDiff(arr) {
     return _diff
 }
 
-},{"./apply-patch.js":60,"./lib/set-non-enumerable.js":65}],63:[function(require,module,exports){
+},{"./apply-patch.js":62,"./lib/set-non-enumerable.js":67}],65:[function(require,module,exports){
 var applyPatch = require("./apply-patch.js")
 var setNonEnumerable = require("./lib/set-non-enumerable.js")
 
@@ -6271,7 +6406,7 @@ function indexOf(n, h) {
     return -1
 }
 
-},{"./apply-patch.js":60,"./lib/set-non-enumerable.js":65}],64:[function(require,module,exports){
+},{"./apply-patch.js":62,"./lib/set-non-enumerable.js":67}],66:[function(require,module,exports){
 var Observ = require("observ")
 
 // circular dep between ArrayMethods & this file
@@ -6358,7 +6493,7 @@ function getLength() {
     return this._list.length
 }
 
-},{"./add-listener.js":59,"./array-methods.js":61,"./put.js":67,"./set.js":68,"./splice.js":69,"./transaction.js":70,"observ":73}],65:[function(require,module,exports){
+},{"./add-listener.js":61,"./array-methods.js":63,"./put.js":69,"./set.js":70,"./splice.js":71,"./transaction.js":72,"observ":75}],67:[function(require,module,exports){
 module.exports = setNonEnumerable;
 
 function setNonEnumerable(object, key, value) {
@@ -6370,7 +6505,7 @@ function setNonEnumerable(object, key, value) {
     });
 }
 
-},{}],66:[function(require,module,exports){
+},{}],68:[function(require,module,exports){
 function head (a) {
   return a[0]
 }
@@ -6673,7 +6808,7 @@ var exports = module.exports = function (deps, exports) {
 }
 exports(null, exports)
 
-},{}],67:[function(require,module,exports){
+},{}],69:[function(require,module,exports){
 var addListener = require("./add-listener.js")
 var setNonEnumerable = require("./lib/set-non-enumerable.js");
 
@@ -6712,7 +6847,7 @@ function put(index, value) {
     obs._observSet(valueList)
     return value
 }
-},{"./add-listener.js":59,"./lib/set-non-enumerable.js":65}],68:[function(require,module,exports){
+},{"./add-listener.js":61,"./lib/set-non-enumerable.js":67}],70:[function(require,module,exports){
 var applyPatch = require("./apply-patch.js")
 var setNonEnumerable = require("./lib/set-non-enumerable.js")
 var adiff = require("adiff")
@@ -6734,7 +6869,7 @@ function set(rawList) {
     return changes
 }
 
-},{"./apply-patch.js":60,"./lib/set-non-enumerable.js":65,"adiff":66}],69:[function(require,module,exports){
+},{"./apply-patch.js":62,"./lib/set-non-enumerable.js":67,"adiff":68}],71:[function(require,module,exports){
 var slice = Array.prototype.slice
 
 var addListener = require("./add-listener.js")
@@ -6786,7 +6921,7 @@ function splice(index, amount) {
     return removed
 }
 
-},{"./add-listener.js":59,"./lib/set-non-enumerable.js":65}],70:[function(require,module,exports){
+},{"./add-listener.js":61,"./lib/set-non-enumerable.js":67}],72:[function(require,module,exports){
 module.exports = transaction
 
 function transaction (func) {
@@ -6798,7 +6933,7 @@ function transaction (func) {
     }
 
 }
-},{}],71:[function(require,module,exports){
+},{}],73:[function(require,module,exports){
 var Observ = require("observ")
 var extend = require("xtend")
 
@@ -6908,7 +7043,7 @@ function ObservStruct(struct) {
     return obs
 }
 
-},{"observ":73,"xtend":72}],72:[function(require,module,exports){
+},{"observ":75,"xtend":74}],74:[function(require,module,exports){
 module.exports = extend
 
 function extend() {
@@ -6927,7 +7062,7 @@ function extend() {
     return target
 }
 
-},{}],73:[function(require,module,exports){
+},{}],75:[function(require,module,exports){
 module.exports = Observable
 
 function Observable(value) {
@@ -6956,11 +7091,11 @@ function Observable(value) {
     }
 }
 
-},{}],74:[function(require,module,exports){
-arguments[4][56][0].apply(exports,arguments)
-},{"dup":56,"is-number":75}],75:[function(require,module,exports){
-arguments[4][57][0].apply(exports,arguments)
-},{"dup":57}],76:[function(require,module,exports){
+},{}],76:[function(require,module,exports){
+arguments[4][58][0].apply(exports,arguments)
+},{"dup":58,"is-number":77}],77:[function(require,module,exports){
+arguments[4][59][0].apply(exports,arguments)
+},{"dup":59}],78:[function(require,module,exports){
 module.exports = function (elem, opts, cb) {
     if (typeof opts === 'function') {
         cb = opts;
@@ -6999,7 +7134,7 @@ module.exports = function (elem, opts, cb) {
     });
 };
 
-},{}],77:[function(require,module,exports){
+},{}],79:[function(require,module,exports){
 "use strict";
 var window = require("global/window")
 var once = require("once")
@@ -7171,7 +7306,7 @@ function createXHR(options, callback) {
 
 function noop() {}
 
-},{"global/window":78,"once":79,"parse-headers":83}],78:[function(require,module,exports){
+},{"global/window":80,"once":81,"parse-headers":85}],80:[function(require,module,exports){
 (function (global){
 if (typeof window !== "undefined") {
     module.exports = window;
@@ -7184,7 +7319,7 @@ if (typeof window !== "undefined") {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],79:[function(require,module,exports){
+},{}],81:[function(require,module,exports){
 module.exports = once
 
 once.proto = once(function () {
@@ -7205,7 +7340,7 @@ function once (fn) {
   }
 }
 
-},{}],80:[function(require,module,exports){
+},{}],82:[function(require,module,exports){
 var isFunction = require('is-function')
 
 module.exports = forEach
@@ -7253,7 +7388,7 @@ function forEachObject(object, iterator, context) {
     }
 }
 
-},{"is-function":81}],81:[function(require,module,exports){
+},{"is-function":83}],83:[function(require,module,exports){
 module.exports = isFunction
 
 var toString = Object.prototype.toString
@@ -7270,7 +7405,7 @@ function isFunction (fn) {
       fn === window.prompt))
 };
 
-},{}],82:[function(require,module,exports){
+},{}],84:[function(require,module,exports){
 
 exports = module.exports = trim;
 
@@ -7286,7 +7421,7 @@ exports.right = function(str){
   return str.replace(/\s*$/, '');
 };
 
-},{}],83:[function(require,module,exports){
+},{}],85:[function(require,module,exports){
 var trim = require('trim')
   , forEach = require('for-each')
   , isArray = function(arg) {
@@ -7318,4 +7453,4 @@ module.exports = function (headers) {
 
   return result
 }
-},{"for-each":80,"trim":82}]},{},[50]);
+},{"for-each":82,"trim":84}]},{},[52]);
