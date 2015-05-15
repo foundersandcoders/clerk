@@ -1675,7 +1675,9 @@ module.exports = function (utils, state) {
 
 		utils.request(_createOptions(payload), function (e, h, b) {
 
-			render();
+			var payments = state.payments();
+			payments.push(b);
+			state.payments.set(payments);
 		});
 	};
 
@@ -1767,7 +1769,8 @@ module.exports = function (utils, state) {
 
 		utils.request(_createOptions(payload), function (e, h, b) {
 
-			var payments = state.payments().push(JSON.parse(b));
+			var payments = state.payments();
+			payments.push(b);
 			state.payments.set(payments);
 		});
 	};
@@ -1838,7 +1841,8 @@ module.exports = function (utils, state) {
 
 			utils.request(_createOptions(payload), function (e, h, b) {
 
-				var payments = state.payments().push(JSON.parse(b));
+				var payments = state.payments();
+				payments.push(b);
 				state.payments.set(payments);
 			});
 		}
@@ -1919,6 +1923,7 @@ module.exports = function (utils, state) {
 
 		utils.request(_createOptions("payments"), function (e, h, b) {
 
+			console.log(b);
 			var payments = JSON.parse(b).sort(function (a, b) {
 				var diff = moment(a.datePaid) - moment(b.datePaid);
 				return (diff > 0) ? 1 : (diff === 0) ? 0 : -1;

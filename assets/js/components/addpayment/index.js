@@ -32,7 +32,9 @@ module.exports = function (utils, state) {
 
 		utils.request(_createOptions(payload), function (e, h, b) {
 
-			render();
+			var payments = state.payments();
+			payments.push(b);
+			state.payments.set(payments);
 		});
 	};
 

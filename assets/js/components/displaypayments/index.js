@@ -32,6 +32,7 @@ module.exports = function (utils, state) {
 
 		utils.request(_createOptions("payments"), function (e, h, b) {
 
+			console.log(b);
 			var payments = JSON.parse(b).sort(function (a, b) {
 				var diff = moment(a.datePaid) - moment(b.datePaid);
 				return (diff > 0) ? 1 : (diff === 0) ? 0 : -1;
