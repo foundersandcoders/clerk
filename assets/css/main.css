@@ -301,7 +301,7 @@ nav {
   text-align: center; }
 
 .overall-container {
-  bottom: 60px;
+  bottom: 70px;
   position: fixed;
   left: 0;
   right: 0;
@@ -318,90 +318,95 @@ nav {
   flex-direction: column;
   padding-right: 15px; }
 
-.individual-section {
+#member-info {
   width: 100%;
   height: 40%;
   background-color: #fff;
   margin: 10px;
   display: flex;
   text-align: left;
-  padding: 20px; }
-  .individual-section p {
+  padding: 20px;
+  overflow: scroll; }
+  #member-info p {
     font-size: 15px;
     margin-bottom: 5px;
     margin-top: 5px; }
-  .individual-section .col-1 {
+  #member-info .col-1 {
     width: 40%;
     min-height: 100px; }
-  .individual-section .col-2 {
+  #member-info .col-2 {
     width: 40%;
     min-height: 100px; }
-  .individual-section .col-3 {
+  #member-info .col-3 {
     width: 40%;
     min-height: 100px; }
 
-.table-section-individual {
+#table-payments {
   width: 100%;
   height: 60%;
   background-color: #fff;
   margin: 10px;
-  padding: 10px; }
-  .table-section-individual .table-section-individual-header {
+  margin-top: 0;
+  padding: 10px;
+  overflow: scroll; }
+  #table-payments .table-section-individual-header {
     display: flex;
     width: 100%;
-    height: 60px; }
-    .table-section-individual .table-section-individual-header p {
+    height: 60px;
+    text-align: center; }
+    #table-payments .table-section-individual-header p {
       font-size: 20px;
       font-weight: bold; }
-    .table-section-individual .table-section-individual-header .col-1 {
+    #table-payments .table-section-individual-header .col-1 {
       width: 20%;
       border-right: 1px solid #ededed; }
-    .table-section-individual .table-section-individual-header .col-2 {
+    #table-payments .table-section-individual-header .col-2 {
       width: 20%;
       border-right: 1px solid #ededed; }
-    .table-section-individual .table-section-individual-header .col-3 {
+    #table-payments .table-section-individual-header .col-3 {
       width: 20%;
       border-right: 1px solid #ededed; }
-    .table-section-individual .table-section-individual-header .col-4 {
+    #table-payments .table-section-individual-header .col-4 {
       width: 20%;
       border-right: 1px solid #ededed; }
-    .table-section-individual .table-section-individual-header .col-5 {
+    #table-payments .table-section-individual-header .col-5 {
       width: 20%;
       border-right: 1px solid #ededed; }
-    .table-section-individual .table-section-individual-header .col-6 {
+    #table-payments .table-section-individual-header .col-6 {
       width: 20%;
       border-right: 1px solid #ededed; }
-    .table-section-individual .table-section-individual-header .col-7 {
+    #table-payments .table-section-individual-header .col-7 {
       width: 20%; }
-  .table-section-individual .table-section-individual-rows {
-    height: 25em;
+  #table-payments .table-section-individual-rows {
     overflow: scroll; }
-    .table-section-individual .table-section-individual-rows .row {
+    #table-payments .table-section-individual-rows .row {
       display: flex;
       width: 100%;
       height: 60px; }
-      .table-section-individual .table-section-individual-rows .row p {
-        font-size: 15px; }
-      .table-section-individual .table-section-individual-rows .row .col-1 {
-        width: 20%;
+      #table-payments .table-section-individual-rows .row p {
+        font-size: 15px;
+        padding: 5px;
+        text-align: center; }
+      #table-payments .table-section-individual-rows .row .col-1 {
+        flex: 1;
         border-right: 1px solid #ededed; }
-      .table-section-individual .table-section-individual-rows .row .col-2 {
-        width: 20%;
+      #table-payments .table-section-individual-rows .row .col-2 {
+        flex: 1;
         border-right: 1px solid #ededed; }
-      .table-section-individual .table-section-individual-rows .row .col-3 {
-        width: 20%;
+      #table-payments .table-section-individual-rows .row .col-3 {
+        flex: 1;
         border-right: 1px solid #ededed; }
-      .table-section-individual .table-section-individual-rows .row .col-4 {
-        width: 20%;
+      #table-payments .table-section-individual-rows .row .col-4 {
+        flex: 1;
         border-right: 1px solid #ededed; }
-      .table-section-individual .table-section-individual-rows .row .col-5 {
-        width: 20%;
+      #table-payments .table-section-individual-rows .row .col-5 {
+        flex: 1;
         border-right: 1px solid #ededed; }
-      .table-section-individual .table-section-individual-rows .row .col-6 {
-        width: 20%;
+      #table-payments .table-section-individual-rows .row .col-6 {
+        flex: 1;
         border-right: 1px solid #ededed; }
-      .table-section-individual .table-section-individual-rows .row .col-7 {
-        width: 20%; }
+      #table-payments .table-section-individual-rows .row .col-7 {
+        flex: 1; }
 
 #search-result {
   max-width: 1000px; }
@@ -530,13 +535,13 @@ nav {
     margin-bottom: 10px; }
 
 .enter-payment-section {
-  bottom: 10px;
+  bottom: 0;
   width: 100%;
-  height: 60px;
+  height: 70px;
   background-color: #FFF;
   position: fixed; }
   .enter-payment-section .container {
-    margin-top: 10px;
+    margin-top: 15px;
     margin-left: 15px;
     margin-right: 15px; }
 

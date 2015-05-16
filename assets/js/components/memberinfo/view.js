@@ -4,7 +4,8 @@ var h = require("virtual-dom/h");
 
 module.exports = function (data, utils) {
 
-	return h("div.individual-section", [
+	// return h("div.individual-section", [
+	return ([
 		renderPersonalInfo(data),
 		renderAddressInfo(data),
 		renderMembership(data)
