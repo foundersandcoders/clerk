@@ -209,7 +209,7 @@ if (typeof document !== 'undefined') {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"min-document":60}],9:[function(require,module,exports){
+},{"min-document":61}],9:[function(require,module,exports){
 "use strict";
 
 module.exports = function isObject(x) {
@@ -1972,7 +1972,7 @@ function _createOptions (item) {
 		url: "/api/" + item + "?memberId=" + id
 	}
 }
-},{"./view":41,"moment":64}],41:[function(require,module,exports){
+},{"./view":41,"moment":65}],41:[function(require,module,exports){
 "use strict";
 
 var h = require("virtual-dom/h");
@@ -2047,6 +2047,30 @@ module.exports = function (data, refreshFn, deleteFn, utils) {
 };
 
 },{"virtual-dom/h":3}],42:[function(require,module,exports){
+var memberTypes = module.exports.memberTypes = [{
+		value: "annual-single",
+		description: "Annual Single"
+	}, {
+		value: "annual-double",
+		description: "Annual Double"
+	},{
+		value: "annual-family",
+		description: "Annual Family"
+	},{
+		value: "life-single",
+		description: "Life Single"
+	},{
+		value: "life-double",
+		description: "Life Double"
+	},{
+		value: "group-annual",
+		description: "Group Annual"
+	},{
+		value: "corporate-annual",
+		description: "Corporate Annual"
+	}
+];
+},{}],43:[function(require,module,exports){
 "use strict";
 
 
@@ -2090,7 +2114,7 @@ function _createOptions () {
 	}
 }
 
-},{"./view":43}],43:[function(require,module,exports){
+},{"./view":44}],44:[function(require,module,exports){
 "use strict";
 
 
@@ -2099,27 +2123,13 @@ var h = require("virtual-dom/h");
 
 module.exports = function (data, utils) {
 	
-	var memberTypes = [{
-			value: "annual-single",
-			description: "Annual Single"
-		}, {
-			value: "annual-double",
-			description: "Annual Double"
+	var memberTypes = require("../helpers").memberTypes;
+	var newsType    = [{
+			value: "post",
+			description: "Post"
 		},{
-			value: "annual-family",
-			description: "Annual Family"
-		},{
-			value: "life-single",
-			description: "Life Single"
-		},{
-			value: "life-double",
-			description: "Life Double"
-		},{
-			value: "group-annual",
-			description: "Group Annual"
-		},{
-			value: "corporate-annual",
-			description: "Corporate Annual"
+			value: "online",
+			description: "Online"
 		}
 	];
 
@@ -2133,74 +2143,144 @@ module.exports = function (data, utils) {
 
 		return h("div.col-1", [
 			h("h2", "Personal info"),
-			check("Title: ", member.title),
-			check("Initials: ", member.initials),
-			check("First name: ", member.firstName),
-			check("Last name: ", member.lastName),
-      		check("Member id: ", member.id),
-			check("Primary email: ", member.email1),
-			check("Secondary email: ", member.email2),
-      		check("Bounced email: ", member.emailBounced),
-      		h("p", [
-				h("span.info", "News: "),
-				renderOnlineStatus(member)
+			h("p", [
+				h("span.info", "ID: "),
+				h("input#edit-member-id", {
+					type: "text",
+					value: member.id
+				})
 			]),
-      		check("Status: ", member.status),
-			deletedInfo(member)
+			h("p", [
+				h("span.info", "Title: "),
+				h("input#edit-member-title", {
+					type: "text",
+					value: member.title || ""
+				})
+			]),
+			h("p", [
+				h("span.info", "Initials: "),
+				h("input#edit-member-initials", {
+					type: "text",
+					value: member.initials || ""
+				})
+			]),
+			h("p", [
+				h("span.info", "First name: "),
+				h("input#edit-member-first-name", {
+					type: "text",
+					value: member.firstName || ""
+				})
+			]),
+			h("p", [
+				h("span.info", "Last name: "),
+				h("input#edit-member-last-name", {
+					type: "text",
+					value: member.lastName || ""
+				})
+			]),
+			h("p", [
+				h("span.info", "Primary email: "),
+				h("input#edit-member-primary-email", {
+					type: "text",
+					value: member.email1 || ""
+				})
+			]),
+			h("p", [
+				h("span.info", "Secondary email: "),
+				h("input#edit-member-secondary-email", {
+					type: "text",
+					value: member.email2 || ""
+				})
+			]),
+			h("p", [
+				h("span.info", "News: "),
+				h("select", renderOptionsSelected(newsType, (member.onlineMember ? "online" : "post"), "Select news"))
+			]),
+			h("p", [
+				h("span.info", "Status: "),
+				h("input#edit-member-status", {
+					type: "text",
+					value: member.status || ""
+				})
+			]),
+			// deletedInfo(member)
 		]);
-	}
-
-  	function renderOnlineStatus (member) {
-  		return h("select", [
-	        h("option", {
-	          	selected: !!(member.onlineMember)
-	        }, "Online"),
-	        h("option", {
-	            selected: !(member.onlineMember)
-	        }, "Post")
-      	]);
-  	}
-
-	function renderType () {
-		return h("select#member-type", renderOptions("Change Type", memberTypes, data));
-	}
-
-	function renderOptions(placeholder, reasons, member){
-
-		var options = [
-			h("option", {
-				value: "",
-				disabled: true
-			}, placeholder)
-		];
-
-		return options.concat(
-			reasons.map(function (elm){
-
-				var selected = (member.membershipType === elm.value || member.membershipType === elm.description);
-
-				return h("option", {
-					value: elm.value,
-					selected: selected
-				}, elm.description)
-			})
-		);
 	}
 
 	function renderAddressInfo (member) {
 
 		return h("div.col-2", [
 			h("h2", "Address info"),
-			checkSingle("", member.address1),
-			checkSingle("", member.address2),
-			checkSingle("", member.address3),
-			checkSingle("", member.address4),
-			checkSingle("", member.county),
-			checkSingle("", member.postcode),
-			checkSingle("", member.deliverer),
-			check("Home phone: ", member.homePhone),
-			check("Work phone: ", member.workPhone),
-			check("Mobile phone: ", member.mobilePhone)
+			h("p", [
+				h("span.info", "Address 1: "),
+				h("input#edit-member-address1", {
+					type: "text",
+					value: member.address1 || ""
+				})
+			]),
+			h("p", [
+				h("span.info", "Address 2: "),
+				h("input#edit-member-address2", {
+					type: "text",
+					value: member.address2 || ""
+				})
+			]),
+			h("p", [
+				h("span.info", "Address 3: "),
+				h("input#edit-member-address3", {
+					type: "text",
+					value: member.address3 || ""
+				})
+			]),
+			h("p", [
+				h("span.info", "Address 4: "),
+				h("input#edit-member-address3", {
+					type: "text",
+					value: member.address3 || ""
+				})
+			]),
+			h("p", [
+				h("span.info", "County: "),
+				h("input#edit-member-county", {
+					type: "text",
+					value: member.county || ""
+				})
+			]),
+			h("p", [
+				h("span.info", "Postcode: "),
+				h("input#edit-member-postcode", {
+					type: "text",
+					value: member.postcode || ""
+				})
+			]),
+			h("p", [
+				h("span.info", "Deliverer: "),
+				h("input#edit-member-deliverer", {
+					type: "text",
+					value: member.deliverer || ""
+				})
+			]),
+			h("p", [
+				h("span.info", "Home phone: "),
+				h("input#edit-member-home-phone", {
+					type: "text",
+					value: member.homePhone || ""
+				})
+			]),
+			h("p", [
+				h("span.info", "Work phone: "),
+				h("input#edit-member-work-phone", {
+					type: "text",
+					value: member.workPhone || ""
+				})
+			]),
+			h("p", [
+				h("span.info", "Mobile phone: "),
+				h("input#edit-member-mobile-phone", {
+					type: "text",
+					value: member.mobilePhone || ""
+				})
+			])
 		]);
 	}
 
@@ -2208,99 +2288,91 @@ module.exports = function (data, utils) {
 
 		return h("div.col-3", [
 			h("h2", "Membership info"),
-      		check("Date joined: ", utils.moment(member.dateJoined).format("DD-MM-YYYY")),
-      		renderType(),
-			renderMembershipLife(member),
-			renderMembershipLifeChanged(member),
-			renderGiftAid(member),
-			renderDateGiftAidCancelled(member),
-			check("Standing order: ", member.standingOrder),
-			check("Notes:", member.membershipNotes),
-			renderRegistered(member),
-			check("Due date: ", utils.moment(member.dueDate).format("DD-MMM"))
+			h("p", [
+				h("span.info", "Membership type: "),
+				h("select", renderOptionsSelected(memberTypes, member.membershipType, "Membership type"))
+			]),
+			h("p", [
+				h("span.info", "Date joined: "),
+				h("input#edit-member-date-joined", {
+					type: "text",
+					value: utils.moment(member.dateJoined).format("DD-MM-YYYY") || ""
+				})
+			]),
+			h("p", [
+				h("span.info", "Life payment date: "),
+				h("input#edit-member-life-payment-date", {
+					type: "text",
+					value: utils.moment(member.lifePaymentDate).format("DD-MM-YYYY") || ""
+				})
+			]),
+			h("p", [
+				h("span.info", "Date GAD Signed: "),
+				h("input#edit-member-date-gift-aid-signed", {
+					type: "text",
+					value: utils.moment(member.dateGiftAidSigned).format("DD-MM-YYYY") || ""
+				})
+			]),
+			// h("p", [
+			// 	h("span.info", "Date GAD Signed: "),
+			// 	h("input#edit-member-date-gift-aid-signed", {
+			// 		type: "text",
+			// 		value: utils.moment(member.dateGiftAidSigned).format("DD-MM-YYYY") || ""
+			// 	})
+			// ]),
+			h("p", [
+				h("span.info", "Due date: "),
+				h("input#edit-member-due-date", {
+					type: "text",
+					value: utils.moment(member.dueDate).format("DD-MMM") || ""
+				})
+			]),
+			h("p", [
+				h("span.info", "Notes: "),
+				h("input#edit-member-notes", {
+					type: "text",
+					value: member.membershipNotes || ""
+				})
+			]),
+
+
+			// renderGiftAid(member),
+			// renderDateGiftAidCancelled(member),
+			// check("Standing order: ", member.standingOrder),
+			// renderRegistered(member),
 		]);
 	}
 
-	function check (name, elm) {
-		if(elm) {
-			return h("p", [
-				h("span.info", name),
-			    h("input#view-member-" + replaceSpaceColon.call(name), {
-			    	type: "text",
-			    	value: elm
-			    })
-            ]);
-		}
+	/**
+	 *	Renders a list of options with one selected;
+	 *
+	 *	@param {Array}  - array of objects like: {value: "string", description: "string"}
+	 *	@param {String} - value or description to be selected from options
+	 *	return {Object} - virtual dom object
+	 */
+	function renderOptionsSelected (options, selectedOption, placeholder) {
+
+		var firstPlaceholderOption = [
+			h("option", {
+				value: "",
+				disabled: true
+			}, placeholder)
+		];
+
+		return firstPlaceholderOption.concat(
+			options.map(function (elm){
+				var selected = (elm.value === selectedOption || elm.description === selectedOption);
+
+				return h("option", {
+					value:    elm.value,
+					selected: selected
+				}, elm.description);
+			})
+		);
 	}
 
-	function checkSingle (name, elm) {
-		if(elm){
-        	return h("input#view-member-" + replaceSpaceColon.call(name), {
-        		type: "text",
-        		value: elm
-        	});
-		}
-	}
-
-	function renderRegistered (member) {
-
-    return check("Status: ", (member.online) ? "Registered" : "Unregistered" );
-	}
-
-	function renderMembershipLifeChanged (member) {
-		if(member.dateTypeChanged && (member.membershipType === "life-double" || member.membershipType === "life-single")) {
-      		return h("p", [
-        		check("Life payment date: ", member.lifePaymentDate),
-        		check("Membership date changed: ", member.dateTypeChanged)
-      		]);
-		}
-	}
-
-	function renderMembershipLife (member) {
-		if(member.membershipType === "life-double" || member.membershipType === "life-single") {
-      		return check("Life payent date: ", member.lifePaymentDate);
-		}
-	}
-
-	function renderGiftAid (member) {
-		if(member.giftAid){
-      		return check("GAD Signed: ", utils.moment(member.dateGiftAidSigned).format("DD-MM-YYYY"));
-		}
-	}
-
-	function renderDateGiftAidCancelled (member) {
-		if(member.dateGiftAidCancelled) {
-			return h("p", [
-				check("GAD cancelled: ", utils.moment(member.dateGiftAidCancelled).format("DD-MM-YYYY"))
-			]);
-		}
-	}
-
-	function deletedInfo (member) {
-		if(member.status === "deleted") {
-			return h("span", [
-        		check("Deletion date:", utils.moment(member.deletionDate).format("DD-MM-YY")),
-        		check("Deletion reason: ", member.deletionReason)
-			]);
-		}
-	}
-
-	function replaceSpaceColon (){
-		return this.toLowerCase().replace(" ", "-").replace(":", "");
-	}
-
-	function fullName () {
-		var store = [];
-
-		if(utils.is.ok(this.title)    ) {store.push(this.title)}
-		if(utils.is.ok(this.firstName)) {store.push(this.firstName)}
-		if(utils.is.ok(this.initials) ) {store.push(this.initials)}
-		if(utils.is.ok(this.lastName) ) {store.push(this.lastName)}
-
-		return store.join(" ");
-	}
 };
-},{"virtual-dom/h":3}],44:[function(require,module,exports){
+},{"../helpers":42,"virtual-dom/h":3}],45:[function(require,module,exports){
 "use strict";
 
 
@@ -2383,7 +2455,7 @@ module.exports = function (utils, state) {
 
 	return that;
 };
-},{"./view":45}],45:[function(require,module,exports){
+},{"./view":46}],46:[function(require,module,exports){
 "use strict";
 
 var h = require("virtual-dom/h");
@@ -2488,9 +2560,9 @@ module.exports = function (status, updateType, deleteFn, reactivateFn) {
 		);
 	}
 };
-},{"virtual-dom/h":3}],46:[function(require,module,exports){
-arguments[4][42][0].apply(exports,arguments)
-},{"./view":47,"dup":42}],47:[function(require,module,exports){
+},{"virtual-dom/h":3}],47:[function(require,module,exports){
+arguments[4][43][0].apply(exports,arguments)
+},{"./view":48,"dup":43}],48:[function(require,module,exports){
 "use strict";
 
 var h = require("virtual-dom/h");
@@ -2633,7 +2705,7 @@ module.exports = function (data, utils) {
 		return store.join(" ");
 	}
 };
-},{"virtual-dom/h":3}],48:[function(require,module,exports){
+},{"virtual-dom/h":3}],49:[function(require,module,exports){
 "use strict";
 
 
@@ -2691,7 +2763,7 @@ function _createOptions (payload) {
 	}
 }
 
-},{"./view":49}],49:[function(require,module,exports){
+},{"./view":50}],50:[function(require,module,exports){
 "use strict";
 
 var h = require("virtual-dom/h");
@@ -2724,7 +2796,7 @@ module.exports = function (toggleFn, putFn, mode) {
 		}
 	}
 };
-},{"virtual-dom/h":3}],50:[function(require,module,exports){
+},{"virtual-dom/h":3}],51:[function(require,module,exports){
 "use strict";
 
 
@@ -2801,7 +2873,7 @@ function _createOptions (query) {
 	}
 }
 
-},{"./view":51}],51:[function(require,module,exports){
+},{"./view":52}],52:[function(require,module,exports){
 "use strict";
 
 var h = require("virtual-dom/h");
@@ -2828,7 +2900,7 @@ module.exports = function (fn) {
 		])
 	]);
 };
-},{"virtual-dom/h":3}],52:[function(require,module,exports){
+},{"virtual-dom/h":3}],53:[function(require,module,exports){
 "use strict";
 
 var view  = require("./view");
@@ -2849,7 +2921,7 @@ module.exports = function (utils, state) {
 
 	return that;
 };
-},{"./view":53}],53:[function(require,module,exports){
+},{"./view":54}],54:[function(require,module,exports){
 "use strict";
 
 var h = require("virtual-dom/h");
@@ -2926,7 +2998,7 @@ module.exports = function (data) {
 	}
 };
 
-},{"virtual-dom/h":3}],54:[function(require,module,exports){
+},{"virtual-dom/h":3}],55:[function(require,module,exports){
 "use strict";
 
 var view  = require("./view");
@@ -3004,7 +3076,7 @@ module.exports = function (utils) {
 
 	return;
 };
-},{"./view":55}],55:[function(require,module,exports){
+},{"./view":56}],56:[function(require,module,exports){
 "use strict";
 
 
@@ -3028,7 +3100,7 @@ module.exports = function (fn) {
 		])
 	]);
 }
-},{"virtual-dom/h":3}],56:[function(require,module,exports){
+},{"virtual-dom/h":3}],57:[function(require,module,exports){
 ;(function () {
 	"use strict";
 
@@ -3055,7 +3127,7 @@ module.exports = function (fn) {
 		console.log("Index: ", e)
 	}
 }());
-},{"./components/uploadcsv/index.js":54,"./pages/adminhome.js":57,"./pages/viewmember.js":58,"./services/request.js":59,"d-bap":61,"moment":64,"observ":79,"observ-array":70,"observ-struct":77,"torf":80,"upload-element":82,"virtual-dom/create-element":1,"virtual-dom/diff":2,"virtual-dom/h":3,"virtual-dom/patch":11}],57:[function(require,module,exports){
+},{"./components/uploadcsv/index.js":55,"./pages/adminhome.js":58,"./pages/viewmember.js":59,"./services/request.js":60,"d-bap":62,"moment":65,"observ":80,"observ-array":71,"observ-struct":78,"torf":81,"upload-element":83,"virtual-dom/create-element":1,"virtual-dom/diff":2,"virtual-dom/h":3,"virtual-dom/patch":11}],58:[function(require,module,exports){
 "use strict";
 
 var searchResultsComponent = require("../components/search/index.js");
@@ -3108,7 +3180,7 @@ module.exports = function (utils) {
 		console.log("Search page err: ", e);
 	}
 };
-},{"../components/search-box/index.js":50,"../components/search/index.js":52}],58:[function(require,module,exports){
+},{"../components/search-box/index.js":51,"../components/search/index.js":53}],59:[function(require,module,exports){
 "use strict";
 
 
@@ -3206,15 +3278,15 @@ module.exports = function (utils) {
 	}
 };
 
-},{"../components/addpayment/index.js":34,"../components/chargedonations/index.js":36,"../components/chargesubscriptions/index.js":38,"../components/displaypayments/index.js":40,"../components/memberedit/index.js":42,"../components/memberstatus/index.js":44,"../components/memberview/index.js":46,"../components/modecontrol/index.js":48}],59:[function(require,module,exports){
+},{"../components/addpayment/index.js":34,"../components/chargedonations/index.js":36,"../components/chargesubscriptions/index.js":38,"../components/displaypayments/index.js":40,"../components/memberedit/index.js":43,"../components/memberstatus/index.js":45,"../components/memberview/index.js":47,"../components/modecontrol/index.js":49}],60:[function(require,module,exports){
 "use strict";
 
 var request = require("xhr");
 
 module.exports = request;
-},{"xhr":83}],60:[function(require,module,exports){
+},{"xhr":84}],61:[function(require,module,exports){
 
-},{}],61:[function(require,module,exports){
+},{}],62:[function(require,module,exports){
 "use strict";
 
 var is = require("torf");
@@ -3270,7 +3342,7 @@ function _clone (obj){
   return temp;
 }
 
-},{"torf":62}],62:[function(require,module,exports){
+},{"torf":63}],63:[function(require,module,exports){
 'use strict';
 
 
@@ -3344,7 +3416,7 @@ function checkEmail (email, regexp){
 		return false;
 	};
 };
-},{"is-number":63}],63:[function(require,module,exports){
+},{"is-number":64}],64:[function(require,module,exports){
 /*!
  * is-number <https://github.com/jonschlinkert/is-number>
  *
@@ -3360,7 +3432,7 @@ module.exports = function isNumber(n) {
     || n === 0;
 };
 
-},{}],64:[function(require,module,exports){
+},{}],65:[function(require,module,exports){
 //! moment.js
 //! version : 2.10.3
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
@@ -6472,7 +6544,7 @@ module.exports = function isNumber(n) {
     return _moment;
 
 }));
-},{}],65:[function(require,module,exports){
+},{}],66:[function(require,module,exports){
 var setNonEnumerable = require("./lib/set-non-enumerable.js");
 
 module.exports = addListener
@@ -6502,7 +6574,7 @@ function addListener(observArray, observ) {
     })
 }
 
-},{"./lib/set-non-enumerable.js":71}],66:[function(require,module,exports){
+},{"./lib/set-non-enumerable.js":72}],67:[function(require,module,exports){
 var addListener = require('./add-listener.js')
 
 module.exports = applyPatch
@@ -6540,7 +6612,7 @@ function unpack(value, index){
     return typeof value === "function" ? value() : value
 }
 
-},{"./add-listener.js":65}],67:[function(require,module,exports){
+},{"./add-listener.js":66}],68:[function(require,module,exports){
 var ObservArray = require("./index.js")
 
 var slice = Array.prototype.slice
@@ -6607,7 +6679,7 @@ function notImplemented() {
     throw new Error("Pull request welcome")
 }
 
-},{"./array-reverse.js":68,"./array-sort.js":69,"./index.js":70}],68:[function(require,module,exports){
+},{"./array-reverse.js":69,"./array-sort.js":70,"./index.js":71}],69:[function(require,module,exports){
 var applyPatch = require("./apply-patch.js")
 var setNonEnumerable = require('./lib/set-non-enumerable.js')
 
@@ -6642,7 +6714,7 @@ function fakeDiff(arr) {
     return _diff
 }
 
-},{"./apply-patch.js":66,"./lib/set-non-enumerable.js":71}],69:[function(require,module,exports){
+},{"./apply-patch.js":67,"./lib/set-non-enumerable.js":72}],70:[function(require,module,exports){
 var applyPatch = require("./apply-patch.js")
 var setNonEnumerable = require("./lib/set-non-enumerable.js")
 
@@ -6703,7 +6775,7 @@ function indexOf(n, h) {
     return -1
 }
 
-},{"./apply-patch.js":66,"./lib/set-non-enumerable.js":71}],70:[function(require,module,exports){
+},{"./apply-patch.js":67,"./lib/set-non-enumerable.js":72}],71:[function(require,module,exports){
 var Observ = require("observ")
 
 // circular dep between ArrayMethods & this file
@@ -6790,7 +6862,7 @@ function getLength() {
     return this._list.length
 }
 
-},{"./add-listener.js":65,"./array-methods.js":67,"./put.js":73,"./set.js":74,"./splice.js":75,"./transaction.js":76,"observ":79}],71:[function(require,module,exports){
+},{"./add-listener.js":66,"./array-methods.js":68,"./put.js":74,"./set.js":75,"./splice.js":76,"./transaction.js":77,"observ":80}],72:[function(require,module,exports){
 module.exports = setNonEnumerable;
 
 function setNonEnumerable(object, key, value) {
@@ -6802,7 +6874,7 @@ function setNonEnumerable(object, key, value) {
     });
 }
 
-},{}],72:[function(require,module,exports){
+},{}],73:[function(require,module,exports){
 function head (a) {
   return a[0]
 }
@@ -7105,7 +7177,7 @@ var exports = module.exports = function (deps, exports) {
 }
 exports(null, exports)
 
-},{}],73:[function(require,module,exports){
+},{}],74:[function(require,module,exports){
 var addListener = require("./add-listener.js")
 var setNonEnumerable = require("./lib/set-non-enumerable.js");
 
@@ -7144,7 +7216,7 @@ function put(index, value) {
     obs._observSet(valueList)
     return value
 }
-},{"./add-listener.js":65,"./lib/set-non-enumerable.js":71}],74:[function(require,module,exports){
+},{"./add-listener.js":66,"./lib/set-non-enumerable.js":72}],75:[function(require,module,exports){
 var applyPatch = require("./apply-patch.js")
 var setNonEnumerable = require("./lib/set-non-enumerable.js")
 var adiff = require("adiff")
@@ -7166,7 +7238,7 @@ function set(rawList) {
     return changes
 }
 
-},{"./apply-patch.js":66,"./lib/set-non-enumerable.js":71,"adiff":72}],75:[function(require,module,exports){
+},{"./apply-patch.js":67,"./lib/set-non-enumerable.js":72,"adiff":73}],76:[function(require,module,exports){
 var slice = Array.prototype.slice
 
 var addListener = require("./add-listener.js")
@@ -7218,7 +7290,7 @@ function splice(index, amount) {
     return removed
 }
 
-},{"./add-listener.js":65,"./lib/set-non-enumerable.js":71}],76:[function(require,module,exports){
+},{"./add-listener.js":66,"./lib/set-non-enumerable.js":72}],77:[function(require,module,exports){
 module.exports = transaction
 
 function transaction (func) {
@@ -7230,7 +7302,7 @@ function transaction (func) {
     }
 
 }
-},{}],77:[function(require,module,exports){
+},{}],78:[function(require,module,exports){
 var Observ = require("observ")
 var extend = require("xtend")
 
@@ -7340,7 +7412,7 @@ function ObservStruct(struct) {
     return obs
 }
 
-},{"observ":79,"xtend":78}],78:[function(require,module,exports){
+},{"observ":80,"xtend":79}],79:[function(require,module,exports){
 module.exports = extend
 
 function extend() {
@@ -7359,7 +7431,7 @@ function extend() {
     return target
 }
 
-},{}],79:[function(require,module,exports){
+},{}],80:[function(require,module,exports){
 module.exports = Observable
 
 function Observable(value) {
@@ -7388,11 +7460,11 @@ function Observable(value) {
     }
 }
 
-},{}],80:[function(require,module,exports){
-arguments[4][62][0].apply(exports,arguments)
-},{"dup":62,"is-number":81}],81:[function(require,module,exports){
+},{}],81:[function(require,module,exports){
 arguments[4][63][0].apply(exports,arguments)
-},{"dup":63}],82:[function(require,module,exports){
+},{"dup":63,"is-number":82}],82:[function(require,module,exports){
+arguments[4][64][0].apply(exports,arguments)
+},{"dup":64}],83:[function(require,module,exports){
 module.exports = function (elem, opts, cb) {
     if (typeof opts === 'function') {
         cb = opts;
@@ -7431,7 +7503,7 @@ module.exports = function (elem, opts, cb) {
     });
 };
 
-},{}],83:[function(require,module,exports){
+},{}],84:[function(require,module,exports){
 "use strict";
 var window = require("global/window")
 var once = require("once")
@@ -7603,7 +7675,7 @@ function createXHR(options, callback) {
 
 function noop() {}
 
-},{"global/window":84,"once":85,"parse-headers":89}],84:[function(require,module,exports){
+},{"global/window":85,"once":86,"parse-headers":90}],85:[function(require,module,exports){
 (function (global){
 if (typeof window !== "undefined") {
     module.exports = window;
@@ -7616,7 +7688,7 @@ if (typeof window !== "undefined") {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],85:[function(require,module,exports){
+},{}],86:[function(require,module,exports){
 module.exports = once
 
 once.proto = once(function () {
@@ -7637,7 +7709,7 @@ function once (fn) {
   }
 }
 
-},{}],86:[function(require,module,exports){
+},{}],87:[function(require,module,exports){
 var isFunction = require('is-function')
 
 module.exports = forEach
@@ -7685,7 +7757,7 @@ function forEachObject(object, iterator, context) {
     }
 }
 
-},{"is-function":87}],87:[function(require,module,exports){
+},{"is-function":88}],88:[function(require,module,exports){
 module.exports = isFunction
 
 var toString = Object.prototype.toString
@@ -7702,7 +7774,7 @@ function isFunction (fn) {
       fn === window.prompt))
 };
 
-},{}],88:[function(require,module,exports){
+},{}],89:[function(require,module,exports){
 
 exports = module.exports = trim;
 
@@ -7718,7 +7790,7 @@ exports.right = function(str){
   return str.replace(/\s*$/, '');
 };
 
-},{}],89:[function(require,module,exports){
+},{}],90:[function(require,module,exports){
 var trim = require('trim')
   , forEach = require('for-each')
   , isArray = function(arg) {
@@ -7750,4 +7822,4 @@ module.exports = function (headers) {
 
   return result
 }
-},{"for-each":86,"trim":88}]},{},[56]);
+},{"for-each":87,"trim":89}]},{},[57]);

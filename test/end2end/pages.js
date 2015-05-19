@@ -98,8 +98,11 @@ var EditMember = module.exports.EditMember = function () {
 	var page = "edit";
 
 	this.id        = element(by.id(page + "-member-id"));
-	this.fullName  = element(by.id(page + "-member-name"));
-	this.news      = element(by.id(page + "-member-news"));
+	this.title     = element(by.id(page + "-member-title"));
+	this.initials  = element(by.id(page + "-member-initials"));
+	this.firstName = element(by.id(page + "-member-first-name"));
+	this.lastName  = element(by.id(page + "-member-last-name"));
+	this.news      = element(by.id(page + "-member-method-news-receive"));
 	this.status    = element(by.id(page + "-member-status"));
 
 	this.address1  = element(by.id(page + "-member-address1"));
@@ -109,13 +112,16 @@ var EditMember = module.exports.EditMember = function () {
 	this.county    = element(by.id(page + "-member-county"));
 	this.postcode  = element(by.id(page + "-member-postcode"));
 	this.deliverer = element(by.id(page + "-member-deliverer"));
-	this.homePhone = element(by.id(page + "-member-home-phone"));
 
 	this.registered           = element(by.id(page + "-member-status-online"));
+	this.homePhone            = element(by.id(page + "-member-home-phone"));
 	this.mobilePhone          = element(by.id(page + "-member-mobile-phone"));
 	this.workPhone            = element(by.id(page + "-member-work-phone"));
 	this.email1               = element(by.id(page + "-member-primary-email"));
 	this.email2               = element(by.id(page + "-member-secondary-email"));
+
+
+	this.membershipType       = element(by.id(page + "-member-membership-type"));
 	this.dateJoined           = element(by.id(page + "-member-date-joined"));
 	this.lifePaymentDate      = element(by.id(page + "-member-life-payment-date"));
 	this.membershipDue        = element(by.id(page + "-membership-due-date"));
