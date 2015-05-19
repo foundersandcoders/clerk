@@ -1,5 +1,5 @@
 var stop        = function(){return browser.pause()};
-var SignInPages = browser.params.helpers.pages.view.SignIn;
+var SignInPages = browser.params.helpers.pages.SignIn;
 var params      = browser.params;
 
 describe("Sign in: ", function(){

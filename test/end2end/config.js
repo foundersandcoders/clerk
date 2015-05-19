@@ -7,7 +7,7 @@ exports.config = {
 		browserName: 'chrome'
 	}],
 	specs: [
-		'./signup.spec.js',
+		"./signup.spec.js",
 		// './signin.spec.js',
 		"./admin.home.spec.js",
 		"./member.create.spec.js"
@@ -21,9 +21,8 @@ exports.config = {
 			clerk: 'http://localhost:8080'
 		},
 		helpers: {
-			pages: {
-				view: require(__dirname + '/pages.js'),
-			},
+			pages: require(__dirname + "/pages.js"),
+			mocks: require(__dirname + "/mocks.js"),
 			clear: require(__dirname + '/_helpers/form-input-object.js').clear
 		}
 	},

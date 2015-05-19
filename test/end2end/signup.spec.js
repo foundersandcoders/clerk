@@ -1,6 +1,6 @@
 var stop        = function(){return browser.pause()};
-var SignUpPages = browser.params.helpers.pages.view.SignUp;
-var SignInPages = browser.params.helpers.pages.view.SignIn;
+var SignUpPages = browser.params.helpers.pages.SignUp;
+var SignInPages = browser.params.helpers.pages.SignIn;
 var params      = browser.params;
 
 describe('As admin I can login and see admin home screen', function(){

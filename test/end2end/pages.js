@@ -15,20 +15,6 @@ var Admin = function (){
 	this.newMemberButton = element(by.id("nav-add-member"));
 };
 
-var memberMock = function (id, firstName, lastName) {
-
-	var that = {};
-
-	that.id        = id        || (Math.random()*1000000);
-	that.firstName = firstName || "Besart";
-	that.lastName  = lastName  || "Hoxhaj";
-	that.initials  = "B J H";
-	that.title     = "Mr.";
-	that.email1    = "besartshyti@gmail.com";
-
-	return that;
-};
-
 var CreateMember = function () {
 
 	var page = "add";
@@ -71,6 +57,8 @@ var ViewMember = function () {
 	this.news      = element(by.id(page + "-member-news"));
 	this.status    = element(by.id(page + "-member-status"));
 
+	this.registered = element(by.id("view-member-status-online"));
+
 	this.address1  = element(by.id(page + "-member-address1"));
 	this.address2  = element(by.id(page + "-member-address2"));
 	this.address3  = element(by.id(page + "-member-address3"));
@@ -92,46 +80,11 @@ var ViewMember = function () {
 	this.notes                = element(by.id(page + "-member-membership-notes"));
 };
 
-
-
-// mockdata
-module.exports.memberMock   = memberMock;
 // pages
 module.exports.SignUp       = SignUp;
 module.exports.SignIn       = SignIn;
 module.exports.Admin        = Admin;
 module.exports.CreateMember = CreateMember;
 module.exports.ViewMember   = ViewMember;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

@@ -1,5 +1,5 @@
 var stop        = function(){return browser.pause()};
-var AdminPages  = browser.params.helpers.pages.view.Admin;
+var AdminPages  = browser.params.helpers.pages.Admin;
 var params      = browser.params;
 
 describe("Admin home screen: ", function(){
