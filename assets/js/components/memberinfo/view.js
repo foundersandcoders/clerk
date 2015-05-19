@@ -35,7 +35,7 @@ module.exports = function (data, utils) {
 			]),
 			h("p", [
 				h("span.info", "Status: "),
-				h("span#view-member-status", member.status)
+				h("span#view-member-status", member.status.)
 			]),
 			deletedInfo(member)
 		]);

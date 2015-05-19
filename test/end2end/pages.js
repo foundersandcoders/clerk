@@ -1,4 +1,17 @@
+var Navbar = function (){
+
+	this.home        = element(by.id("nav-home"));
+	this.signup      = element(by.id("nav-signup"));
+	this.login       = element(by.id("nav-login"));
+	this.logout      = element(by.id("nav-logout"));
+	this.addMember   = element(by.id("nav-add-member"));
+	this.maintenance = element(by.id("nav-data-maintenance"));
+	this.reports     = element(by.id("nav-reports"));
+	this.emails      = element(by.id("nav-emails"));
+};
+
 var SignUp = function (){
+
 	this.email          = element(by.id("email"));
 	this.password       = element(by.id("password"));
 	this.cpassword      = element(by.id("cpassword"));
@@ -6,6 +19,7 @@ var SignUp = function (){
 };
 
 var SignIn = function (){
+
 	this.email          = element(by.id("email"));
 	this.password       = element(by.id("password"));
 	this.submit         = element(by.id("button_sign_in"));
@@ -81,6 +95,7 @@ var ViewMember = function () {
 };
 
 // pages
+module.exports.Navbar       = Navbar;
 module.exports.SignUp       = SignUp;
 module.exports.SignIn       = SignIn;
 module.exports.Admin        = Admin;
