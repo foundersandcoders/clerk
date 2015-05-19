@@ -4,8 +4,6 @@ var h = require("virtual-dom/h");
 
 module.exports = function (data, utils, mode) {
 
-  mode = "edit";
-
   // return h("div.individual-section", [
 	return ([
 		renderPersonalInfo(data),
@@ -18,7 +16,7 @@ module.exports = function (data, utils, mode) {
 		return h("div.col-1", [
 			h("h2", "Personal info"),
 			h("p", [
-        check("Name: ", fullName.call(member))
+				check("Name: ", fullName.call(member))
 			]),
 			h("p", [
 				h("span.info", "Member id: "),
@@ -33,10 +31,10 @@ module.exports = function (data, utils, mode) {
 			h("p", [
 				h("span.info", "News: "),
 			  renderOnlineStatus(member)
-      ]),
+			]),
 			h("p", [
 				h("span.info", "Status: "),
-				h("span#view-member-status", member.status.)
+				h("span#view-member-status", member.status)
 			]),
 			deletedInfo(member)
 		]);
@@ -44,16 +42,16 @@ module.exports = function (data, utils, mode) {
 
   function renderOnlineStatus (member) {
     if (mode === "edit") {
-      return h("select", [
-        h("option", {
-          selected: !!(member.onlineMember)
-        }, "Online"),
-        h("option", {
-          selected: !(member.onlineMember)
-        }, "Post")
-      ]);
+	    return h("select", [
+	        h("option", {
+	          	selected: !!(member.onlineMember)
+	        }, "Online"),
+	        h("option", {
+	            selected: !(member.onlineMember)
+	        }, "Post")
+      	]);
     } else {
-			return h("span#view-member-news", (member.onlineMember) ? "Online" : "Post");
+		return h("span#view-member-news", (member.onlineMember) ? "Online" : "Post");
     }
   }
 
@@ -101,8 +99,8 @@ module.exports = function (data, utils, mode) {
 		if(elm) {
 			return h("p", [
 				h("span.info", name),
-			  viewOrEdit(name, elm)
-      ]);
+			    viewOrEdit(name, elm)
+            ]);
 		}
 	}
 
@@ -116,7 +114,7 @@ module.exports = function (data, utils, mode) {
 
 	function checkSingle (name, elm) {
 		if(elm){
-      return viewOrEdit("#view-member-" + replaceSpaceColon.call(name), name + elm);
+            return viewOrEdit("#view-member-" + replaceSpaceColon.call(name), name + elm);
 		}
 	}
 

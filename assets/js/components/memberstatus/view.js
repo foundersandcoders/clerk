@@ -57,25 +57,24 @@ module.exports = function (status, updateType, deleteFn, reactivateFn) {
 
 
 	return h("div#status-controls", [
-			renderType(),
-			renderStatus(status)
-		]);
+		renderStatus(status)
+	]);
 
 
 
-	function renderType () {
-		return h("div.member-type-section", [
-			h("div.title-ctrl", [
-				h("p", "Change membership"),
-			]),
-			h("div.body-ctrl", [
-				h("select#member-type", renderOptions("Change Type", memberTypes)),
-				h("button.button-two.m-l-15",{
-					onclick: updateType
-				}, "Save")
-			])
-		])
-	}
+	// function renderType () {
+	// 	return h("div.member-type-section", [
+	// 		h("div.title-ctrl", [
+	// 			h("p", "Change membership"),
+	// 		]),
+	// 		h("div.body-ctrl", [
+	// 			h("select#member-type", renderOptions("Change Type", memberTypes)),
+	// 			h("button.button-two.m-l-15",{
+	// 				onclick: updateType
+	// 			}, "Save")
+	// 		])
+	// 	])
+	// }
 
 
 	function renderStatus (status) {
