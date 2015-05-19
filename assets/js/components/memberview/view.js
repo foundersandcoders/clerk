@@ -2,9 +2,8 @@
 
 var h = require("virtual-dom/h");
 
-module.exports = function (data, utils, mode) {
+module.exports = function (data, utils) {
 
-  // return h("div.individual-section", [
 	return ([
 		renderPersonalInfo(data),
 		renderAddressInfo(data),
@@ -15,44 +14,22 @@ module.exports = function (data, utils, mode) {
 
 		return h("div.col-1", [
 			h("h2", "Personal info"),
-			h("p", [
-				check("Name: ", fullName.call(member))
-			]),
-			h("p", [
-				h("span.info", "Member id: "),
-				h("span#view-member-id", member.id)
-			]),
+      check("Name: ", fullName.call(member)),
+      check("Member: ", member.id),
 			check("Primary email: ", member.email1),
 			check("Secondary email: ", member.email2),
-			h("p", [
-				h("span.info", "Bounced email: "),
-				h("span#view-member-email-bounced", member.emailBounced),
-			]),
-			h("p", [
+      check("Bounced email: ", member.emailBounced),
+      h("p", [
 				h("span.info", "News: "),
 			  renderOnlineStatus(member)
 			]),
-			h("p", [
-				h("span.info", "Status: "),
-				h("span#view-member-status", member.status)
-			]),
+      check("Status: ", member.status),
 			deletedInfo(member)
 		]);
 	}
 
   function renderOnlineStatus (member) {
-    if (mode === "edit") {
-	    return h("select", [
-	        h("option", {
-	          	selected: !!(member.onlineMember)
-	        }, "Online"),
-	        h("option", {
-	            selected: !(member.onlineMember)
-	        }, "Post")
-      	]);
-    } else {
 		return h("span#view-member-news", (member.onlineMember) ? "Online" : "Post");
-    }
   }
 
 	function renderAddressInfo (member) {
@@ -76,14 +53,8 @@ module.exports = function (data, utils, mode) {
 
 		return h("div.col-3", [
 			h("h2", "Membership info"),
-			h("p", [
-				h("span.info", "Date joined: "),
-				h("span#view-member-date-joined", utils.moment(member.dateJoined).format("DD-MM-YYYY"))
-			]),
-			h("p", [
-				h("span.info", "Membership type: "),
-				h("span#view-member-membership-type", member.membershipType)
-			]),
+      check("Date joined: ", utils.moment(member.dateJoined).format("DD-MM-YYYY")),
+      check("Membership type: ", member.membershipType),
 			renderMembershipLife(member),
 			renderMembershipLifeChanged(member),
 			renderGiftAid(member),
@@ -99,61 +70,40 @@ module.exports = function (data, utils, mode) {
 		if(elm) {
 			return h("p", [
 				h("span.info", name),
-			    viewOrEdit(name, elm)
-            ]);
+        h("span#view-member-" + replaceSpaceColon.call(name), elm)
+      ]);
 		}
 	}
 
-  function viewOrEdit (name, elm) {
-    if (mode === "edit") {
-      return input("#view-member-" + replaceSpaceColon.call(name), "text", elm);
-    } else {
-      return h("span#view-member-" + replaceSpaceColon.call(name), elm);
-    }
-  }
-
 	function checkSingle (name, elm) {
 		if(elm){
-            return viewOrEdit("#view-member-" + replaceSpaceColon.call(name), name + elm);
+      return h("p#view-member-" + replaceSpaceColon.call(name), name + elm);
 		}
 	}
 
 	function renderRegistered (member) {
 
-		return h("p", [
-			h("span.info", "Status: "),
-			h("span#view-member-status-online", (member.online) ? "registered" : "unregistered")
-		]);
+    return check("Status: ", (member.online) ? "Registered" : "Unregistered" );
 	}
 
 	function renderMembershipLifeChanged (member) {
 		if(member.dateTypeChanged && (member.membershipType === "life-double" || member.membershipType === "life-single")) {
-			return h("p", [
-				h("span.info", "Life payment date: "),
-				h("span#view-member-date-life-payment-date", member.lifePaymentDate)
-			]),
-			h("p", [
-				h("span.info", "Membership changed date: "),
-				h("span#view-member-date-type-changed", member.dateTypeChanged)
-			]);
+      return h("p", [
+        check("Life payment date: ", member.lifePaymentDate),
+        check("Membership date changed: ", member.dateTypeChanged)
+      ]);
 		}
 	}
 
 	function renderMembershipLife (member) {
 		if(member.membershipType === "life-double" || member.membershipType === "life-single") {
-			return h("p", [
-				h("span.info", "Life payment date: "),
-				h("span#view-member-membership-life", member.lifePaymentDate)
-			]);
+      return check("Life payent date: ", member.lifePaymentDate);
 		}
 	}
 
 	function renderGiftAid (member) {
 		if(member.giftAid){
-			return h("p", [
-				h("span.info", "GAD Signed: "),
-				h("span#view-member-date-gift-signed", utils.moment(member.dateGiftAidSigned).format("DD-MM-YYYY"))
-			]);
+      return check("GAD Signed: ", utils.moment(member.dateGiftAidSigned).format("DD-MM-YYYY"));
 		}
 	}
 
@@ -168,14 +118,8 @@ module.exports = function (data, utils, mode) {
 	function deletedInfo (member) {
 		if(member.status === "deleted") {
 			return h("span", [
-				h("p", [
-					h("span.info", "Deletion date: "),
-					h("span", utils.moment(member.deletionDate).format("DD-MM-YY"))
-				]),
-				h("p", [
-					h("span.info", "Deletion reason: "),
-					h("span", member.deletionReason)
-				])
+        check("Deletion date:", utils.moment(member.deletionDate).format("DD-MM-YY")),
+        check("Deletion reason: ", member.deletionReason)
 			]);
 		}
 	}
@@ -195,11 +139,3 @@ module.exports = function (data, utils, mode) {
 		return store.join(" ");
 	}
 };
-
-
-function input (ident, type, val) {
-  return h("input" + ident, {
-    type: type,
-    value: val
-  });
-}

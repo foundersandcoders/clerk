@@ -8,9 +8,9 @@ module.exports = function (utils, state) {
 
 	var that = {};
 
-	that.render = function (member) {
+	that.render = function () {
 
-		return view(member, utils, "edit");
+		return view(state.member(), utils);
 	};
 
 	that.getData = function () {

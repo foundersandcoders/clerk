@@ -4,12 +4,20 @@ var h = require("virtual-dom/h");
 
 module.exports = function (data, utils, mode) {
 
+/*	    return h("select", [
+	        h("option", {
+	          	selected: !!(member.onlineMember)
+	        }, "Online"),
+	        h("option", {
+	            selected: !(member.onlineMember)
+	        }, "Post")
+      	]);*/
   // return h("div.individual-section", [
-	return ([
+
+  return ([
 		renderPersonalInfo(data),
-		// renderAddressInfo(data),
-		// renderMembership(data)
-	]);
+    h("h3", "HEOUAHEU")
+  ]);
 
 	function renderPersonalInfo (member) {
 
@@ -200,6 +208,13 @@ module.exports = function (data, utils, mode) {
 	// }
 };
 
+
+function input (ident, type, val) {
+  return h("input" + ident, {
+    type: type,
+    value: val
+  });
+}
 
 function input (ident, type, val) {
   return h("input" + ident, {
