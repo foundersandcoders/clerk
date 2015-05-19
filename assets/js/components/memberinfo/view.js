@@ -2,9 +2,11 @@
 
 var h = require("virtual-dom/h");
 
-module.exports = function (data, utils) {
+module.exports = function (data, utils, mode) {
 
-	// return h("div.individual-section", [
+  mode = "edit";
+
+  // return h("div.individual-section", [
 	return ([
 		renderPersonalInfo(data),
 		renderAddressInfo(data),
@@ -16,8 +18,7 @@ module.exports = function (data, utils) {
 		return h("div.col-1", [
 			h("h2", "Personal info"),
 			h("p", [
-				h("span.info", "Name: "),
-				h("span#view-member-full-name", fullName.call(member))
+        check("Name: ", fullName.call(member))
 			]),
 			h("p", [
 				h("span.info", "Member id: "),
@@ -31,8 +32,8 @@ module.exports = function (data, utils) {
 			]),
 			h("p", [
 				h("span.info", "News: "),
-				h("span#view-member-news", (member.onlineMember) ? "Online" : "Post")
-			]),
+			  renderOnlineStatus(member)
+      ]),
 			h("p", [
 				h("span.info", "Status: "),
 				h("span#view-member-status", member.status)
@@ -40,6 +41,21 @@ module.exports = function (data, utils) {
 			deletedInfo(member)
 		]);
 	}
+
+  function renderOnlineStatus (member) {
+    if (mode === "edit") {
+      return h("select", [
+        h("option", {
+          selected: !!(member.onlineMember)
+        }, "Online"),
+        h("option", {
+          selected: !(member.onlineMember)
+        }, "Post")
+      ]);
+    } else {
+			return h("span#view-member-news", (member.onlineMember) ? "Online" : "Post");
+    }
+  }
 
 	function renderAddressInfo (member) {
 
@@ -59,7 +75,7 @@ module.exports = function (data, utils) {
 	}
 
 	function renderMembership (member) {
-		
+
 		return h("div.col-3", [
 			h("h2", "Membership info"),
 			h("p", [
@@ -85,14 +101,22 @@ module.exports = function (data, utils) {
 		if(elm) {
 			return h("p", [
 				h("span.info", name),
-				h("span#view-member-" + replaceSpaceColon.call(name), elm)
-			]);
+			  viewOrEdit(name, elm)
+      ]);
 		}
 	}
 
+  function viewOrEdit (name, elm) {
+    if (mode === "edit") {
+      return input("#view-member-" + replaceSpaceColon.call(name), "text", elm);
+    } else {
+      return h("span#view-member-" + replaceSpaceColon.call(name), elm);
+    }
+  }
+
 	function checkSingle (name, elm) {
 		if(elm){
-			return h("p#view-member-" + replaceSpaceColon.call(name), name + elm);
+      return viewOrEdit("#view-member-" + replaceSpaceColon.call(name), name + elm);
 		}
 	}
 
@@ -173,3 +197,11 @@ module.exports = function (data, utils) {
 		return store.join(" ");
 	}
 };
+
+
+function input (ident, type, val) {
+  return h("input" + ident, {
+    type: type,
+    value: val
+  });
+}
