@@ -209,7 +209,7 @@ if (typeof document !== 'undefined') {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"min-document":58}],9:[function(require,module,exports){
+},{"min-document":60}],9:[function(require,module,exports){
 "use strict";
 
 module.exports = function isObject(x) {
@@ -1972,7 +1972,7 @@ function _createOptions (item) {
 		url: "/api/" + item + "?memberId=" + id
 	}
 }
-},{"./view":41,"moment":62}],41:[function(require,module,exports){
+},{"./view":41,"moment":64}],41:[function(require,module,exports){
 "use strict";
 
 var h = require("virtual-dom/h");
@@ -2047,6 +2047,260 @@ module.exports = function (data, refreshFn, deleteFn, utils) {
 };
 
 },{"virtual-dom/h":3}],42:[function(require,module,exports){
+"use strict";
+
+
+var view  = require("./view");
+
+
+module.exports = function (utils, state) {
+
+	var that = {};
+
+	that.render = function () {
+
+		return view(state.member(), utils);
+	};
+
+	that.getData = function () {
+
+		utils.request(_createOptions(), function (e, h, b) {
+
+			var member = JSON.parse(b);
+			state.member.set(member);
+		});
+	};
+
+	that.getData();
+
+	return that;
+};
+
+function _createOptions () {
+
+	try{
+		var id = document.querySelector("#member-id").textContent;
+	} catch(e) {
+		console.log("Err _createOptions: ", e);
+	}
+
+	return {
+		method: "GET",
+		url: "/api/members/" + id
+	}
+}
+
+},{"./view":43}],43:[function(require,module,exports){
+"use strict";
+
+
+var h = require("virtual-dom/h");
+
+
+module.exports = function (data, utils) {
+	
+	var memberTypes = [{
+			value: "annual-single",
+			description: "Annual Single"
+		}, {
+			value: "annual-double",
+			description: "Annual Double"
+		},{
+			value: "annual-family",
+			description: "Annual Family"
+		},{
+			value: "life-single",
+			description: "Life Single"
+		},{
+			value: "life-double",
+			description: "Life Double"
+		},{
+			value: "group-annual",
+			description: "Group Annual"
+		},{
+			value: "corporate-annual",
+			description: "Corporate Annual"
+		}
+	];
+
+	return ([
+		renderPersonalInfo(data),
+		renderAddressInfo(data),
+		renderMembership(data)
+	]);
+
+	function renderPersonalInfo (member) {
+
+		return h("div.col-1", [
+			h("h2", "Personal info"),
+			check("Title: ", member.title),
+			check("Initials: ", member.initials),
+			check("First name: ", member.firstName),
+			check("Last name: ", member.lastName),
+      		check("Member id: ", member.id),
+			check("Primary email: ", member.email1),
+			check("Secondary email: ", member.email2),
+      		check("Bounced email: ", member.emailBounced),
+      		h("p", [
+				h("span.info", "News: "),
+				renderOnlineStatus(member)
+			]),
+      		check("Status: ", member.status),
+			deletedInfo(member)
+		]);
+	}
+
+  	function renderOnlineStatus (member) {
+  		return h("select", [
+	        h("option", {
+	          	selected: !!(member.onlineMember)
+	        }, "Online"),
+	        h("option", {
+	            selected: !(member.onlineMember)
+	        }, "Post")
+      	]);
+  	}
+
+	function renderType () {
+		return h("select#member-type", renderOptions("Change Type", memberTypes, data));
+	}
+
+	function renderOptions(placeholder, reasons, member){
+
+		var options = [
+			h("option", {
+				value: "",
+				disabled: true
+			}, placeholder)
+		];
+
+		return options.concat(
+			reasons.map(function (elm){
+
+				var selected = (member.membershipType === elm.value || member.membershipType === elm.description);
+
+				return h("option", {
+					value: elm.value,
+					selected: selected
+				}, elm.description)
+			})
+		);
+	}
+
+	function renderAddressInfo (member) {
+
+		return h("div.col-2", [
+			h("h2", "Address info"),
+			checkSingle("", member.address1),
+			checkSingle("", member.address2),
+			checkSingle("", member.address3),
+			checkSingle("", member.address4),
+			checkSingle("", member.county),
+			checkSingle("", member.postcode),
+			checkSingle("", member.deliverer),
+			check("Home phone: ", member.homePhone),
+			check("Work phone: ", member.workPhone),
+			check("Mobile phone: ", member.mobilePhone)
+		]);
+	}
+
+	function renderMembership (member) {
+
+		return h("div.col-3", [
+			h("h2", "Membership info"),
+      		check("Date joined: ", utils.moment(member.dateJoined).format("DD-MM-YYYY")),
+      		renderType(),
+			renderMembershipLife(member),
+			renderMembershipLifeChanged(member),
+			renderGiftAid(member),
+			renderDateGiftAidCancelled(member),
+			check("Standing order: ", member.standingOrder),
+			check("Notes:", member.membershipNotes),
+			renderRegistered(member),
+			check("Due date: ", utils.moment(member.dueDate).format("DD-MMM"))
+		]);
+	}
+
+	function check (name, elm) {
+		if(elm) {
+			return h("p", [
+				h("span.info", name),
+			    h("input#view-member-" + replaceSpaceColon.call(name), {
+			    	type: "text",
+			    	value: elm
+			    })
+            ]);
+		}
+	}
+
+	function checkSingle (name, elm) {
+		if(elm){
+        	return h("input#view-member-" + replaceSpaceColon.call(name), {
+        		type: "text",
+        		value: elm
+        	});
+		}
+	}
+
+	function renderRegistered (member) {
+
+    return check("Status: ", (member.online) ? "Registered" : "Unregistered" );
+	}
+
+	function renderMembershipLifeChanged (member) {
+		if(member.dateTypeChanged && (member.membershipType === "life-double" || member.membershipType === "life-single")) {
+      		return h("p", [
+        		check("Life payment date: ", member.lifePaymentDate),
+        		check("Membership date changed: ", member.dateTypeChanged)
+      		]);
+		}
+	}
+
+	function renderMembershipLife (member) {
+		if(member.membershipType === "life-double" || member.membershipType === "life-single") {
+      		return check("Life payent date: ", member.lifePaymentDate);
+		}
+	}
+
+	function renderGiftAid (member) {
+		if(member.giftAid){
+      		return check("GAD Signed: ", utils.moment(member.dateGiftAidSigned).format("DD-MM-YYYY"));
+		}
+	}
+
+	function renderDateGiftAidCancelled (member) {
+		if(member.dateGiftAidCancelled) {
+			return h("p", [
+				check("GAD cancelled: ", utils.moment(member.dateGiftAidCancelled).format("DD-MM-YYYY"))
+			]);
+		}
+	}
+
+	function deletedInfo (member) {
+		if(member.status === "deleted") {
+			return h("span", [
+        		check("Deletion date:", utils.moment(member.deletionDate).format("DD-MM-YY")),
+        		check("Deletion reason: ", member.deletionReason)
+			]);
+		}
+	}
+
+	function replaceSpaceColon (){
+		return this.toLowerCase().replace(" ", "-").replace(":", "");
+	}
+
+	function fullName () {
+		var store = [];
+
+		if(utils.is.ok(this.title)    ) {store.push(this.title)}
+		if(utils.is.ok(this.firstName)) {store.push(this.firstName)}
+		if(utils.is.ok(this.initials) ) {store.push(this.initials)}
+		if(utils.is.ok(this.lastName) ) {store.push(this.lastName)}
+
+		return store.join(" ");
+	}
+};
+},{"virtual-dom/h":3}],44:[function(require,module,exports){
 "use strict";
 
 
@@ -2129,7 +2383,7 @@ module.exports = function (utils, state) {
 
 	return that;
 };
-},{"./view":43}],43:[function(require,module,exports){
+},{"./view":45}],45:[function(require,module,exports){
 "use strict";
 
 var h = require("virtual-dom/h");
@@ -2163,36 +2417,9 @@ module.exports = function (status, updateType, deleteFn, reactivateFn) {
 		}
 	];
 
-	var memberTypes = [{
-			value: "annual-single",
-			description: "Annual Single"
-		}, {
-			value: "annual-double",
-			description: "Annual Double"
-		},{
-			value: "annual-family",
-			description: "Annual Family"
-		},{
-			value: "life-single",
-			description: "Life Single"
-		},{
-			value: "life-double",
-			description: "Life Double"
-		},{
-			value: "group-annual",
-			description: "Group Annual"
-		},{
-			value: "corporate-annual",
-			description: "Corporate Annual"
-		}
-	];
-
-
 	return h("div#status-controls", [
 		renderStatus(status)
 	]);
-
-
 
 	// function renderType () {
 	// 	return h("div.member-type-section", [
@@ -2261,58 +2488,16 @@ module.exports = function (status, updateType, deleteFn, reactivateFn) {
 		);
 	}
 };
-},{"virtual-dom/h":3}],44:[function(require,module,exports){
-"use strict";
-
-
-var view  = require("./view");
-
-
-module.exports = function (utils, state) {
-
-	var that = {};
-
-	that.render = function (member) {
-
-		return view(member, utils, state.mode());
-	};
-
-	that.getData = function () {
-
-		utils.request(_createOptions(), function (e, h, b) {
-
-			var member = JSON.parse(b);
-			state.member.set(member);
-		});
-	};
-
-	that.getData();
-
-	return that;
-};
-
-function _createOptions () {
-
-	try{
-		var id = document.querySelector("#member-id").textContent;
-	} catch(e) {
-		console.log("Err _createOptions: ", e);
-	}
-
-	return {
-		method: "GET",
-		url: "/api/members/" + id
-	}
-}
-
-},{"./view":45}],45:[function(require,module,exports){
+},{"virtual-dom/h":3}],46:[function(require,module,exports){
+arguments[4][42][0].apply(exports,arguments)
+},{"./view":47,"dup":42}],47:[function(require,module,exports){
 "use strict";
 
 var h = require("virtual-dom/h");
 
-module.exports = function (data, utils, mode) {
+module.exports = function (data, utils) {
 
-  // return h("div.individual-section", [
+
 	return ([
 		renderPersonalInfo(data),
 		renderAddressInfo(data),
@@ -2323,45 +2508,23 @@ module.exports = function (data, utils, mode) {
 
 		return h("div.col-1", [
 			h("h2", "Personal info"),
-			h("p", [
-				check("Name: ", fullName.call(member))
-			]),
-			h("p", [
-				h("span.info", "Member id: "),
-				h("span#view-member-id", member.id)
-			]),
+     		check("Name: ", fullName.call(member)),
+      		check("Member: ", member.id),
 			check("Primary email: ", member.email1),
 			check("Secondary email: ", member.email2),
-			h("p", [
-				h("span.info", "Bounced email: "),
-				h("span#view-member-email-bounced", member.emailBounced),
-			]),
-			h("p", [
+      		check("Bounced email: ", member.emailBounced),
+      		h("p", [
 				h("span.info", "News: "),
 				renderOnlineStatus(member)
 			]),
-			h("p", [
-				h("span.info", "Status: "),
-				h("span#view-member-status", member.status)
-			]),
+      		check("Status: ", member.status),
 			deletedInfo(member)
 		]);
 	}
 
-  function renderOnlineStatus (member) {
-    if (mode === "edit") {
-	    return h("select", [
-	        h("option", {
-	          	selected: !!(member.onlineMember)
-	        }, "Online"),
-	        h("option", {
-	            selected: !(member.onlineMember)
-	        }, "Post")
-      	]);
-    } else {
+  	function renderOnlineStatus (member) {
 		return h("span#view-member-news", (member.onlineMember) ? "Online" : "Post");
-    }
-  }
+  	}
 
 	function renderAddressInfo (member) {
 
@@ -2384,14 +2547,8 @@ module.exports = function (data, utils, mode) {
 
 		return h("div.col-3", [
 			h("h2", "Membership info"),
-			h("p", [
-				h("span.info", "Date joined: "),
-				h("span#view-member-date-joined", utils.moment(member.dateJoined).format("DD-MM-YYYY"))
-			]),
-			h("p", [
-				h("span.info", "Membership type: "),
-				h("span#view-member-membership-type", member.membershipType)
-			]),
+      		check("Date joined: ", utils.moment(member.dateJoined).format("DD-MM-YYYY")),
+      		check("Membership type: ", member.membershipType),
 			renderMembershipLife(member),
 			renderMembershipLifeChanged(member),
 			renderGiftAid(member),
@@ -2414,46 +2571,33 @@ module.exports = function (data, utils, mode) {
 
 	function checkSingle (name, elm) {
 		if(elm){
-            return h("span#view-member-" + replaceSpaceColon.call(name), elm);
+        	return h("p#view-member-" + replaceSpaceColon.call(name), name + elm);
 		}
 	}
 
 	function renderRegistered (member) {
 
-		return h("p", [
-			h("span.info", "Status: "),
-			h("span#view-member-status-online", (member.online) ? "registered" : "unregistered")
-		]);
+    return check("Status: ", (member.online) ? "Registered" : "Unregistered" );
 	}
 
 	function renderMembershipLifeChanged (member) {
 		if(member.dateTypeChanged && (member.membershipType === "life-double" || member.membershipType === "life-single")) {
-			return h("p", [
-				h("span.info", "Life payment date: "),
-				h("span#view-member-date-life-payment-date", member.lifePaymentDate)
-			]),
-			h("p", [
-				h("span.info", "Membership changed date: "),
-				h("span#view-member-date-type-changed", member.dateTypeChanged)
-			]);
+      		return h("p", [
+        		check("Life payment date: ", member.lifePaymentDate),
+        		check("Membership date changed: ", member.dateTypeChanged)
+      		]);
 		}
 	}
 
 	function renderMembershipLife (member) {
 		if(member.membershipType === "life-double" || member.membershipType === "life-single") {
-			return h("p", [
-				h("span.info", "Life payment date: "),
-				h("span#view-member-membership-life", member.lifePaymentDate)
-			]);
+      		return check("Life payent date: ", member.lifePaymentDate);
 		}
 	}
 
 	function renderGiftAid (member) {
 		if(member.giftAid){
-			return h("p", [
-				h("span.info", "GAD Signed: "),
-				h("span#view-member-date-gift-signed", utils.moment(member.dateGiftAidSigned).format("DD-MM-YYYY"))
-			]);
+      		return check("GAD Signed: ", utils.moment(member.dateGiftAidSigned).format("DD-MM-YYYY"));
 		}
 	}
 
@@ -2468,14 +2612,8 @@ module.exports = function (data, utils, mode) {
 	function deletedInfo (member) {
 		if(member.status === "deleted") {
 			return h("span", [
-				h("p", [
-					h("span.info", "Deletion date: "),
-					h("span", utils.moment(member.deletionDate).format("DD-MM-YY"))
-				]),
-				h("p", [
-					h("span.info", "Deletion reason: "),
-					h("span", member.deletionReason)
-				])
+        		check("Deletion date:", utils.moment(member.deletionDate).format("DD-MM-YY")),
+        		check("Deletion reason: ", member.deletionReason)
 			]);
 		}
 	}
@@ -2495,7 +2633,7 @@ module.exports = function (data, utils, mode) {
 		return store.join(" ");
 	}
 };
-},{"virtual-dom/h":3}],46:[function(require,module,exports){
+},{"virtual-dom/h":3}],48:[function(require,module,exports){
 "use strict";
 
 
@@ -2513,14 +2651,18 @@ module.exports = function (utils, state) {
 
 	that.putData = function () {
 
-		var payload = {
-			firstName: "Wil"
-		};
+		try {
+			var payload = {
+				firstName: "Wil",
+			};
+		} catch (e) {
+			console.log("Error in updating details: ", e);
+		}
 
 		utils.request(_createOptions(payload), function (e, h, b) {
 
-			var member = JSON.parse(b);
-			state.member.set(member);
+			// check if b is object, if not, try and JSON.parse it.
+			state.member.set(b);
 			that.toggleMode();
 		});
 	};
@@ -2534,7 +2676,7 @@ module.exports = function (utils, state) {
 	return that;
 };
 
-function _createOptions () {
+function _createOptions (payload) {
 
 	try{
 		var id = document.querySelector("#member-id").textContent;
@@ -2545,11 +2687,11 @@ function _createOptions () {
 	return {
 		method: "PUT",
 		url: "/api/members/" + id,
-		body: payload
+		json: payload
 	}
 }
 
-},{"./view":47}],47:[function(require,module,exports){
+},{"./view":49}],49:[function(require,module,exports){
 "use strict";
 
 var h = require("virtual-dom/h");
@@ -2582,7 +2724,7 @@ module.exports = function (toggleFn, putFn, mode) {
 		}
 	}
 };
-},{"virtual-dom/h":3}],48:[function(require,module,exports){
+},{"virtual-dom/h":3}],50:[function(require,module,exports){
 "use strict";
 
 
@@ -2659,7 +2801,7 @@ function _createOptions (query) {
 	}
 }
 
-},{"./view":49}],49:[function(require,module,exports){
+},{"./view":51}],51:[function(require,module,exports){
 "use strict";
 
 var h = require("virtual-dom/h");
@@ -2686,7 +2828,7 @@ module.exports = function (fn) {
 		])
 	]);
 };
-},{"virtual-dom/h":3}],50:[function(require,module,exports){
+},{"virtual-dom/h":3}],52:[function(require,module,exports){
 "use strict";
 
 var view  = require("./view");
@@ -2707,7 +2849,7 @@ module.exports = function (utils, state) {
 
 	return that;
 };
-},{"./view":51}],51:[function(require,module,exports){
+},{"./view":53}],53:[function(require,module,exports){
 "use strict";
 
 var h = require("virtual-dom/h");
@@ -2784,7 +2926,7 @@ module.exports = function (data) {
 	}
 };
 
-},{"virtual-dom/h":3}],52:[function(require,module,exports){
+},{"virtual-dom/h":3}],54:[function(require,module,exports){
 "use strict";
 
 var view  = require("./view");
@@ -2862,7 +3004,7 @@ module.exports = function (utils) {
 
 	return;
 };
-},{"./view":53}],53:[function(require,module,exports){
+},{"./view":55}],55:[function(require,module,exports){
 "use strict";
 
 
@@ -2886,7 +3028,7 @@ module.exports = function (fn) {
 		])
 	]);
 }
-},{"virtual-dom/h":3}],54:[function(require,module,exports){
+},{"virtual-dom/h":3}],56:[function(require,module,exports){
 ;(function () {
 	"use strict";
 
@@ -2913,7 +3055,7 @@ module.exports = function (fn) {
 		console.log("Index: ", e)
 	}
 }());
-},{"./components/uploadcsv/index.js":52,"./pages/adminhome.js":55,"./pages/viewmember.js":56,"./services/request.js":57,"d-bap":59,"moment":62,"observ":77,"observ-array":68,"observ-struct":75,"torf":78,"upload-element":80,"virtual-dom/create-element":1,"virtual-dom/diff":2,"virtual-dom/h":3,"virtual-dom/patch":11}],55:[function(require,module,exports){
+},{"./components/uploadcsv/index.js":54,"./pages/adminhome.js":57,"./pages/viewmember.js":58,"./services/request.js":59,"d-bap":61,"moment":64,"observ":79,"observ-array":70,"observ-struct":77,"torf":80,"upload-element":82,"virtual-dom/create-element":1,"virtual-dom/diff":2,"virtual-dom/h":3,"virtual-dom/patch":11}],57:[function(require,module,exports){
 "use strict";
 
 var searchResultsComponent = require("../components/search/index.js");
@@ -2966,7 +3108,7 @@ module.exports = function (utils) {
 		console.log("Search page err: ", e);
 	}
 };
-},{"../components/search-box/index.js":48,"../components/search/index.js":50}],56:[function(require,module,exports){
+},{"../components/search-box/index.js":50,"../components/search/index.js":52}],58:[function(require,module,exports){
 "use strict";
 
 
@@ -2975,7 +3117,7 @@ var chargeDonationComponent     = require("../components/chargedonations/index.j
 var chargeSubscriptionComponent = require("../components/chargesubscriptions/index.js");
 var displayPaymentsComponent    = require("../components/displaypayments/index.js");
 var memberViewComponent         = require("../components/memberview/index.js");
-var memberEditComponent         = require("../components/memberview/index.js");
+var memberEditComponent         = require("../components/memberedit/index.js");
 var memberStatusComponent       = require("../components/memberstatus/index.js");
 var modeControlComponent        = require("../components/modecontrol/index.js");
 
@@ -3063,15 +3205,16 @@ module.exports = function (utils) {
 		console.log("View member page err: ", e);
 	}
 };
-},{"../components/addpayment/index.js":34,"../components/chargedonations/index.js":36,"../components/chargesubscriptions/index.js":38,"../components/displaypayments/index.js":40,"../components/memberstatus/index.js":42,"../components/memberview/index.js":44,"../components/modecontrol/index.js":46}],57:[function(require,module,exports){
+
+},{"../components/addpayment/index.js":34,"../components/chargedonations/index.js":36,"../components/chargesubscriptions/index.js":38,"../components/displaypayments/index.js":40,"../components/memberedit/index.js":42,"../components/memberstatus/index.js":44,"../components/memberview/index.js":46,"../components/modecontrol/index.js":48}],59:[function(require,module,exports){
 "use strict";
 
 var request = require("xhr");
 
 module.exports = request;
-},{"xhr":81}],58:[function(require,module,exports){
+},{"xhr":83}],60:[function(require,module,exports){
 
-},{}],59:[function(require,module,exports){
+},{}],61:[function(require,module,exports){
 "use strict";
 
 var is = require("torf");
@@ -3127,7 +3270,7 @@ function _clone (obj){
   return temp;
 }
 
-},{"torf":60}],60:[function(require,module,exports){
+},{"torf":62}],62:[function(require,module,exports){
 'use strict';
 
 
@@ -3201,7 +3344,7 @@ function checkEmail (email, regexp){
 		return false;
 	};
 };
-},{"is-number":61}],61:[function(require,module,exports){
+},{"is-number":63}],63:[function(require,module,exports){
 /*!
  * is-number <https://github.com/jonschlinkert/is-number>
  *
@@ -3217,7 +3360,7 @@ module.exports = function isNumber(n) {
     || n === 0;
 };
 
-},{}],62:[function(require,module,exports){
+},{}],64:[function(require,module,exports){
 //! moment.js
 //! version : 2.10.3
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
@@ -6329,7 +6472,7 @@ module.exports = function isNumber(n) {
     return _moment;
 
 }));
-},{}],63:[function(require,module,exports){
+},{}],65:[function(require,module,exports){
 var setNonEnumerable = require("./lib/set-non-enumerable.js");
 
 module.exports = addListener
@@ -6359,7 +6502,7 @@ function addListener(observArray, observ) {
     })
 }
 
-},{"./lib/set-non-enumerable.js":69}],64:[function(require,module,exports){
+},{"./lib/set-non-enumerable.js":71}],66:[function(require,module,exports){
 var addListener = require('./add-listener.js')
 
 module.exports = applyPatch
@@ -6397,7 +6540,7 @@ function unpack(value, index){
     return typeof value === "function" ? value() : value
 }
 
-},{"./add-listener.js":63}],65:[function(require,module,exports){
+},{"./add-listener.js":65}],67:[function(require,module,exports){
 var ObservArray = require("./index.js")
 
 var slice = Array.prototype.slice
@@ -6464,7 +6607,7 @@ function notImplemented() {
     throw new Error("Pull request welcome")
 }
 
-},{"./array-reverse.js":66,"./array-sort.js":67,"./index.js":68}],66:[function(require,module,exports){
+},{"./array-reverse.js":68,"./array-sort.js":69,"./index.js":70}],68:[function(require,module,exports){
 var applyPatch = require("./apply-patch.js")
 var setNonEnumerable = require('./lib/set-non-enumerable.js')
 
@@ -6499,7 +6642,7 @@ function fakeDiff(arr) {
     return _diff
 }
 
-},{"./apply-patch.js":64,"./lib/set-non-enumerable.js":69}],67:[function(require,module,exports){
+},{"./apply-patch.js":66,"./lib/set-non-enumerable.js":71}],69:[function(require,module,exports){
 var applyPatch = require("./apply-patch.js")
 var setNonEnumerable = require("./lib/set-non-enumerable.js")
 
@@ -6560,7 +6703,7 @@ function indexOf(n, h) {
     return -1
 }
 
-},{"./apply-patch.js":64,"./lib/set-non-enumerable.js":69}],68:[function(require,module,exports){
+},{"./apply-patch.js":66,"./lib/set-non-enumerable.js":71}],70:[function(require,module,exports){
 var Observ = require("observ")
 
 // circular dep between ArrayMethods & this file
@@ -6647,7 +6790,7 @@ function getLength() {
     return this._list.length
 }
 
-},{"./add-listener.js":63,"./array-methods.js":65,"./put.js":71,"./set.js":72,"./splice.js":73,"./transaction.js":74,"observ":77}],69:[function(require,module,exports){
+},{"./add-listener.js":65,"./array-methods.js":67,"./put.js":73,"./set.js":74,"./splice.js":75,"./transaction.js":76,"observ":79}],71:[function(require,module,exports){
 module.exports = setNonEnumerable;
 
 function setNonEnumerable(object, key, value) {
@@ -6659,7 +6802,7 @@ function setNonEnumerable(object, key, value) {
     });
 }
 
-},{}],70:[function(require,module,exports){
+},{}],72:[function(require,module,exports){
 function head (a) {
   return a[0]
 }
@@ -6962,7 +7105,7 @@ var exports = module.exports = function (deps, exports) {
 }
 exports(null, exports)
 
-},{}],71:[function(require,module,exports){
+},{}],73:[function(require,module,exports){
 var addListener = require("./add-listener.js")
 var setNonEnumerable = require("./lib/set-non-enumerable.js");
 
@@ -7001,7 +7144,7 @@ function put(index, value) {
     obs._observSet(valueList)
     return value
 }
-},{"./add-listener.js":63,"./lib/set-non-enumerable.js":69}],72:[function(require,module,exports){
+},{"./add-listener.js":65,"./lib/set-non-enumerable.js":71}],74:[function(require,module,exports){
 var applyPatch = require("./apply-patch.js")
 var setNonEnumerable = require("./lib/set-non-enumerable.js")
 var adiff = require("adiff")
@@ -7023,7 +7166,7 @@ function set(rawList) {
     return changes
 }
 
-},{"./apply-patch.js":64,"./lib/set-non-enumerable.js":69,"adiff":70}],73:[function(require,module,exports){
+},{"./apply-patch.js":66,"./lib/set-non-enumerable.js":71,"adiff":72}],75:[function(require,module,exports){
 var slice = Array.prototype.slice
 
 var addListener = require("./add-listener.js")
@@ -7075,7 +7218,7 @@ function splice(index, amount) {
     return removed
 }
 
-},{"./add-listener.js":63,"./lib/set-non-enumerable.js":69}],74:[function(require,module,exports){
+},{"./add-listener.js":65,"./lib/set-non-enumerable.js":71}],76:[function(require,module,exports){
 module.exports = transaction
 
 function transaction (func) {
@@ -7087,7 +7230,7 @@ function transaction (func) {
     }
 
 }
-},{}],75:[function(require,module,exports){
+},{}],77:[function(require,module,exports){
 var Observ = require("observ")
 var extend = require("xtend")
 
@@ -7197,7 +7340,7 @@ function ObservStruct(struct) {
     return obs
 }
 
-},{"observ":77,"xtend":76}],76:[function(require,module,exports){
+},{"observ":79,"xtend":78}],78:[function(require,module,exports){
 module.exports = extend
 
 function extend() {
@@ -7216,7 +7359,7 @@ function extend() {
     return target
 }
 
-},{}],77:[function(require,module,exports){
+},{}],79:[function(require,module,exports){
 module.exports = Observable
 
 function Observable(value) {
@@ -7245,11 +7388,11 @@ function Observable(value) {
     }
 }
 
-},{}],78:[function(require,module,exports){
-arguments[4][60][0].apply(exports,arguments)
-},{"dup":60,"is-number":79}],79:[function(require,module,exports){
-arguments[4][61][0].apply(exports,arguments)
-},{"dup":61}],80:[function(require,module,exports){
+},{}],80:[function(require,module,exports){
+arguments[4][62][0].apply(exports,arguments)
+},{"dup":62,"is-number":81}],81:[function(require,module,exports){
+arguments[4][63][0].apply(exports,arguments)
+},{"dup":63}],82:[function(require,module,exports){
 module.exports = function (elem, opts, cb) {
     if (typeof opts === 'function') {
         cb = opts;
@@ -7288,7 +7431,7 @@ module.exports = function (elem, opts, cb) {
     });
 };
 
-},{}],81:[function(require,module,exports){
+},{}],83:[function(require,module,exports){
 "use strict";
 var window = require("global/window")
 var once = require("once")
@@ -7460,7 +7603,7 @@ function createXHR(options, callback) {
 
 function noop() {}
 
-},{"global/window":82,"once":83,"parse-headers":87}],82:[function(require,module,exports){
+},{"global/window":84,"once":85,"parse-headers":89}],84:[function(require,module,exports){
 (function (global){
 if (typeof window !== "undefined") {
     module.exports = window;
@@ -7473,7 +7616,7 @@ if (typeof window !== "undefined") {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],83:[function(require,module,exports){
+},{}],85:[function(require,module,exports){
 module.exports = once
 
 once.proto = once(function () {
@@ -7494,7 +7637,7 @@ function once (fn) {
   }
 }
 
-},{}],84:[function(require,module,exports){
+},{}],86:[function(require,module,exports){
 var isFunction = require('is-function')
 
 module.exports = forEach
@@ -7542,7 +7685,7 @@ function forEachObject(object, iterator, context) {
     }
 }
 
-},{"is-function":85}],85:[function(require,module,exports){
+},{"is-function":87}],87:[function(require,module,exports){
 module.exports = isFunction
 
 var toString = Object.prototype.toString
@@ -7559,7 +7702,7 @@ function isFunction (fn) {
       fn === window.prompt))
 };
 
-},{}],86:[function(require,module,exports){
+},{}],88:[function(require,module,exports){
 
 exports = module.exports = trim;
 
@@ -7575,7 +7718,7 @@ exports.right = function(str){
   return str.replace(/\s*$/, '');
 };
 
-},{}],87:[function(require,module,exports){
+},{}],89:[function(require,module,exports){
 var trim = require('trim')
   , forEach = require('for-each')
   , isArray = function(arg) {
@@ -7607,4 +7750,4 @@ module.exports = function (headers) {
 
   return result
 }
-},{"for-each":84,"trim":86}]},{},[54]);
+},{"for-each":86,"trim":88}]},{},[56]);

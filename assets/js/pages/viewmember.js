@@ -6,7 +6,7 @@ var chargeDonationComponent     = require("../components/chargedonations/index.j
 var chargeSubscriptionComponent = require("../components/chargesubscriptions/index.js");
 var displayPaymentsComponent    = require("../components/displaypayments/index.js");
 var memberViewComponent         = require("../components/memberview/index.js");
-var memberEditComponent         = require("../components/memberview/index.js");
+var memberEditComponent         = require("../components/memberedit/index.js");
 var memberStatusComponent       = require("../components/memberstatus/index.js");
 var modeControlComponent        = require("../components/modecontrol/index.js");
 

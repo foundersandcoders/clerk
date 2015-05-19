@@ -31,36 +31,9 @@ module.exports = function (status, updateType, deleteFn, reactivateFn) {
 		}
 	];
 
-	var memberTypes = [{
-			value: "annual-single",
-			description: "Annual Single"
-		}, {
-			value: "annual-double",
-			description: "Annual Double"
-		},{
-			value: "annual-family",
-			description: "Annual Family"
-		},{
-			value: "life-single",
-			description: "Life Single"
-		},{
-			value: "life-double",
-			description: "Life Double"
-		},{
-			value: "group-annual",
-			description: "Group Annual"
-		},{
-			value: "corporate-annual",
-			description: "Corporate Annual"
-		}
-	];
-
-
 	return h("div#status-controls", [
 		renderStatus(status)
 	]);
-
-
 
 	// function renderType () {
 	// 	return h("div.member-type-section", [

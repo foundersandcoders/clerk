@@ -1,52 +1,64 @@
 "use strict";
 
+
 var h = require("virtual-dom/h");
 
-module.exports = function (data, utils, mode) {
 
-  // return h("div.individual-section", [
+module.exports = function (data, utils) {
+	
+	var memberTypes = [{
+			value: "annual-single",
+			description: "Annual Single"
+		}, {
+			value: "annual-double",
+			description: "Annual Double"
+		},{
+			value: "annual-family",
+			description: "Annual Family"
+		},{
+			value: "life-single",
+			description: "Life Single"
+		},{
+			value: "life-double",
+			description: "Life Double"
+		},{
+			value: "group-annual",
+			description: "Group Annual"
+		},{
+			value: "corporate-annual",
+			description: "Corporate Annual"
+		}
+	];
+
 	return ([
 		renderPersonalInfo(data),
-		// renderAddressInfo(data),
-		// renderMembership(data)
+		renderAddressInfo(data),
+		renderMembership(data)
 	]);
 
 	function renderPersonalInfo (member) {
 
 		return h("div.col-1", [
 			h("h2", "Personal info"),
-			h("p", [
-				h("span.info", "Date joined: "),
-				h("input#view-member-date-joined", {
-					type: "text",
-					value: member.firstName
-				})
-			])
-			// h("p", [
-			// 	h("span.info", "Member id: "),
-			// 	h("span#view-member-id", member.id)
-			// ]),
-			// check("Primary email: ", member.email1),
-			// check("Secondary email: ", member.email2),
-			// h("p", [
-			// 	h("span.info", "Bounced email: "),
-			// 	h("span#view-member-email-bounced", member.emailBounced),
-			// ]),
-			// h("p", [
-			// 	h("span.info", "News: "),
-			//   renderOnlineStatus(member)
-			// ]),
-			// h("p", [
-			// 	h("span.info", "Status: "),
-			// 	h("span#view-member-status", member.status)
-			// ]),
-			// deletedInfo(member)
+			check("Title: ", member.title),
+			check("Initials: ", member.initials),
+			check("First name: ", member.firstName),
+			check("Last name: ", member.lastName),
+      		check("Member id: ", member.id),
+			check("Primary email: ", member.email1),
+			check("Secondary email: ", member.email2),
+      		check("Bounced email: ", member.emailBounced),
+      		h("p", [
+				h("span.info", "News: "),
+				renderOnlineStatus(member)
+			]),
+      		check("Status: ", member.status),
+			deletedInfo(member)
 		]);
 	}
 
-  function renderOnlineStatus (member) {
-    if (mode === "edit") {
-	    return h("select", [
+  	function renderOnlineStatus (member) {
+  		return h("select", [
 	        h("option", {
 	          	selected: !!(member.onlineMember)
 	        }, "Online"),
@@ -54,10 +66,33 @@ module.exports = function (data, utils, mode) {
 	            selected: !(member.onlineMember)
 	        }, "Post")
       	]);
-    } else {
-		return h("span#view-member-news", (member.onlineMember) ? "Online" : "Post");
-    }
-  }
+  	}
+
+	function renderType () {
+		return h("select#member-type", renderOptions("Change Type", memberTypes, data));
+	}
+
+	function renderOptions(placeholder, reasons, member){
+
+		var options = [
+			h("option", {
+				value: "",
+				disabled: true
+			}, placeholder)
+		];
+
+		return options.concat(
+			reasons.map(function (elm){
+
+				var selected = (member.membershipType === elm.value || member.membershipType === elm.description);
+
+				return h("option", {
+					value: elm.value,
+					selected: selected
+				}, elm.description)
+			})
+		);
+	}
 
 	function renderAddressInfo (member) {
 
@@ -80,14 +115,8 @@ module.exports = function (data, utils, mode) {
 
 		return h("div.col-3", [
 			h("h2", "Membership info"),
-			h("p", [
-				h("span.info", "Date joined: "),
-				h("span#view-member-date-joined", utils.moment(member.dateJoined).format("DD-MM-YYYY"))
-			]),
-			h("p", [
-				h("span.info", "Membership type: "),
-				h("span#view-member-membership-type", member.membershipType)
-			]),
+      		check("Date joined: ", utils.moment(member.dateJoined).format("DD-MM-YYYY")),
+      		renderType(),
 			renderMembershipLife(member),
 			renderMembershipLifeChanged(member),
 			renderGiftAid(member),
@@ -103,61 +132,46 @@ module.exports = function (data, utils, mode) {
 		if(elm) {
 			return h("p", [
 				h("span.info", name),
-			    viewOrEdit(name, elm)
+			    h("input#view-member-" + replaceSpaceColon.call(name), {
+			    	type: "text",
+			    	value: elm
+			    })
             ]);
 		}
 	}
 
-  function viewOrEdit (name, elm) {
-    if (mode === "edit") {
-      return input("#view-member-" + replaceSpaceColon.call(name), "text", elm);
-    } else {
-      return h("span#view-member-" + replaceSpaceColon.call(name), elm);
-    }
-  }
-
 	function checkSingle (name, elm) {
 		if(elm){
-            return viewOrEdit("#view-member-" + replaceSpaceColon.call(name), name + elm);
+        	return h("input#view-member-" + replaceSpaceColon.call(name), {
+        		type: "text",
+        		value: elm
+        	});
 		}
 	}
 
 	function renderRegistered (member) {
 
-		return h("p", [
-			h("span.info", "Status: "),
-			h("span#view-member-status-online", (member.online) ? "registered" : "unregistered")
-		]);
+    return check("Status: ", (member.online) ? "Registered" : "Unregistered" );
 	}
 
 	function renderMembershipLifeChanged (member) {
 		if(member.dateTypeChanged && (member.membershipType === "life-double" || member.membershipType === "life-single")) {
-			return h("p", [
-				h("span.info", "Life payment date: "),
-				h("span#view-member-date-life-payment-date", member.lifePaymentDate)
-			]),
-			h("p", [
-				h("span.info", "Membership changed date: "),
-				h("span#view-member-date-type-changed", member.dateTypeChanged)
-			]);
+      		return h("p", [
+        		check("Life payment date: ", member.lifePaymentDate),
+        		check("Membership date changed: ", member.dateTypeChanged)
+      		]);
 		}
 	}
 
 	function renderMembershipLife (member) {
 		if(member.membershipType === "life-double" || member.membershipType === "life-single") {
-			return h("p", [
-				h("span.info", "Life payment date: "),
-				h("span#view-member-membership-life", member.lifePaymentDate)
-			]);
+      		return check("Life payent date: ", member.lifePaymentDate);
 		}
 	}
 
 	function renderGiftAid (member) {
 		if(member.giftAid){
-			return h("p", [
-				h("span.info", "GAD Signed: "),
-				h("span#view-member-date-gift-signed", utils.moment(member.dateGiftAidSigned).format("DD-MM-YYYY"))
-			]);
+      		return check("GAD Signed: ", utils.moment(member.dateGiftAidSigned).format("DD-MM-YYYY"));
 		}
 	}
 
@@ -172,14 +186,8 @@ module.exports = function (data, utils, mode) {
 	function deletedInfo (member) {
 		if(member.status === "deleted") {
 			return h("span", [
-				h("p", [
-					h("span.info", "Deletion date: "),
-					h("span", utils.moment(member.deletionDate).format("DD-MM-YY"))
-				]),
-				h("p", [
-					h("span.info", "Deletion reason: "),
-					h("span", member.deletionReason)
-				])
+        		check("Deletion date:", utils.moment(member.deletionDate).format("DD-MM-YY")),
+        		check("Deletion reason: ", member.deletionReason)
 			]);
 		}
 	}
@@ -188,22 +196,14 @@ module.exports = function (data, utils, mode) {
 		return this.toLowerCase().replace(" ", "-").replace(":", "");
 	}
 
-	// function fullName () {
-	// 	var store = [];
+	function fullName () {
+		var store = [];
 
-	// 	if(utils.is.ok(this.title)    ) {store.push(this.title)}
-	// 	if(utils.is.ok(this.firstName)) {store.push(this.firstName)}
-	// 	if(utils.is.ok(this.initials) ) {store.push(this.initials)}
-	// 	if(utils.is.ok(this.lastName) ) {store.push(this.lastName)}
+		if(utils.is.ok(this.title)    ) {store.push(this.title)}
+		if(utils.is.ok(this.firstName)) {store.push(this.firstName)}
+		if(utils.is.ok(this.initials) ) {store.push(this.initials)}
+		if(utils.is.ok(this.lastName) ) {store.push(this.lastName)}
 
-	// 	return store.join(" ");
-	// }
+		return store.join(" ");
+	}
 };
-
-
-function input (ident, type, val) {
-  return h("input" + ident, {
-    type: type,
-    value: val
-  });
-}

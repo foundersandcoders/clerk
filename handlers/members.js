@@ -46,7 +46,11 @@ module.exports = function (members) {
 
       var member = clean.object(req.payload);
 
+      console.log("member: ", req.payload);
+
       members.update({id: req.params.id}, member, req.auth.credentials.token, function (e, r) {
+
+        console.log(e);
 
         if (e) {
           return res(e).code(500);

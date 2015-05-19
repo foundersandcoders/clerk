@@ -5,7 +5,6 @@ var CreateMember = browser.params.helpers.pages.CreateMember;
 var ViewMember   = browser.params.helpers.pages.ViewMember;
 var params       = browser.params;
 
-
 describe("Create member: ", function(){
 	var memberAdd  = new CreateMember();
 	var memberView = new ViewMember();

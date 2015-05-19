@@ -15,14 +15,18 @@ module.exports = function (utils, state) {
 
 	that.putData = function () {
 
-		var payload = {
-			firstName: "Wil"
-		};
+		try {
+			var payload = {
+				firstName: "Wil",
+			};
+		} catch (e) {
+			console.log("Error in updating details: ", e);
+		}
 
 		utils.request(_createOptions(payload), function (e, h, b) {
 
-			var member = JSON.parse(b);
-			state.member.set(member);
+			// check if b is object, if not, try and JSON.parse it.
+			state.member.set(b);
 			that.toggleMode();
 		});
 	};
@@ -36,7 +40,7 @@ module.exports = function (utils, state) {
 	return that;
 };
 
-function _createOptions () {
+function _createOptions (payload) {
 
 	try{
 		var id = document.querySelector("#member-id").textContent;
@@ -47,6 +51,6 @@ function _createOptions () {
 	return {
 		method: "PUT",
 		url: "/api/members/" + id,
-		body: payload
+		json: payload
 	}
 }
