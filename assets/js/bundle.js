@@ -2016,28 +2016,28 @@ module.exports = function (data, refreshFn, deleteFn, utils) {
 
 			return h("div.row", [
 				h("div.col-1", [
-					h("p", utils.moment(elm.date).format("DD-MM-YYYY"))
+					h("p#member-payment-date", utils.moment(elm.date).format("DD-MM-YYYY"))
 				]),
 				h("div.col-2", [
-					h("p", elm.description)
+					h("p#member-payment-description", elm.description)
 				]),
 				h("div.col-3", [
-					h("p", (elm.collection === "charges") ? elm.total : "")
+					h("p#member-payment-charges", (elm.collection === "charges") ? elm.total : "")
 				]),
 				h("div.col-3", [
-					h("p", (elm.collection === "payments") ? elm.total : "")
+					h("p#member-payment-payments", (elm.collection === "payments") ? elm.total : "")
 				]),
 				h("div.col-4", [
-					h("p", "?")
+					h("p#member-payment-balance-due", "?")
 				]),
 				h("div.col-5", [
-					h("p", elm.listReference)
+					h("p#member-payment-reference", elm.listReference)
 				]),
 				h("div.col-6", [
-					h("p", elm.notes)
+					h("p#member-payment-notes", elm.notes)
 				]),
 				h("div.col-7", [
-					h("p", {
+					h("p#member-payment-delete", {
             			onclick: deleteFn(elm.collection, elm.id)
 					}, "x")
 				])
@@ -2338,7 +2338,7 @@ module.exports = function (data, utils, mode) {
 			]),
 			h("p", [
 				h("span.info", "News: "),
-			  renderOnlineStatus(member)
+				renderOnlineStatus(member)
 			]),
 			h("p", [
 				h("span.info", "Status: "),
@@ -2407,22 +2407,14 @@ module.exports = function (data, utils, mode) {
 		if(elm) {
 			return h("p", [
 				h("span.info", name),
-			    viewOrEdit(name, elm)
+			    h("span#view-member-" + replaceSpaceColon.call(name), elm)
             ]);
 		}
 	}
 
-  function viewOrEdit (name, elm) {
-    if (mode === "edit") {
-      return input("#view-member-" + replaceSpaceColon.call(name), "text", elm);
-    } else {
-      return h("span#view-member-" + replaceSpaceColon.call(name), elm);
-    }
-  }
-
 	function checkSingle (name, elm) {
 		if(elm){
-            return viewOrEdit("#view-member-" + replaceSpaceColon.call(name), name + elm);
+            return h("span#view-member-" + replaceSpaceColon.call(name), elm);
 		}
 	}
 
@@ -2503,15 +2495,6 @@ module.exports = function (data, utils, mode) {
 		return store.join(" ");
 	}
 };
-
-
-function input (ident, type, val) {
-  return h("input" + ident, {
-    type: type,
-    value: val
-  });
-}
-
 },{"virtual-dom/h":3}],46:[function(require,module,exports){
 "use strict";
 

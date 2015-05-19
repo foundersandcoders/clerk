@@ -30,7 +30,7 @@ module.exports = function (data, utils, mode) {
 			]),
 			h("p", [
 				h("span.info", "News: "),
-			  renderOnlineStatus(member)
+				renderOnlineStatus(member)
 			]),
 			h("p", [
 				h("span.info", "Status: "),
@@ -99,22 +99,14 @@ module.exports = function (data, utils, mode) {
 		if(elm) {
 			return h("p", [
 				h("span.info", name),
-			    viewOrEdit(name, elm)
+			    h("span#view-member-" + replaceSpaceColon.call(name), elm)
             ]);
 		}
 	}
 
-  function viewOrEdit (name, elm) {
-    if (mode === "edit") {
-      return input("#view-member-" + replaceSpaceColon.call(name), "text", elm);
-    } else {
-      return h("span#view-member-" + replaceSpaceColon.call(name), elm);
-    }
-  }
-
 	function checkSingle (name, elm) {
 		if(elm){
-            return viewOrEdit("#view-member-" + replaceSpaceColon.call(name), name + elm);
+            return h("span#view-member-" + replaceSpaceColon.call(name), elm);
 		}
 	}
 
@@ -195,11 +187,3 @@ module.exports = function (data, utils, mode) {
 		return store.join(" ");
 	}
 };
-
-
-function input (ident, type, val) {
-  return h("input" + ident, {
-    type: type,
-    value: val
-  });
-}

@@ -1,4 +1,4 @@
-var Navbar = function (){
+var Navbar = module.exports.Navbar = function (){
 
 	this.home        = element(by.id("nav-home"));
 	this.signup      = element(by.id("nav-signup"));
@@ -10,7 +10,7 @@ var Navbar = function (){
 	this.emails      = element(by.id("nav-emails"));
 };
 
-var SignUp = function (){
+var SignUp = module.exports.SignUp = function (){
 
 	this.email          = element(by.id("email"));
 	this.password       = element(by.id("password"));
@@ -18,18 +18,18 @@ var SignUp = function (){
 	this.submit         = element(by.id("button_sign_up"));
 };
 
-var SignIn = function (){
+var SignIn = module.exports.SignIn = function (){
 
 	this.email          = element(by.id("email"));
 	this.password       = element(by.id("password"));
 	this.submit         = element(by.id("button_sign_in"));
 };
 
-var Admin = function (){
+var Admin = module.exports.Admin = function (){
 	this.newMemberButton = element(by.id("nav-add-member"));
 };
 
-var CreateMember = function () {
+var CreateMember = module.exports.CreateMember = function () {
 
 	var page = "add";
 
@@ -62,16 +62,14 @@ var CreateMember = function () {
 	this.cancelButton = element(by.id("cancel-member-btn"));
 };
 
-var ViewMember = function () {
+var ViewMember = module.exports.ViewMember = function () {
 
 	var page = "view";
 
 	this.id        = element(by.id(page + "-member-id"));
-	this.fullName  = element(by.id(page + "-member-full-name"));
+	this.fullName  = element(by.id(page + "-member-name"));
 	this.news      = element(by.id(page + "-member-news"));
 	this.status    = element(by.id(page + "-member-status"));
-
-	this.registered = element(by.id("view-member-status-online"));
 
 	this.address1  = element(by.id(page + "-member-address1"));
 	this.address2  = element(by.id(page + "-member-address2"));
@@ -82,6 +80,7 @@ var ViewMember = function () {
 	this.deliverer = element(by.id(page + "-member-deliverer"));
 	this.homePhone = element(by.id(page + "-member-home-phone"));
 
+	this.registered           = element(by.id(page + "-member-status-online"));
 	this.mobilePhone          = element(by.id(page + "-member-mobile-phone"));
 	this.workPhone            = element(by.id(page + "-member-work-phone"));
 	this.email1               = element(by.id(page + "-member-primary-email"));
@@ -94,12 +93,81 @@ var ViewMember = function () {
 	this.notes                = element(by.id(page + "-member-membership-notes"));
 };
 
-// pages
-module.exports.Navbar       = Navbar;
-module.exports.SignUp       = SignUp;
-module.exports.SignIn       = SignIn;
-module.exports.Admin        = Admin;
-module.exports.CreateMember = CreateMember;
-module.exports.ViewMember   = ViewMember;
+var EditMember = module.exports.EditMember = function () {
+
+	var page = "edit";
+
+	this.id        = element(by.id(page + "-member-id"));
+	this.fullName  = element(by.id(page + "-member-name"));
+	this.news      = element(by.id(page + "-member-news"));
+	this.status    = element(by.id(page + "-member-status"));
+
+	this.address1  = element(by.id(page + "-member-address1"));
+	this.address2  = element(by.id(page + "-member-address2"));
+	this.address3  = element(by.id(page + "-member-address3"));
+	this.address4  = element(by.id(page + "-member-address4"));
+	this.county    = element(by.id(page + "-member-county"));
+	this.postcode  = element(by.id(page + "-member-postcode"));
+	this.deliverer = element(by.id(page + "-member-deliverer"));
+	this.homePhone = element(by.id(page + "-member-home-phone"));
+
+	this.registered           = element(by.id(page + "-member-status-online"));
+	this.mobilePhone          = element(by.id(page + "-member-mobile-phone"));
+	this.workPhone            = element(by.id(page + "-member-work-phone"));
+	this.email1               = element(by.id(page + "-member-primary-email"));
+	this.email2               = element(by.id(page + "-member-secondary-email"));
+	this.dateJoined           = element(by.id(page + "-member-date-joined"));
+	this.lifePaymentDate      = element(by.id(page + "-member-life-payment-date"));
+	this.membershipDue        = element(by.id(page + "-membership-due-date"));
+	this.giftAidSignedDate    = element(by.id(page + "-member-date-gift-aid-signed"));
+	this.giftAidCancelledDate = element(by.id(page + "-member-date-gift-cancelled"));
+	this.notes                = element(by.id(page + "-member-membership-notes"));
+};
+
+var PaymentMember = module.exports.PaymentMember = function () {
+
+	this.dateS        = element(by.id("member-payment-date"));
+	this.descriptionS = element(by.id("member-payment-description"));
+	this.chargeS      = element(by.id("member-payment-charges"));
+	this.paymentS     = element(by.id("member-balance-due"));
+	this.balanceDueS  = element(by.id("member-payment-balance-due"));
+	this.referenceS   = element(by.id("member-payment-reference"));
+	this.noteS        = element(by.id("member-payment-notes"));
+	this.deleteS      = element(by.id("member-payment-delete"));
+};
+
+var MemberPaymentsControls = module.exports.MemberPaymentsControls = function () {
+
+	this.modeToEditBtn   = element(by.id("member-controls-mode-to-edit"));
+	this.deleteBtn       = element(by.id("member-controls-delete-btn"));
+	this.deletionReasons = element(by.id(""));
+
+	// subscriptions
+	this.subAmount       = element(by.id("member-controls-subscription-amount"));
+	this.subBtn          = element(by.id("member-controls-subscription-pay-btn"));
+	this.subRefundBtn    = element(by.id("member-controls-subscription-refund-btn"));
+
+	// donation
+	this.donationAmount  = element(by.id("member-controls-donation-amount"));
+	this.donationNote    = element(by.id("member-controls-donation-note"));
+	this.donationPay     = element(by.id("member-controls-donation-pay"));
+
+	// payment
+	this.paymentDate      = element(by.id("member-controls-payment-date"));
+	this.paymentType      = element(by.id("member-controls-payment-type"));
+	this.paymentReference = element(by.id("member-controls-payment-reference"));
+	this.paymentAmount    = element(by.id("member-controls-payment-amount"));
+	this.paymentNote      = element(by.id("member-controls-payment-note"));
+};
+
+
+
+
+
+
+
+
+
+
 
 
