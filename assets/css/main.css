@@ -208,7 +208,9 @@ nav {
   display: -webkit-flex;
   display: flex;
   -webkit-flex-flow: row wrap;
-  justify-content: flex-end; }
+  justify-content: flex-end;
+  border-bottom: 1px solid #dbdbdb;
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1); }
 
 .navigation a {
   text-decoration: none;
@@ -625,6 +627,8 @@ div.gbp {
   align-items: center; }
 
 .search-container {
+  border-bottom: 1px solid #dbdbdb;
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
   height: auto;
   max-width: 1000px;
   background-color: #fff;
