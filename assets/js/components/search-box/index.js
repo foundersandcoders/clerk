@@ -17,22 +17,42 @@ module.exports = function (utils, state) {
 
 	    var selectStatus = document.querySelector("#member-status");
 
-		var query = {
-			id:       document.querySelector("#search-field-id").value,
-			email1:   document.querySelector("#search-field-email").value,
-			lastName: document.querySelector("#search-field-lastName").value,
-      		status:   selectStatus.options[selectStatus.selectedIndex].value
-		};
+	    try {
+			var query = {
+				id:       document.querySelector("#search-field-id").value,
+				email1:   '"' + document.querySelector("#search-field-email").value + '"',
+				lastName: document.querySelector("#search-field-lastName").value + "*",
+				status:   selectStatus.options[selectStatus.selectedIndex].value
+			};
+		} catch (e) {
+			console.log("Error with query serach param: ", e);
+		}
 
 		utils.request(_createOptions(utils.clean.object(query)), function (e, h, b) {
 
 			var members = JSON.parse(b);
-			state.members.set(members);
+
+			if(checkQuery(query, JSON.parse(b))) {
+				window.location = "/members/" + members[0].id
+			} else {			
+				state.members.set(members);
+			}
 		});
 	};
 	
 	return that;
 };
+
+function checkQuery (query, members) {
+
+	query.email1 = query.email1.replace(/"/g, '');
+
+	return (
+		(query.id || query.email1) 
+		&& members.length === 1 
+		&& (query.id === members[0].id || query.email1 === members[0].email1)
+	);
+}
 
 function _createQuery(query) {
 

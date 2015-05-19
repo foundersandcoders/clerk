@@ -4,7 +4,7 @@
   "description": "Membership management for Friends of Chichester Harbour",
   "main": "index.js",
   "scripts": {
-    "end2end": "node ./test/acceptance/index.js",
+    "end2end": "protractor ./test/end2end/config.js",
     "test": "tape ./test/*.test.js",
     "test-end": "tape ./test/frontend/*.test.js",
     "jshint": "jshint -c ./.jshintrc --exclude-path .gitignore .",
@@ -28,13 +28,17 @@
     "browserify": "^10.0.0",
     "faster": "^3.4.6",
     "istanbul": "^0.3.13",
+    "jsdom": "^3.1.2",
     "jshint": "^2.7.0",
     "node-sass": "^2.1.1",
+    "phantom": "^0.7.2",
     "pre-commit": "^1.0.6",
+    "protractor": "^2.0.0",
     "rubberbands": "^1.0.2",
     "tap-spec": "^3.0.0",
     "tape": "^4.0.0",
-    "webdriverio": "^2.4.5"
+    "webdriverio": "^2.4.5",
+    "zombie": "^2.5.1"
   },
   "pre-commit": [
     "jshint",
@@ -50,6 +54,7 @@
     "hapi": "^8.4.0",
     "hapi-auth-cookie": "^2.0.0",
     "hyperquest": "^1.2.0",
+    "lodash": "^3.8.0",
     "moment": "^2.10.3",
     "observ": "^0.2.0",
     "observ-array": "^3.2.1",

@@ -33,6 +33,7 @@ module.exports = function (utils, state) {
 		var selectElm = document.querySelector("#deletion-reason");
 
 		var payload = {
+			deletionDate: utils.moment(),
 			deletionReason: selectElm.options[selectElm.selectedIndex].value,
 			status: "deleted"
 		};
@@ -41,7 +42,9 @@ module.exports = function (utils, state) {
 
 			var member = state.member();
 			member.status = b.status;
-			state.member.set(member);
+			member.deletionReason = b.deletionReason;
+			member.deletionDate = b.deletionDate;
+			state.member.set(b);
 		});
 	}
 

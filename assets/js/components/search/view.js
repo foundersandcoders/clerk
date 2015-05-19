@@ -6,6 +6,9 @@ module.exports = function (data) {
 	console.log("ddd",data);
 	return h("div.search-table-section-member", [
 		h("div.search-table-section-member-header", [
+			h("div.col-5", [
+				h("p", "Membership number")
+			]),
 			h("div.col-1", [
 				h("p", "Name")
 			]),
@@ -33,8 +36,11 @@ module.exports = function (data) {
 
 			return h("a", {href: "/members/" + result.id}, [
 				h("div.row", [
+					h("div.col-5", [
+						h("p", result.id)
+					]),
 					h("div.col-1", [
-						h("p", result.firstName + " " + result.lastName)
+						h("p", result.lastName + " " + result.firstName)
 					]),
 					h("div.col-2", [
 						h("p", result.title)

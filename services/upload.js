@@ -99,6 +99,7 @@ module.exports = function () {
 					count += 1;
 
 					var member       = that._stamp(count, results.data[0], that._blue("member"));
+					member.dueDate   = moment("01-01", "DD-MM");
 					var memberHeader = {"index":{"_index":"clerk","_type":"members", "_id": member.id}};
 
 
