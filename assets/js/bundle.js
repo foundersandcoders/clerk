@@ -1,1 +1,1 @@
-console.error("Error: Parsing file /Users/besartshyti/Desktop/projects/clerk/assets/js/components/memberinfo/view.js: Unexpected token (38:47)");
+console.error("Error: Parsing file /Users/besartshyti/Desktop/projects/clerk/assets/js/components/memberinfo/view.js: Unexpected token (39:47)");

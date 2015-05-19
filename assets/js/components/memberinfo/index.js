@@ -10,7 +10,7 @@ module.exports = function (utils, state) {
 
 	that.render = function (member) {
 
-		return view(member, utils);
+		return view(member, utils, "edit");
 	};
 
 	that.getData = function () {
