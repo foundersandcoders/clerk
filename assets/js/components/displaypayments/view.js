@@ -2,7 +2,7 @@
 
 var h = require("virtual-dom/h");
 
-module.exports = function (data, refreshFn, deleteFn, utils) {
+module.exports = function (data, selected, selectFn, refreshFn, deleteFn, utils) {
 
 
 	return h("div.table-section-individual", [
@@ -29,7 +29,9 @@ module.exports = function (data, refreshFn, deleteFn, utils) {
 				h("p", "Notes")
 			]),
 			h("div.col-7", [
-				h("p", "Delete")
+        h("button", {
+          onclick: deleteFn
+        },"Delete")
 			])
 		]),
 		h("div.table-section-individual-rows", renderRows(data))
@@ -39,7 +41,16 @@ module.exports = function (data, refreshFn, deleteFn, utils) {
 
 		return data.map(function (elm){
 
-			return h("div.row", [
+      var sel = selected.some(function (s) {
+        return s.id === elm.id;
+      }) ? "selected" : "unselected";
+
+      var ref = {
+        id: elm.id,
+        collection: elm.collection
+      };
+
+      return h("div.row." + sel, [
 				h("div.col-1", [
 					h("p#member-payment-date", utils.moment(elm.date).format("DD-MM-YYYY"))
 				]),
@@ -63,7 +74,7 @@ module.exports = function (data, refreshFn, deleteFn, utils) {
 				]),
 				h("div.col-7", [
 					h("p#member-payment-delete", {
-            			onclick: deleteFn(elm.collection, elm.id)
+            onclick: selectFn(ref)
 					}, "x")
 				])
 			])

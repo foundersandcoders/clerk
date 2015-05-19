@@ -379,13 +379,13 @@ nav {
       flex: 1; }
   #table-payments .table-section-individual-rows {
     overflow: scroll; }
+    #table-payments .table-section-individual-rows .selected {
+      background-color: #FFE5E5; }
     #table-payments .table-section-individual-rows .row {
       display: flex;
       width: 100%;
       height: 50px;
       line-height: 45px; }
-      #table-payments .table-section-individual-rows .row:hover {
-        background-color: #FFE5E5; }
       #table-payments .table-section-individual-rows .row p {
         font-size: 13px;
         padding: 5px;

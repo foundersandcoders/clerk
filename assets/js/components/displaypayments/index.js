@@ -11,22 +11,60 @@ module.exports = function (utils, state) {
 
 	that.render = function (payments) {
 
-		return view(payments, that.getData, that.deletePayment, utils);
+		return view(payments, state.selected(), that.select, that.getData, that.deletePayment, utils);
 	};
 
-	that.deletePayment = function (collection, id) {
+	that.deletePayment = function () {
 
-	    return function () {
-			var opts = {
-				method: "DELETE",
-				url: "/api/" + collection + "/" + id
-			};
-			utils.request(opts, function (e, h, b) {
+      var deleteMe = state.selected();
 
-				that.getData();
-			});
-	    }
+      deleteMe.forEach(function (record) {
+
+        var opts = {
+          method: "DELETE",
+          url: "/api/" + record.collection + "/" + record.id
+        };
+
+        utils.request(opts, function (e, h, b) {
+
+          var payments = state.payments();
+
+          payments.forEach(function (p, i) {
+
+            if (p.id === JSON.parse(b).id) {
+              payments.splice(i, 1);
+            }
+          });
+          state.payments.set(payments);
+        });
+      });
+
 	};
+
+  that.select = function (ref) {
+
+    return function () {
+      var selected = state.selected();
+      var index;
+
+      var isSelected = selected.some(function (r, i) {
+
+        if (r.id === ref.id) {
+          index = i;
+          return true;
+        } else {
+          return false;
+        }
+      });
+
+      if (isSelected) {
+        selected.splice(index, 1);
+      } else {
+        selected.push(ref);
+      }
+      state.selected.set(selected);
+    };
+  };
 
 	that.getData = function () {
 
