@@ -1,14 +1,13 @@
 "use strict";
 
 
-var h = require("virtual-dom/h");
-
+var h                     = require("virtual-dom/h");
+var memberTypes           = require("../helpers").memberTypes;
+var newsType              = require("../helpers").newsType;
+var renderOptionsSelected = require("../helpers").renderOptionsSelected;
 
 module.exports = function (data, utils) {
 	
-	var memberTypes    = require("../helpers").memberTypes;
-	var newsType       = require("../helpers").newsType;
-
 	return ([
 		renderPersonalInfo(data),
 		renderAddressInfo(data),
@@ -23,7 +22,8 @@ module.exports = function (data, utils) {
 				h("span.info", "ID: "),
 				h("input#edit-member-id", {
 					type: "text",
-					value: member.id
+					value: member.id,
+					disabled: true
 				})
 			]),
 			h("p", [
@@ -79,8 +79,7 @@ module.exports = function (data, utils) {
 					value: member.status || "",
 					disabled: true
 				})
-			]),
-			// deletedInfo(member)
+			])
 		]);
 	}
 
@@ -89,33 +88,42 @@ module.exports = function (data, utils) {
 		return h("div.col-2", [
 			h("h2", "Address info"),
 			h("p", [
-				h("span.info", "Address 1: "),
+				h("span.info", "Address line: "),
 				h("input#edit-member-address1", {
 					type: "text",
-					value: member.address1 || ""
+					value: member.address1 || "",
+					placeholder: "House name/number and street, P.O. box, company name, c/o"
 				})
 			]),
+			// h("p", [
+			// 	h("span.info", "Address line 1: "),
+			// 	h("input#edit-member-address1", {
+			// 		type: "text",
+			// 		value: member.address1 || "",
+			// 		placeholder: "House name/number and street, P.O. box, company name, c/o"
+			// 	})
+			// ]),
 			h("p", [
-				h("span.info", "Address 2: "),
+				h("span.info", "Town/City: "),
 				h("input#edit-member-address2", {
 					type: "text",
 					value: member.address2 || ""
 				})
 			]),
-			h("p", [
-				h("span.info", "Address 3: "),
-				h("input#edit-member-address3", {
-					type: "text",
-					value: member.address3 || ""
-				})
-			]),
-			h("p", [
-				h("span.info", "Address 4: "),
-				h("input#edit-member-address3", {
-					type: "text",
-					value: member.address3 || ""
-				})
-			]),
+			// h("p", [
+			// 	h("span.info", "Address 3: "),
+			// 	h("input#edit-member-address3", {
+			// 		type: "text",
+			// 		value: member.address3 || ""
+			// 	})
+			// ]),
+			// h("p", [
+			// 	h("span.info", "Address 4: "),
+			// 	h("input#edit-member-address3", {
+			// 		type: "text",
+			// 		value: member.address3 || ""
+			// 	})
+			// ]),
 			h("p", [
 				h("span.info", "County: "),
 				h("input#edit-member-county", {
@@ -130,13 +138,13 @@ module.exports = function (data, utils) {
 					value: member.postcode || ""
 				})
 			]),
-			h("p", [
-				h("span.info", "Deliverer: "),
-				h("input#edit-member-deliverer", {
-					type: "text",
-					value: member.deliverer || ""
-				})
-			]),
+			// h("p", [
+			// 	h("span.info", "Deliverer: "),
+			// 	h("input#edit-member-deliverer", {
+			// 		type: "text",
+			// 		value: member.deliverer || ""
+			// 	})
+			// ]),
 			h("p", [
 				h("span.info", "Home phone: "),
 				h("input#edit-member-home-phone", {
@@ -219,33 +227,5 @@ module.exports = function (data, utils) {
 				})
 			]),
 		]);
-	}
-
-	/**
-	 *	Renders a list of options with one selected;
-	 *
-	 *	@param {Array}  - array of objects like: {value: "string", description: "string"}
-	 *	@param {String} - value or description to be selected from options
-	 *	return {Object} - virtual dom object
-	 */
-	function renderOptionsSelected (options, selectedOption, placeholder) {
-
-		var firstPlaceholderOption = [
-			h("option", {
-				value: "",
-				disabled: true
-			}, placeholder)
-		];
-
-		return firstPlaceholderOption.concat(
-			options.map(function (elm){
-				var selected = (elm.value === selectedOption || elm.description === selectedOption);
-
-				return h("option", {
-					value:    elm.value,
-					selected: selected
-				}, elm.description);
-			})
-		);
 	}
 };

@@ -16,9 +16,17 @@ module.exports = function (utils, state) {
 	that.putData = function () {
 
 		try {
-			var payload = {
-				firstName: "Wil",
-			};
+			// var payload = {
+			// 	title:          get("edit-member-title"),
+			// 	initials:       get("edit-member-initials"),
+			// 	firstName:      get("edit-member-first-name"),
+			// 	lastName:       get("edit-member-last-name"),
+			// 	primaryEmail:   get("edit-member-primary-email"),
+			// 	secondaryEmail: get("edit-member-secondary-email"),
+
+			// 	addressLine: get(),
+			// 	firstName: "Wil",
+			// };
 		} catch (e) {
 			console.log("Error in updating details: ", e);
 		}
@@ -53,4 +61,21 @@ function _createOptions (payload) {
 		url: "/api/members/" + id,
 		json: payload
 	}
+}
+
+var $$ = function (query) {
+
+	var that = {};
+	that.elm = document.getElementByI
+}
+
+function get (elm, query) {
+
+	return document.getElementById(elm, query);
+}
+
+function val (elm) {
+
+	var e = getElementById(elm);
+	return elm.options[e.selectedIndex].value;
 }

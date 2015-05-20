@@ -2097,6 +2097,38 @@ module.exports = function (data, selected, selectFn, refreshFn, deleteFn, utils)
 };
 
 },{"virtual-dom/h":3}],42:[function(require,module,exports){
+var h = require("virtual-dom/h");
+module.exports.renderOptionsSelected = renderOptionsSelected.bind(undefined, h);
+
+/**
+ *	Renders a list of options with one selected;
+ *
+ *	@param {Array}  - array of objects like: {value: "string", description: "string"}
+ *	@param {String} - value or description to be selected from options
+ *	return {Object} - virtual dom object
+**/
+
+function renderOptionsSelected (h, options, selectedOption, placeholder) {
+
+	var firstPlaceholderOption = [
+		h("option", {
+			value: "",
+			disabled: true
+		}, placeholder)
+	];
+
+	return firstPlaceholderOption.concat(
+		options.map(function (elm){
+			var selected = (elm.value === selectedOption || elm.description === selectedOption);
+
+			return h("option", {
+				value:    elm.value,
+				selected: selected
+			}, elm.description);
+		})
+	);
+}
+
 var memberTypes = module.exports.memberTypes = [{
 		value: "annual-single",
 		description: "Annual Single"
@@ -2129,7 +2161,7 @@ var newsType = module.exports.newsType = [{
 		description: "Online"
 	}
 ];
-},{}],43:[function(require,module,exports){
+},{"virtual-dom/h":3}],43:[function(require,module,exports){
 "use strict";
 
 
@@ -2177,14 +2209,13 @@ function _createOptions () {
 "use strict";
 
 
-var h = require("virtual-dom/h");
-
+var h                     = require("virtual-dom/h");
+var memberTypes           = require("../helpers").memberTypes;
+var newsType              = require("../helpers").newsType;
+var renderOptionsSelected = require("../helpers").renderOptionsSelected;
 
 module.exports = function (data, utils) {
 	
-	var memberTypes    = require("../helpers").memberTypes;
-	var newsType       = require("../helpers").newsType;
-
 	return ([
 		renderPersonalInfo(data),
 		renderAddressInfo(data),
@@ -2199,7 +2230,8 @@ module.exports = function (data, utils) {
 				h("span.info", "ID: "),
 				h("input#edit-member-id", {
 					type: "text",
-					value: member.id
+					value: member.id,
+					disabled: true
 				})
 			]),
 			h("p", [
@@ -2255,8 +2287,7 @@ module.exports = function (data, utils) {
 					value: member.status || "",
 					disabled: true
 				})
-			]),
-			// deletedInfo(member)
+			])
 		]);
 	}
 
@@ -2265,33 +2296,42 @@ module.exports = function (data, utils) {
 		return h("div.col-2", [
 			h("h2", "Address info"),
 			h("p", [
-				h("span.info", "Address 1: "),
+				h("span.info", "Address line: "),
 				h("input#edit-member-address1", {
 					type: "text",
-					value: member.address1 || ""
+					value: member.address1 || "",
+					placeholder: "House name/number and street, P.O. box, company name, c/o"
 				})
 			]),
+			// h("p", [
+			// 	h("span.info", "Address line 1: "),
+			// 	h("input#edit-member-address1", {
+			// 		type: "text",
+			// 		value: member.address1 || "",
+			// 		placeholder: "House name/number and street, P.O. box, company name, c/o"
+			// 	})
+			// ]),
 			h("p", [
-				h("span.info", "Address 2: "),
+				h("span.info", "Town/City: "),
 				h("input#edit-member-address2", {
 					type: "text",
 					value: member.address2 || ""
 				})
 			]),
-			h("p", [
-				h("span.info", "Address 3: "),
-				h("input#edit-member-address3", {
-					type: "text",
-					value: member.address3 || ""
-				})
-			]),
-			h("p", [
-				h("span.info", "Address 4: "),
-				h("input#edit-member-address3", {
-					type: "text",
-					value: member.address3 || ""
-				})
-			]),
+			// h("p", [
+			// 	h("span.info", "Address 3: "),
+			// 	h("input#edit-member-address3", {
+			// 		type: "text",
+			// 		value: member.address3 || ""
+			// 	})
+			// ]),
+			// h("p", [
+			// 	h("span.info", "Address 4: "),
+			// 	h("input#edit-member-address3", {
+			// 		type: "text",
+			// 		value: member.address3 || ""
+			// 	})
+			// ]),
 			h("p", [
 				h("span.info", "County: "),
 				h("input#edit-member-county", {
@@ -2306,13 +2346,13 @@ module.exports = function (data, utils) {
 					value: member.postcode || ""
 				})
 			]),
-			h("p", [
-				h("span.info", "Deliverer: "),
-				h("input#edit-member-deliverer", {
-					type: "text",
-					value: member.deliverer || ""
-				})
-			]),
+			// h("p", [
+			// 	h("span.info", "Deliverer: "),
+			// 	h("input#edit-member-deliverer", {
+			// 		type: "text",
+			// 		value: member.deliverer || ""
+			// 	})
+			// ]),
 			h("p", [
 				h("span.info", "Home phone: "),
 				h("input#edit-member-home-phone", {
@@ -2395,34 +2435,6 @@ module.exports = function (data, utils) {
 				})
 			]),
 		]);
-	}
-
-	/**
-	 *	Renders a list of options with one selected;
-	 *
-	 *	@param {Array}  - array of objects like: {value: "string", description: "string"}
-	 *	@param {String} - value or description to be selected from options
-	 *	return {Object} - virtual dom object
-	 */
-	function renderOptionsSelected (options, selectedOption, placeholder) {
-
-		var firstPlaceholderOption = [
-			h("option", {
-				value: "",
-				disabled: true
-			}, placeholder)
-		];
-
-		return firstPlaceholderOption.concat(
-			options.map(function (elm){
-				var selected = (elm.value === selectedOption || elm.description === selectedOption);
-
-				return h("option", {
-					value:    elm.value,
-					selected: selected
-				}, elm.description);
-			})
-		);
 	}
 };
 },{"../helpers":42,"virtual-dom/h":3}],45:[function(require,module,exports){
@@ -2777,9 +2789,17 @@ module.exports = function (utils, state) {
 	that.putData = function () {
 
 		try {
-			var payload = {
-				firstName: "Wil",
-			};
+			// var payload = {
+			// 	title:          get("edit-member-title"),
+			// 	initials:       get("edit-member-initials"),
+			// 	firstName:      get("edit-member-first-name"),
+			// 	lastName:       get("edit-member-last-name"),
+			// 	primaryEmail:   get("edit-member-primary-email"),
+			// 	secondaryEmail: get("edit-member-secondary-email"),
+
+			// 	addressLine: get(),
+			// 	firstName: "Wil",
+			// };
 		} catch (e) {
 			console.log("Error in updating details: ", e);
 		}
@@ -2816,6 +2836,22 @@ function _createOptions (payload) {
 	}
 }
 
+var $$ = function (query) {
+
+	var that = {};
+	that.elm = document.getElementByI
+}
+
+function get (elm, query) {
+
+	return document.getElementById(elm, query);
+}
+
+function val (elm) {
+
+	var e = getElementById(elm);
+	return elm.options[e.selectedIndex].value;
+}
 },{"./view":50}],50:[function(require,module,exports){
 "use strict";
 
@@ -3248,8 +3284,6 @@ var modeControlComponent        = require("../components/modecontrol/index.js");
 
 module.exports = function (utils) {
 
-	var tree, resultsNode, initial = true;
-
 	var state = utils.observS({
 		member:   utils.observ({}),
 		payments: utils.observ([]),
@@ -3263,27 +3297,20 @@ module.exports = function (utils) {
 		render();
 	});
 
-	var addPayment = addPaymentComponent(utils, state);
-	var chargeDonation = chargeDonationComponent(utils, state);
+	var addPayment         = addPaymentComponent(utils, state);
+	var chargeDonation     = chargeDonationComponent(utils, state);
 	var chargeSubscription = chargeSubscriptionComponent(utils, state);
-	var displayPayments = displayPaymentsComponent(utils, state);
-	var memberView = memberViewComponent(utils, state);
-	var memberEdit = memberEditComponent(utils, state);
-	var memberStatus = memberStatusComponent(utils, state);
-	var modeControl = modeControlComponent(utils, state);
+	var displayPayments    = displayPaymentsComponent(utils, state);
+	var memberView         = memberViewComponent(utils, state);
+	var memberEdit         = memberEditComponent(utils, state);
+	var memberStatus       = memberStatusComponent(utils, state);
+	var modeControl        = modeControlComponent(utils, state);
 
 	function view (h) {
 
 		return h("div#member-component", [
 			h("div.overall-container", [
-				h("div.content-container", [
-					h("div#member-info", [
-						renderViewMode()
-					]),
-					h("div#table-payments",[
-						displayPayments.render(state.payments())
-					])
-				]),
+				renderViewMode(),
 				h("div.actions-container", [
 					modeControl.render(),
 					memberStatus.render(),
@@ -3301,16 +3328,28 @@ module.exports = function (utils) {
 		]);
 
 		function renderViewMode() {
+
 			if(state.mode() === "edit") {
-        console.log("edit yo");
-				return memberEdit.render(state.member());
+				return h("div.content-container", [
+					h("div#member-info-edit",[
+						memberEdit.render(state.member())
+					])
+				])
 			} else {
-				return memberView.render(state.member());
+				return h("div.content-container", [
+					h("div#member-info", [
+						memberView.render(state.member())
+					]),
+					h("div#table-payments",[
+						displayPayments.render(state.payments())
+					])
+				])
 			}
 		}
 	}
 
-
+	var tree, resultsNode, initial = true;
+	
 	function render () {
 
 		if(initial){
