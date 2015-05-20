@@ -454,6 +454,71 @@ module.exports = function (data, selected, selectFn, refreshFn, deleteFn, utils)
 	}
 };
 
+},{"virtual-dom/h":"/home/william/projects/clerk/node_modules/virtual-dom/h.js"}],"/home/william/projects/clerk/assets/js/components/helpers.js":[function(require,module,exports){
+var h = require("virtual-dom/h");
+module.exports.renderOptionsSelected = renderOptionsSelected.bind(undefined, h);
+
+/**
+ *	Renders a list of options with one selected;
+ *
+ *	@param {Array}  - array of objects like: {value: "string", description: "string"}
+ *	@param {String} - value or description to be selected from options
+ *	return {Object} - virtual dom object
+**/
+
+function renderOptionsSelected (h, options, selectedOption, placeholder) {
+
+	var firstPlaceholderOption = [
+		h("option", {
+			value: "",
+			disabled: true
+		}, placeholder)
+	];
+
+	return firstPlaceholderOption.concat(
+		options.map(function (elm){
+			var selected = (elm.value === selectedOption || elm.description === selectedOption);
+
+			return h("option", {
+				value:    elm.value,
+				selected: selected
+			}, elm.description);
+		})
+	);
+}
+
+var memberTypes = module.exports.memberTypes = [{
+		value: "annual-single",
+		description: "Annual Single"
+	}, {
+		value: "annual-double",
+		description: "Annual Double"
+	},{
+		value: "annual-family",
+		description: "Annual Family"
+	},{
+		value: "life-single",
+		description: "Life Single"
+	},{
+		value: "life-double",
+		description: "Life Double"
+	},{
+		value: "group-annual",
+		description: "Group Annual"
+	},{
+		value: "corporate-annual",
+		description: "Corporate Annual"
+	}
+];
+
+var newsType = module.exports.newsType = [{
+		value: "post",
+		description: "Post"
+	},{
+		value: "online",
+		description: "Online"
+	}
+];
 },{"virtual-dom/h":"/home/william/projects/clerk/node_modules/virtual-dom/h.js"}],"/home/william/projects/clerk/assets/js/components/memberedit/index.js":[function(require,module,exports){
 "use strict";
 
@@ -502,35 +567,13 @@ function _createOptions () {
 "use strict";
 
 
-var h = require("virtual-dom/h");
-
+var h                     = require("virtual-dom/h");
+var memberTypes           = require("../helpers").memberTypes;
+var newsType              = require("../helpers").newsType;
+var renderOptionsSelected = require("../helpers").renderOptionsSelected;
 
 module.exports = function (data, utils) {
 	
-	var memberTypes = [{
-			value: "annual-single",
-			description: "Annual Single"
-		}, {
-			value: "annual-double",
-			description: "Annual Double"
-		},{
-			value: "annual-family",
-			description: "Annual Family"
-		},{
-			value: "life-single",
-			description: "Life Single"
-		},{
-			value: "life-double",
-			description: "Life Double"
-		},{
-			value: "group-annual",
-			description: "Group Annual"
-		},{
-			value: "corporate-annual",
-			description: "Corporate Annual"
-		}
-	];
-
 	return ([
 		renderPersonalInfo(data),
 		renderAddressInfo(data),
@@ -541,74 +584,154 @@ module.exports = function (data, utils) {
 
 		return h("div.col-1", [
 			h("h2", "Personal info"),
-			check("Title: ", member.title),
-			check("Initials: ", member.initials),
-			check("First name: ", member.firstName),
-			check("Last name: ", member.lastName),
-      		check("Member id: ", member.id),
-			check("Primary email: ", member.email1),
-			check("Secondary email: ", member.email2),
-      		check("Bounced email: ", member.emailBounced),
-      		h("p", [
-				h("span.info", "News: "),
-				renderOnlineStatus(member)
+			h("p", [
+				h("span.info", "ID: "),
+				h("input#edit-member-id", {
+					type: "text",
+					value: member.id,
+					disabled: true
+				})
 			]),
-      		check("Status: ", member.status),
-			deletedInfo(member)
+			h("p", [
+				h("span.info", "Title: "),
+				h("input#edit-member-title", {
+					type: "text",
+					value: member.title || ""
+				})
+			]),
+			h("p", [
+				h("span.info", "Initials: "),
+				h("input#edit-member-initials", {
+					type: "text",
+					value: member.initials || ""
+				})
+			]),
+			h("p", [
+				h("span.info", "First name: "),
+				h("input#edit-member-first-name", {
+					type: "text",
+					value: member.firstName || ""
+				})
+			]),
+			h("p", [
+				h("span.info", "Last name: "),
+				h("input#edit-member-last-name", {
+					type: "text",
+					value: member.lastName || ""
+				})
+			]),
+			h("p", [
+				h("span.info", "Primary email: "),
+				h("input#edit-member-primary-email", {
+					type: "text",
+					value: member.email1 || ""
+				})
+			]),
+			h("p", [
+				h("span.info", "Secondary email: "),
+				h("input#edit-member-secondary-email", {
+					type: "text",
+					value: member.email2 || ""
+				})
+			]),
+			h("p", [
+				h("span.info", "News: "),
+				h("select.input-width", renderOptionsSelected(newsType, (member.onlineMember ? "online" : "post"), "Select news"))
+			]),
+			h("p", [
+				h("span.info", "Status: "),
+				h("input#edit-member-status", {
+					type: "text",
+					value: member.status || "",
+					disabled: true
+				})
+			])
 		]);
-	}
-
-  	function renderOnlineStatus (member) {
-  		return h("select", [
-	        h("option", {
-	          	selected: !!(member.onlineMember)
-	        }, "Online"),
-	        h("option", {
-	            selected: !(member.onlineMember)
-	        }, "Post")
-      	]);
-  	}
-
-	function renderType () {
-		return h("select#member-type", renderOptions("Change Type", memberTypes, data));
-	}
-
-	function renderOptions(placeholder, reasons, member){
-
-		var options = [
-			h("option", {
-				value: "",
-				disabled: true
-			}, placeholder)
-		];
-
-		return options.concat(
-			reasons.map(function (elm){
-
-				var selected = (member.membershipType === elm.value || member.membershipType === elm.description);
-
-				return h("option", {
-					value: elm.value,
-					selected: selected
-				}, elm.description)
-			})
-		);
 	}
 
 	function renderAddressInfo (member) {
 
 		return h("div.col-2", [
 			h("h2", "Address info"),
-			checkSingle("", member.address1),
-			checkSingle("", member.address2),
-			checkSingle("", member.address3),
-			checkSingle("", member.address4),
-			checkSingle("", member.county),
-			checkSingle("", member.postcode),
-			checkSingle("", member.deliverer),
-			check("Home phone: ", member.homePhone),
-			check("Work phone: ", member.workPhone),
-			check("Mobile phone: ", member.mobilePhone)
+			h("p", [
+				h("span.info", "Address line: "),
+				h("input#edit-member-address1", {
+					type: "text",
+					value: member.address1 || "",
+					placeholder: "House name/number and street, P.O. box, company name, c/o"
+				})
+			]),
+			// h("p", [
+			// 	h("span.info", "Address line 1: "),
+			// 	h("input#edit-member-address1", {
+			// 		type: "text",
+			// 		value: member.address1 || "",
+			// 		placeholder: "House name/number and street, P.O. box, company name, c/o"
+			// 	})
+			// ]),
+			h("p", [
+				h("span.info", "Town/City: "),
+				h("input#edit-member-address2", {
+					type: "text",
+					value: member.address2 || ""
+				})
+			]),
+			// h("p", [
+			// 	h("span.info", "Address 3: "),
+			// 	h("input#edit-member-address3", {
+			// 		type: "text",
+			// 		value: member.address3 || ""
+			// 	})
+			// ]),
+			// h("p", [
+			// 	h("span.info", "Address 4: "),
+			// 	h("input#edit-member-address3", {
+			// 		type: "text",
+			// 		value: member.address3 || ""
+			// 	})
+			// ]),
+			h("p", [
+				h("span.info", "County: "),
+				h("input#edit-member-county", {
+					type: "text",
+					value: member.county || ""
+				})
+			]),
+			h("p", [
+				h("span.info", "Postcode: "),
+				h("input#edit-member-postcode", {
+					type: "text",
+					value: member.postcode || ""
+				})
+			]),
+			// h("p", [
+			// 	h("span.info", "Deliverer: "),
+			// 	h("input#edit-member-deliverer", {
+			// 		type: "text",
+			// 		value: member.deliverer || ""
+			// 	})
+			// ]),
+			h("p", [
+				h("span.info", "Home phone: "),
+				h("input#edit-member-home-phone", {
+					type: "text",
+					value: member.homePhone || ""
+				})
+			]),
+			h("p", [
+				h("span.info", "Work phone: "),
+				h("input#edit-member-work-phone", {
+					type: "text",
+					value: member.workPhone || ""
+				})
+			]),
+			h("p", [
+				h("span.info", "Mobile phone: "),
+				h("input#edit-member-mobile-phone", {
+					type: "text",
+					value: member.mobilePhone || ""
+				})
+			])
 		]);
 	}
 
@@ -616,99 +739,63 @@ module.exports = function (data, utils) {
 
 		return h("div.col-3", [
 			h("h2", "Membership info"),
-      		check("Date joined: ", utils.moment(member.dateJoined).format("DD-MM-YYYY")),
-      		renderType(),
-			renderMembershipLife(member),
-			renderMembershipLifeChanged(member),
-			renderGiftAid(member),
-			renderDateGiftAidCancelled(member),
-			check("Standing order: ", member.standingOrder),
-			check("Notes:", member.membershipNotes),
-			renderRegistered(member),
-			check("Due date: ", utils.moment(member.dueDate).format("DD-MMM"))
+			h("p", [
+				h("span.info", "Membership type: "),
+				h("select.input-width", renderOptionsSelected(memberTypes, (member.membershipType || ""), "Membership type"))
+			]),
+			h("p", [
+				h("span.info", "Date joined: "),
+				h("input#edit-member-date-joined", {
+					type: "text",
+					value: (member.dateJoined ? utils.moment(member.dateJoined).format("DD-MM-YYYY") : "")
+				})
+			]),
+			h("p", [
+				h("span.info", "Life payment date: "),
+				h("input#edit-member-life-payment-date", {
+					type: "text",
+					value: (member.lifePaymentDate ? utils.moment(member.lifePaymentDate).format("DD-MM-YYYY") : "")
+				})
+			]),
+			h("p", [
+				h("span.info", "Registered: "),
+				h("input#edit-member-status-online", {
+					type: "checkbox",
+					checked: member.onlineMember
+				})
+			]),
+			h("p", [
+				h("span.info", "Gift aid: "),
+				h("input#edit-member-gift-aid-signed", {
+					type: "checkbox",
+					checked: member.giftAidSigned
+				})
+			]),
+			h("p", [
+				h("span.info", "Date GAD Signed: "),
+				h("input#edit-member-date-gift-aid-signed", {
+					type: "text",
+					value: (member.dateGiftAidSigned ? utils.moment(member.dateGiftAidSigned).format("DD-MM-YYYY") : "")
+				})
+			]),
+			h("p", [
+				h("span.info", "Due date: "),
+				h("input#edit-member-due-date", {
+					type: "text",
+					value: (member.dueDate ? utils.moment(member.dueDate).format("DD-MMM") : "")
+				})
+			]),
+			h("p", [
+				h("span.info", "Notes: "),
+				h("input#edit-member-notes", {
+					type: "text",
+					value: member.membershipNotes || ""
+				})
+			]),
 		]);
 	}
-
-	function check (name, elm) {
-		if(elm) {
-			return h("p", [
-				h("span.info", name),
-			    h("input#view-member-" + replaceSpaceColon.call(name), {
-			    	type: "text",
-			    	value: elm
-			    })
-            ]);
-		}
-	}
-
-	function checkSingle (name, elm) {
-		if(elm){
-        	return h("input#view-member-" + replaceSpaceColon.call(name), {
-        		type: "text",
-        		value: elm
-        	});
-		}
-	}
-
-	function renderRegistered (member) {
-
-    return check("Status: ", (member.online) ? "Registered" : "Unregistered" );
-	}
-
-	function renderMembershipLifeChanged (member) {
-		if(member.dateTypeChanged && (member.membershipType === "life-double" || member.membershipType === "life-single")) {
-      		return h("p", [
-        		check("Life payment date: ", member.lifePaymentDate),
-        		check("Membership date changed: ", member.dateTypeChanged)
-      		]);
-		}
-	}
-
-	function renderMembershipLife (member) {
-		if(member.membershipType === "life-double" || member.membershipType === "life-single") {
-      		return check("Life payent date: ", member.lifePaymentDate);
-		}
-	}
-
-	function renderGiftAid (member) {
-		if(member.giftAid){
-      		return check("GAD Signed: ", utils.moment(member.dateGiftAidSigned).format("DD-MM-YYYY"));
-		}
-	}
-
-	function renderDateGiftAidCancelled (member) {
-		if(member.dateGiftAidCancelled) {
-			return h("p", [
-				check("GAD cancelled: ", utils.moment(member.dateGiftAidCancelled).format("DD-MM-YYYY"))
-			]);
-		}
-	}
-
-	function deletedInfo (member) {
-		if(member.status === "deleted") {
-			return h("span", [
-        		check("Deletion date:", utils.moment(member.deletionDate).format("DD-MM-YY")),
-        		check("Deletion reason: ", member.deletionReason)
-			]);
-		}
-	}
-
-	function replaceSpaceColon (){
-		return this.toLowerCase().replace(" ", "-").replace(":", "");
-	}
-
-	function fullName () {
-		var store = [];
-
-		if(utils.is.ok(this.title)    ) {store.push(this.title)}
-		if(utils.is.ok(this.firstName)) {store.push(this.firstName)}
-		if(utils.is.ok(this.initials) ) {store.push(this.initials)}
-		if(utils.is.ok(this.lastName) ) {store.push(this.lastName)}
-
-		return store.join(" ");
-	}
 };
-},{"virtual-dom/h":"/home/william/projects/clerk/node_modules/virtual-dom/h.js"}],"/home/william/projects/clerk/assets/js/components/memberstatus/index.js":[function(require,module,exports){
+},{"../helpers":"/home/william/projects/clerk/assets/js/components/helpers.js","virtual-dom/h":"/home/william/projects/clerk/node_modules/virtual-dom/h.js"}],"/home/william/projects/clerk/assets/js/components/memberstatus/index.js":[function(require,module,exports){
 "use strict";
 
 
@@ -898,150 +985,7 @@ module.exports = function (status, updateType, deleteFn, reactivateFn) {
 };
 },{"virtual-dom/h":"/home/william/projects/clerk/node_modules/virtual-dom/h.js"}],"/home/william/projects/clerk/assets/js/components/memberview/index.js":[function(require,module,exports){
 module.exports=require("/home/william/projects/clerk/assets/js/components/memberedit/index.js")
-},{"/home/william/projects/clerk/assets/js/components/memberedit/index.js":"/home/william/projects/clerk/assets/js/components/memberedit/index.js"}],"/home/william/projects/clerk/assets/js/components/memberview/view.js":[function(require,module,exports){
-"use strict";
-
-var h = require("virtual-dom/h");
-
-module.exports = function (data, utils) {
-
-
-	return ([
-		renderPersonalInfo(data),
-		renderAddressInfo(data),
-		renderMembership(data)
-	]);
-
-	function renderPersonalInfo (member) {
-
-		return h("div.col-1", [
-			h("h2", "Personal info"),
-     		check("Name: ", fullName.call(member)),
-      		check("Member: ", member.id),
-			check("Primary email: ", member.email1),
-			check("Secondary email: ", member.email2),
-      		check("Bounced email: ", member.emailBounced),
-      		h("p", [
-				h("span.info", "News: "),
-				renderOnlineStatus(member)
-			]),
-      		check("Status: ", member.status),
-			deletedInfo(member)
-		]);
-	}
-
-  	function renderOnlineStatus (member) {
-		return h("span#view-member-news", (member.onlineMember) ? "Online" : "Post");
-  	}
-
-	function renderAddressInfo (member) {
-
-		return h("div.col-2", [
-			h("h2", "Address info"),
-			checkSingle("", member.address1),
-			checkSingle("", member.address2),
-			checkSingle("", member.address3),
-			checkSingle("", member.address4),
-			checkSingle("", member.county),
-			checkSingle("", member.postcode),
-			checkSingle("", member.deliverer),
-			check("Home phone: ", member.homePhone),
-			check("Work phone: ", member.workPhone),
-			check("Mobile phone: ", member.mobilePhone)
-		]);
-	}
-
-	function renderMembership (member) {
-
-		return h("div.col-3", [
-			h("h2", "Membership info"),
-      		check("Date joined: ", utils.moment(member.dateJoined).format("DD-MM-YYYY")),
-      		check("Membership type: ", member.membershipType),
-			renderMembershipLife(member),
-			renderMembershipLifeChanged(member),
-			renderGiftAid(member),
-			renderDateGiftAidCancelled(member),
-			check("Standing order: ", member.standingOrder),
-			check("Notes:", member.membershipNotes),
-			renderRegistered(member),
-			check("Due date: ", utils.moment(member.dueDate).format("DD-MMM"))
-		]);
-	}
-
-	function check (name, elm) {
-		if(elm) {
-			return h("p", [
-				h("span.info", name),
-			    h("span#view-member-" + replaceSpaceColon.call(name), elm)
-            ]);
-		}
-	}
-
-	function checkSingle (name, elm) {
-		if(elm){
-        	return h("p#view-member-" + replaceSpaceColon.call(name), name + elm);
-		}
-	}
-
-	function renderRegistered (member) {
-
-    return check("Status: ", (member.online) ? "Registered" : "Unregistered" );
-	}
-
-	function renderMembershipLifeChanged (member) {
-		if(member.dateTypeChanged && (member.membershipType === "life-double" || member.membershipType === "life-single")) {
-      		return h("p", [
-        		check("Life payment date: ", member.lifePaymentDate),
-        		check("Membership date changed: ", member.dateTypeChanged)
-      		]);
-		}
-	}
-
-	function renderMembershipLife (member) {
-		if(member.membershipType === "life-double" || member.membershipType === "life-single") {
-      		return check("Life payent date: ", member.lifePaymentDate);
-		}
-	}
-
-	function renderGiftAid (member) {
-		if(member.giftAid){
-      		return check("GAD Signed: ", utils.moment(member.dateGiftAidSigned).format("DD-MM-YYYY"));
-		}
-	}
-
-	function renderDateGiftAidCancelled (member) {
-		if(member.dateGiftAidCancelled) {
-			return h("p", [
-				check("GAD cancelled: ", utils.moment(member.dateGiftAidCancelled).format("DD-MM-YYYY"))
-			]);
-		}
-	}
-
-	function deletedInfo (member) {
-		if(member.status === "deleted") {
-			return h("span", [
-        		check("Deletion date:", utils.moment(member.deletionDate).format("DD-MM-YY")),
-        		check("Deletion reason: ", member.deletionReason)
-			]);
-		}
-	}
-
-	function replaceSpaceColon (){
-		return this.toLowerCase().replace(" ", "-").replace(":", "");
-	}
-
-	function fullName () {
-		var store = [];
-
-		if(utils.is.ok(this.title)    ) {store.push(this.title)}
-		if(utils.is.ok(this.firstName)) {store.push(this.firstName)}
-		if(utils.is.ok(this.initials) ) {store.push(this.initials)}
-		if(utils.is.ok(this.lastName) ) {store.push(this.lastName)}
-
-		return store.join(" ");
-	}
-};
-},{"virtual-dom/h":"/home/william/projects/clerk/node_modules/virtual-dom/h.js"}],"/home/william/projects/clerk/assets/js/components/modecontrol/index.js":[function(require,module,exports){
+},{"/home/william/projects/clerk/assets/js/components/memberedit/index.js":"/home/william/projects/clerk/assets/js/components/memberedit/index.js"}],"/home/william/projects/clerk/assets/js/components/modecontrol/index.js":[function(require,module,exports){
 "use strict";
 
 
@@ -1060,9 +1004,17 @@ module.exports = function (utils, state) {
 	that.putData = function () {
 
 		try {
-			var payload = {
-				firstName: "Wil",
-			};
+			// var payload = {
+			// 	title:          get("edit-member-title"),
+			// 	initials:       get("edit-member-initials"),
+			// 	firstName:      get("edit-member-first-name"),
+			// 	lastName:       get("edit-member-last-name"),
+			// 	primaryEmail:   get("edit-member-primary-email"),
+			// 	secondaryEmail: get("edit-member-secondary-email"),
+
+			// 	addressLine: get(),
+			// 	firstName: "Wil",
+			// };
 		} catch (e) {
 			console.log("Error in updating details: ", e);
 		}
@@ -1099,6 +1051,22 @@ function _createOptions (payload) {
 	}
 }
 
+var $$ = function (query) {
+
+	var that = {};
+	that.elm = document.getElementByI
+}
+
+function get (elm, query) {
+
+	return document.getElementById(elm, query);
+}
+
+function val (elm) {
+
+	var e = getElementById(elm);
+	return elm.options[e.selectedIndex].value;
+}
 },{"./view":"/home/william/projects/clerk/assets/js/components/modecontrol/view.js"}],"/home/william/projects/clerk/assets/js/components/modecontrol/view.js":[function(require,module,exports){
 "use strict";
 
@@ -1531,8 +1499,6 @@ var modeControlComponent        = require("../components/modecontrol/index.js");
 
 module.exports = function (utils) {
 
-	var tree, resultsNode, initial = true;
-
 	var state = utils.observS({
 		member:   utils.observ({}),
 		payments: utils.observ([]),
@@ -1546,27 +1512,20 @@ module.exports = function (utils) {
 		render();
 	});
 
-	var addPayment = addPaymentComponent(utils, state);
-	var chargeDonation = chargeDonationComponent(utils, state);
+	var addPayment         = addPaymentComponent(utils, state);
+	var chargeDonation     = chargeDonationComponent(utils, state);
 	var chargeSubscription = chargeSubscriptionComponent(utils, state);
-	var displayPayments = displayPaymentsComponent(utils, state);
-	var memberView = memberViewComponent(utils, state);
-	var memberEdit = memberEditComponent(utils, state);
-	var memberStatus = memberStatusComponent(utils, state);
-	var modeControl = modeControlComponent(utils, state);
+	var displayPayments    = displayPaymentsComponent(utils, state);
+	var memberView         = memberViewComponent(utils, state);
+	var memberEdit         = memberEditComponent(utils, state);
+	var memberStatus       = memberStatusComponent(utils, state);
+	var modeControl        = modeControlComponent(utils, state);
 
 	function view (h) {
 
 		return h("div#member-component", [
 			h("div.overall-container", [
-				h("div.content-container", [
-					h("div#member-info", [
-						renderViewMode()
-					]),
-					h("div#table-payments",[
-						displayPayments.render(state.payments())
-					])
-				]),
+				renderViewMode(),
 				h("div.actions-container", [
 					modeControl.render(),
 					memberStatus.render(),
@@ -1584,16 +1543,28 @@ module.exports = function (utils) {
 		]);
 
 		function renderViewMode() {
+
 			if(state.mode() === "edit") {
-        console.log("edit yo");
-				return memberEdit.render(state.member());
+				return h("div.content-container", [
+					h("div#member-info-edit",[
+						memberEdit.render(state.member())
+					])
+				])
 			} else {
-				return memberView.render(state.member());
+				return h("div.content-container", [
+					h("div#member-info", [
+						memberView.render(state.member())
+					]),
+					h("div#table-payments",[
+						displayPayments.render(state.payments())
+					])
+				])
 			}
 		}
 	}
 
-
+	var tree, resultsNode, initial = true;
+	
 	function render () {
 
 		if(initial){
@@ -5798,9 +5769,7 @@ function Observable(value) {
 
 },{}],"/home/william/projects/clerk/node_modules/torf/index.js":[function(require,module,exports){
 module.exports=require("/home/william/projects/clerk/node_modules/d-bap/node_modules/torf/index.js")
-},{"/home/william/projects/clerk/node_modules/d-bap/node_modules/torf/index.js":"/home/william/projects/clerk/node_modules/d-bap/node_modules/torf/index.js"}],"/home/william/projects/clerk/node_modules/torf/node_modules/is-number/index.js":[function(require,module,exports){
-module.exports=require("/home/william/projects/clerk/node_modules/d-bap/node_modules/torf/node_modules/is-number/index.js")
-},{"/home/william/projects/clerk/node_modules/d-bap/node_modules/torf/node_modules/is-number/index.js":"/home/william/projects/clerk/node_modules/d-bap/node_modules/torf/node_modules/is-number/index.js"}],"/home/william/projects/clerk/node_modules/upload-element/index.js":[function(require,module,exports){
+},{"/home/william/projects/clerk/node_modules/d-bap/node_modules/torf/index.js":"/home/william/projects/clerk/node_modules/d-bap/node_modules/torf/index.js"}],"/home/william/projects/clerk/node_modules/upload-element/index.js":[function(require,module,exports){
 module.exports = function (elem, opts, cb) {
     if (typeof opts === 'function') {
         cb = opts;

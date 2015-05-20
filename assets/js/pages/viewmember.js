@@ -12,8 +12,6 @@ var modeControlComponent        = require("../components/modecontrol/index.js");
 
 module.exports = function (utils) {
 
-	var tree, resultsNode, initial = true;
-
 	var state = utils.observS({
 		member:   utils.observ({}),
 		payments: utils.observ([]),
@@ -27,27 +25,20 @@ module.exports = function (utils) {
 		render();
 	});
 
-	var addPayment = addPaymentComponent(utils, state);
-	var chargeDonation = chargeDonationComponent(utils, state);
+	var addPayment         = addPaymentComponent(utils, state);
+	var chargeDonation     = chargeDonationComponent(utils, state);
 	var chargeSubscription = chargeSubscriptionComponent(utils, state);
-	var displayPayments = displayPaymentsComponent(utils, state);
-	var memberView = memberViewComponent(utils, state);
-	var memberEdit = memberEditComponent(utils, state);
-	var memberStatus = memberStatusComponent(utils, state);
-	var modeControl = modeControlComponent(utils, state);
+	var displayPayments    = displayPaymentsComponent(utils, state);
+	var memberView         = memberViewComponent(utils, state);
+	var memberEdit         = memberEditComponent(utils, state);
+	var memberStatus       = memberStatusComponent(utils, state);
+	var modeControl        = modeControlComponent(utils, state);
 
 	function view (h) {
 
 		return h("div#member-component", [
 			h("div.overall-container", [
-				h("div.content-container", [
-					h("div#member-info", [
-						renderViewMode()
-					]),
-					h("div#table-payments",[
-						displayPayments.render(state.payments())
-					])
-				]),
+				renderViewMode(),
 				h("div.actions-container", [
 					modeControl.render(),
 					memberStatus.render(),
@@ -65,16 +56,28 @@ module.exports = function (utils) {
 		]);
 
 		function renderViewMode() {
+
 			if(state.mode() === "edit") {
-        console.log("edit yo");
-				return memberEdit.render(state.member());
+				return h("div.content-container", [
+					h("div#member-info-edit",[
+						memberEdit.render(state.member())
+					])
+				])
 			} else {
-				return memberView.render(state.member());
+				return h("div.content-container", [
+					h("div#member-info", [
+						memberView.render(state.member())
+					]),
+					h("div#table-payments",[
+						displayPayments.render(state.payments())
+					])
+				])
 			}
 		}
 	}
 
-
+	var tree, resultsNode, initial = true;
+	
 	function render () {
 
 		if(initial){
