@@ -10,7 +10,7 @@ module.exports = function (utils, state) {
 
 	that.render = function () {
 
-		return view(that.getData);
+		return view(that.getData, utils.moment);
 	};
 
 	that.getData = function () {
@@ -34,22 +34,55 @@ module.exports = function (utils, state) {
 
 			if(checkQuery(query, JSON.parse(b))) {
 				window.location = "/members/" + members[0].id
-			} else {			
-				state.members.set(members);
+			} else {
+
+        members.forEach(function (member, i) {
+
+          return getPayments(member, utils.request, function (mostRecent) {
+
+            if (mostRecent) {
+              member.lastSubscription = mostRecent;
+            }
+
+            if (i >= members.length - 1) {
+              state.members.set(members);
+            }
+          });
+        });
 			}
 		});
 	};
-	
+
 	return that;
 };
+
+function getPayments (member, request, cb) {
+
+  var opts = {
+    method: "GET",
+    url: "/api/payments?memberId=" + member.id
+  };
+
+  request(opts, function (e, h, b) {
+
+    var payments = JSON.parse(b);
+    if (payments.length > 0) {
+      var mostRecent = payments.reduce(function (a, b) {
+
+          return (b.collection === "payments" && new Date(a.date).getTime() < new Date(b.date).getTime()) ? b : a;
+      });
+    }
+    return cb(mostRecent);
+  });
+}
 
 function checkQuery (query, members) {
 
 	query.email1 = query.email1.replace(/"/g, '');
 
 	return (
-		(query.id || query.email1) 
-		&& members.length === 1 
+		(query.id || query.email1)
+		&& members.length === 1
 		&& (query.id === members[0].id || query.email1 === members[0].email1)
 	);
 }
