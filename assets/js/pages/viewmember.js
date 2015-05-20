@@ -17,7 +17,8 @@ module.exports = function (utils) {
 	var state = utils.observS({
 		member:   utils.observ({}),
 		payments: utils.observ([]),
-		mode: utils.observ("view")
+		mode:     utils.observ("view"),
+    selected: utils.observ([])
 	});
 
 	state(function onchange () {
@@ -65,6 +66,7 @@ module.exports = function (utils) {
 
 		function renderViewMode() {
 			if(state.mode() === "edit") {
+        console.log("edit yo");
 				return memberEdit.render(state.member());
 			} else {
 				return memberView.render(state.member());

@@ -1904,22 +1904,60 @@ module.exports = function (utils, state) {
 
 	that.render = function (payments) {
 
-		return view(payments, that.getData, that.deletePayment, utils);
+		return view(payments, state.selected(), that.select, that.getData, that.deletePayment, utils);
 	};
 
-	that.deletePayment = function (collection, id) {
+	that.deletePayment = function () {
 
-	    return function () {
-			var opts = {
-				method: "DELETE",
-				url: "/api/" + collection + "/" + id
-			};
-			utils.request(opts, function (e, h, b) {
+      var deleteMe = state.selected();
 
-				that.getData();
-			});
-	    }
+      deleteMe.forEach(function (record) {
+
+        var opts = {
+          method: "DELETE",
+          url: "/api/" + record.collection + "/" + record.id
+        };
+
+        utils.request(opts, function (e, h, b) {
+
+          var payments = state.payments();
+
+          payments.forEach(function (p, i) {
+
+            if (p.id === JSON.parse(b).id) {
+              payments.splice(i, 1);
+            }
+          });
+          state.payments.set(payments);
+        });
+      });
+
 	};
+
+  that.select = function (ref) {
+
+    return function () {
+      var selected = state.selected();
+      var index;
+
+      var isSelected = selected.some(function (r, i) {
+
+        if (r.id === ref.id) {
+          index = i;
+          return true;
+        } else {
+          return false;
+        }
+      });
+
+      if (isSelected) {
+        selected.splice(index, 1);
+      } else {
+        selected.push(ref);
+      }
+      state.selected.set(selected);
+    };
+  };
 
 	that.getData = function () {
 
@@ -1972,12 +2010,13 @@ function _createOptions (item) {
 		url: "/api/" + item + "?memberId=" + id
 	}
 }
+
 },{"./view":41,"moment":65}],41:[function(require,module,exports){
 "use strict";
 
 var h = require("virtual-dom/h");
 
-module.exports = function (data, refreshFn, deleteFn, utils) {
+module.exports = function (data, selected, selectFn, refreshFn, deleteFn, utils) {
 
 
 	return h("div.table-section-individual", [
@@ -2004,7 +2043,9 @@ module.exports = function (data, refreshFn, deleteFn, utils) {
 				h("p", "Notes")
 			]),
 			h("div.col-7", [
-				h("p", "Delete")
+        h("button", {
+          onclick: deleteFn
+        },"Delete")
 			])
 		]),
 		h("div.table-section-individual-rows", renderRows(data))
@@ -2014,7 +2055,16 @@ module.exports = function (data, refreshFn, deleteFn, utils) {
 
 		return data.map(function (elm){
 
-			return h("div.row", [
+      var sel = selected.some(function (s) {
+        return s.id === elm.id;
+      }) ? "selected" : "unselected";
+
+      var ref = {
+        id: elm.id,
+        collection: elm.collection
+      };
+
+      return h("div.row." + sel, [
 				h("div.col-1", [
 					h("p#member-payment-date", utils.moment(elm.date).format("DD-MM-YYYY"))
 				]),
@@ -2038,7 +2088,7 @@ module.exports = function (data, refreshFn, deleteFn, utils) {
 				]),
 				h("div.col-7", [
 					h("p#member-payment-delete", {
-            			onclick: deleteFn(elm.collection, elm.id)
+            onclick: selectFn(ref)
 					}, "x")
 				])
 			])
@@ -3203,7 +3253,8 @@ module.exports = function (utils) {
 	var state = utils.observS({
 		member:   utils.observ({}),
 		payments: utils.observ([]),
-		mode: utils.observ("view")
+		mode:     utils.observ("view"),
+    selected: utils.observ([])
 	});
 
 	state(function onchange () {
@@ -3251,6 +3302,7 @@ module.exports = function (utils) {
 
 		function renderViewMode() {
 			if(state.mode() === "edit") {
+        console.log("edit yo");
 				return memberEdit.render(state.member());
 			} else {
 				return memberView.render(state.member());

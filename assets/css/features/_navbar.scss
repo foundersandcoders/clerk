@@ -10,17 +10,20 @@ nav {
 .navigation {
   list-style: none;
   margin: 0;
-  
+
   background: white;
-  
+
   display: -webkit-box;
   display: -moz-box;
   display: -ms-flexbox;
   display: -webkit-flex;
   display: flex;
-  
+
   -webkit-flex-flow: row wrap;
   justify-content: flex-end;
+
+  border-bottom: 1px solid #dbdbdb;
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
 }
 
 .navigation a {
@@ -47,11 +50,11 @@ background: #f4f4f7;
 		padding: 0;
 	}
 
-	.navigation a { 
-		text-align: center; 
+	.navigation a {
+		text-align: center;
 		padding: 10px;
-		border-top: 1px solid rgba(255,255,255,0.3); 
-		border-bottom: 1px solid rgba(0,0,0,0.1); 
+		border-top: 1px solid rgba(255,255,255,0.3);
+		border-bottom: 1px solid rgba(0,0,0,0.1);
 	}
 
 
