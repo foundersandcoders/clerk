@@ -6,6 +6,7 @@ var view  = require("./view");
 
 module.exports = function (utils, state) {
 
+	var $$   = utils.$$;
 	var that = {};
 
 	that.render = function (member) {
@@ -16,17 +17,33 @@ module.exports = function (utils, state) {
 	that.putData = function () {
 
 		try {
-			// var payload = {
-			// 	title:          get("edit-member-title"),
-			// 	initials:       get("edit-member-initials"),
-			// 	firstName:      get("edit-member-first-name"),
-			// 	lastName:       get("edit-member-last-name"),
-			// 	primaryEmail:   get("edit-member-primary-email"),
-			// 	secondaryEmail: get("edit-member-secondary-email"),
-
-			// 	addressLine: get(),
-			// 	firstName: "Wil",
-			// };
+			var payload = {
+				// info
+				title:          $$("edit-member-title").value(),
+				initials:       $$("edit-member-initials").value(),
+				firstName:      $$("edit-member-first-name").value(),
+				lastName:       $$("edit-member-last-name").value(),
+				primaryEmail:   $$("edit-member-primary-email").value(),
+				secondaryEmail: $$("edit-member-secondary-email").value(),
+				news:           $$("edit-member-news-type").valSelect(),
+				// address
+				address1:       $$("edit-member-address1").value(),
+				address2:       $$("edit-member-address2").value(),
+				county:         $$("edit-member-county").value(),
+				postCode:       $$("edit-member-postcode").value(),
+				homePhone:      $$("edit-member-home-phone").value(),
+				workPhone:      $$("edit-member-work-phone").value(),
+				mobilePhone:    $$("edit-member-mobile-phone").value(),
+				// membership
+				membershipType:    $$("edit-member-membership-type").valSelect(),
+				dateJoined:        $$("edit-member-date-joined").value(),
+				lifePaymentDate:   $$("edit-member-life-payment-date").value(),
+				onlineMember:      $$("edit-member-status-online").checkedValue(),
+				giftAidSigned:     $$("edit-member-gift-aid-signed").checkedValue(),
+				dateGiftAidSigned: $$("edit-member-date-gift-aid-signed").value(),
+				standingOrder:     $$("edit-member-standing-order").checkedValue(),
+				notes:             $$("edit-member-notes").value()
+			};
 		} catch (e) {
 			console.log("Error in updating details: ", e);
 		}
@@ -61,21 +78,4 @@ function _createOptions (payload) {
 		url: "/api/members/" + id,
 		json: payload
 	}
-}
-
-var $$ = function (query) {
-
-	var that = {};
-	that.elm = document.getElementByI
-}
-
-function get (elm, query) {
-
-	return document.getElementById(elm, query);
-}
-
-function val (elm) {
-
-	var e = getElementById(elm);
-	return elm.options[e.selectedIndex].value;
 }

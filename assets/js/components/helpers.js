@@ -14,11 +14,12 @@ function renderOptionsSelected (h, options, selectedOption, placeholder) {
 	var firstPlaceholderOption = [
 		h("option", {
 			value: "",
-			disabled: true
+			disabled: true,
+			selected: true
 		}, placeholder)
 	];
 
-	return firstPlaceholderOption.concat(
+	var element =  firstPlaceholderOption.concat(
 		options.map(function (elm){
 			var selected = (elm.value === selectedOption || elm.description === selectedOption);
 
@@ -28,6 +29,8 @@ function renderOptionsSelected (h, options, selectedOption, placeholder) {
 			}, elm.description);
 		})
 	);
+
+	return element;
 }
 
 var memberTypes = module.exports.memberTypes = [{

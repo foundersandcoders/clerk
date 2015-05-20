@@ -58,19 +58,27 @@ module.exports = function (data, utils) {
 				h("span.info", "Primary email: "),
 				h("input#edit-member-primary-email", {
 					type: "text",
-					value: member.email1 || ""
+					value: member.primaryEmail || ""
 				})
 			]),
 			h("p", [
 				h("span.info", "Secondary email: "),
 				h("input#edit-member-secondary-email", {
 					type: "text",
-					value: member.email2 || ""
+					value: member.secondaryEmail || ""
+				})
+			]),
+			h("p", [
+				h("span.info", "Email bounced: "),
+				h("input#edit-member-email-bounced", {
+					type: "checkbox",
+					checked: member.emailBounced,
+					disabled: true
 				})
 			]),
 			h("p", [
 				h("span.info", "News: "),
-				h("select.input-width", renderOptionsSelected(newsType, (member.onlineMember ? "online" : "post"), "Select news"))
+				h("select#edit-member-news-type.input-width", renderOptionsSelected(newsType, (member.onlineMember ? "online" : "post"), "Select news"))
 			]),
 			h("p", [
 				h("span.info", "Status: "),
@@ -175,7 +183,7 @@ module.exports = function (data, utils) {
 			h("h2", "Membership info"),
 			h("p", [
 				h("span.info", "Membership type: "),
-				h("select.input-width", renderOptionsSelected(memberTypes, (member.membershipType || ""), "Membership type"))
+				h("select#edit-member-membership-type.input-width", renderOptionsSelected(memberTypes, (member.membershipType || ""), "Membership type"))
 			]),
 			h("p", [
 				h("span.info", "Date joined: "),
@@ -213,12 +221,19 @@ module.exports = function (data, utils) {
 				})
 			]),
 			h("p", [
-				h("span.info", "Due date: "),
-				h("input#edit-member-due-date", {
-					type: "text",
-					value: (member.dueDate ? utils.moment(member.dueDate).format("DD-MMM") : "")
+				h("span.info", "Standing order: "),
+				h("input#edit-member-standing-order", {
+					type: "checkbox",
+					checked: member.standingOrder
 				})
 			]),
+			// h("p", [
+			// 	h("span.info", "Due date: "),
+			// 	h("input#edit-member-due-date", {
+			// 		type: "text",
+			// 		value: (member.dueDate ? utils.moment(member.dueDate).format("DD-MMM") : "")
+			// 	})
+			// ]),
 			h("p", [
 				h("span.info", "Notes: "),
 				h("input#edit-member-notes", {

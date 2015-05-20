@@ -17,8 +17,8 @@ module.exports = function (data, utils) {
 			h("h2", "Personal info"),
      		check("Name: ", fullName.call(member)),
       		check("Member: ", member.id),
-			check("Primary email: ", member.email1),
-			check("Secondary email: ", member.email2),
+			check("Primary email: ", member.primaryEmail),
+			check("Secondary email: ", member.secondaryEmail),
       		check("Bounced email: ", member.emailBounced),
       		h("p", [
 				h("span.info", "News: "),
@@ -37,13 +37,11 @@ module.exports = function (data, utils) {
 
 		return h("div.col-2", [
 			h("h2", "Address info"),
-			checkSingle("", member.address1),
-			checkSingle("", member.address2),
-			checkSingle("", member.address3),
-			checkSingle("", member.address4),
-			checkSingle("", member.county),
-			checkSingle("", member.postcode),
-			checkSingle("", member.deliverer),
+			checkSingle("Address line: ", member.address1),
+			checkSingle("Town or City: ", member.address2),
+			checkSingle("County: ", member.county),
+			checkSingle("Postcoe: ", member.postcode),
+			checkSingle("Deliverer: ", member.deliverer),
 			check("Home phone: ", member.homePhone),
 			check("Work phone: ", member.workPhone),
 			check("Mobile phone: ", member.mobilePhone)
@@ -60,8 +58,8 @@ module.exports = function (data, utils) {
 			renderMembershipLifeChanged(member),
 			renderGiftAid(member),
 			renderDateGiftAidCancelled(member),
-			check("Standing order: ", member.standingOrder),
-			check("Notes:", member.membershipNotes),
+			check("Standing order: ", (member.standingOrder) ? "Yes" : "No" ),
+			check("Notes: ", member.notes),
 			renderRegistered(member),
 			check("Due date: ", utils.moment(member.dueDate).format("DD-MMM"))
 		]);
@@ -126,6 +124,7 @@ module.exports = function (data, utils) {
 	}
 
 	function replaceSpaceColon (){
+
 		return this.toLowerCase().replace(" ", "-").replace(":", "");
 	}
 

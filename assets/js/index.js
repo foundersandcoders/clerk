@@ -13,13 +13,14 @@
 		observ:        require("observ"),
 		observS:       require("observ-struct"),
 		observA:       require("observ-array"),
-		h:             require("virtual-dom/h")
+		h:             require("virtual-dom/h"),
+		$$:            require("./helpers").$$
 	};
 
 	try{
-		require("./pages/adminhome.js")(utils);
+		// require("./pages/adminhome.js")(utils);
 		require("./pages/viewmember.js")(utils);
-		require("./components/uploadcsv/index.js")(utils);
+		// require("./components/uploadcsv/index.js")(utils);
 	} catch (e){
 		console.log("Index: ", e)
 	}

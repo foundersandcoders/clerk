@@ -1,6 +1,7 @@
 "use strict";
 
 var clean = require("d-bap");
+var debug = require("debug")('http');
 
 module.exports = function (members) {
 
@@ -44,13 +45,7 @@ module.exports = function (members) {
     },
     update: function (req, res) {
 
-      var member = clean.object(req.payload);
-
-      console.log("member: ", req.payload);
-
-      members.update({id: req.params.id}, member, req.auth.credentials.token, function (e, r) {
-
-        console.log(e);
+      members.update({id: req.params.id}, req.payload, req.auth.credentials.token, function (e, r) {
 
         if (e) {
           return res(e).code(500);
