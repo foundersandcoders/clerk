@@ -78,9 +78,11 @@ module.exports = function (utils, state) {
 
 			if(count === 2) {
 				store.sort(function (a, b) {
-					var diff = moment(a.datePaid) - moment(b.datePaid);
-					return (diff > 0) ? -1 : (diff === 0) ? 0 : 1;
-				});
+
+          return new Date(a.date).getTime() - new Date(b.date).getTime();
+        });
+        calculateBalanceDue(store);
+        store.reverse();
 				state.payments.set(store);
 			}
 		});
@@ -92,9 +94,11 @@ module.exports = function (utils, state) {
 
 			if(count === 2) {
 				store.sort(function (a, b) {
-					var diff = moment(a.datePaid) - moment(b.datePaid);
-					return (diff > 0) ? -1 : (diff === 0) ? 0 : 1;
+
+				  return new Date(a.date).getTime() - new Date(b.date).getTime();
 				});
+        calculateBalanceDue(store);
+        store.reverse();
 				state.payments.set(store);
 			}
 		});
@@ -103,6 +107,22 @@ module.exports = function (utils, state) {
 	that.getData();
 	return that;
 };
+
+function calculateBalanceDue (list) {
+
+  list.reduce(function (a, b) {
+
+    var cost;
+    if (b.collection === "charges") {
+      cost = Number(b.total);
+    } else {
+      cost = 0 - Number(b.total);
+    }
+    var due = a + cost;
+    b.balanceDue = String(due);
+    return due;
+  }, 0);
+}
 
 function _createOptions (item) {
 

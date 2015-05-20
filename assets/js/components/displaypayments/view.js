@@ -64,7 +64,7 @@ module.exports = function (data, selected, selectFn, refreshFn, deleteFn, utils)
 					h("p#member-payment-payments", (elm.collection === "payments") ? elm.total : "")
 				]),
 				h("div.col-4", [
-					h("p#member-payment-balance-due", "?")
+					h("p#member-payment-balance-due", elm.balanceDue)
 				]),
 				h("div.col-5", [
 					h("p#member-payment-reference", elm.listReference)
