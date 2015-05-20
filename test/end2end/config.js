@@ -9,7 +9,7 @@ exports.config = {
 	specs: [
 		"./signup.spec.js",
 		// './signin.spec.js',
-		"./admin.home.spec.js",
+		// "./admin.home.spec.js",
 		"./member.create.spec.js"
 	],
 	params: {
@@ -23,7 +23,7 @@ exports.config = {
 		helpers: {
 			pages: require(__dirname + "/pages.js"),
 			mocks: require(__dirname + "/mocks.js"),
-			clear: require(__dirname + '/_helpers/form-input-object.js').clear
+			object: require(__dirname + '/_helpers/form-input-object.js')
 		}
 	},
 	// onPrepare: function(){

@@ -16,6 +16,6 @@ describe("Admin home screen: ", function(){
 		browser.ignoreSynchronization = true;
 
 
-		
+		stop();
 	});
 });

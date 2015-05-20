@@ -49,13 +49,17 @@ var CreateMember = module.exports.CreateMember = function () {
 
 	this.mobilePhone          = element(by.id(page + "-member-mobile-phone"));
 	this.workPhone            = element(by.id(page + "-member-work-phone"));
-	this.email1               = element(by.id(page + "-member-email1"));
-	this.email2               = element(by.id(page + "-member-email2"));
+	this.primaryEmail         = element(by.id(page + "-member-email1"));
+	this.secondaryEmail       = element(by.id(page + "-member-email2"));
+
+	this.membershipType       = element(by.id(page + "-member-membership-type"));
 	this.dateJoined           = element(by.id(page + "-member-date-joined"));
 	this.lifePaymentDate      = element(by.id(page + "-member-life-payment-date"));
 	this.membershipDue        = element(by.id(page + "-membership-due-date"));
+	this.giftAidSigned        = element(by.id(page + "-member-gift-aid-signed"));
 	this.giftAidSignedDate    = element(by.id(page + "-member-date-gift-aid-signed"));
 	this.giftAidCancelledDate = element(by.id(page + "-member-date-gift-cancelled"));
+	this.newsType             = element(by.id(page + "-member-news-type"));
 	this.notes                = element(by.id(page + "-member-membership-notes"));
 
 	this.createButton = element(by.id("create-member-btn"));
@@ -132,7 +136,7 @@ var EditMember = module.exports.EditMember = function () {
 	this.giftAidSignedDate    = element(by.id(page + "-date-gift-aid-signed"));
 	this.giftAidCancelledDate = element(by.id(page + "-date-gift-cancelled"));
 	this.notes                = element(by.id(page + "-membership-notes"));
-});
+};
 
 var PaymentMember = module.exports.PaymentMember = function () {
 
@@ -169,15 +173,3 @@ var MemberPaymentsControls = module.exports.MemberPaymentsControls = function ()
 	this.paymentAmount    = element(by.id("member-controls-payment-amount"));
 	this.paymentNote      = element(by.id("member-controls-payment-note"));
 };
-
-
-
-
-
-
-
-
-
-
-
-
