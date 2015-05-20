@@ -2070,6 +2070,15 @@ var memberTypes = module.exports.memberTypes = [{
 		description: "Corporate Annual"
 	}
 ];
+
+var newsType = module.exports.newsType = [{
+		value: "post",
+		description: "Post"
+	},{
+		value: "online",
+		description: "Online"
+	}
+];
 },{}],43:[function(require,module,exports){
 "use strict";
 
@@ -2123,15 +2132,8 @@ var h = require("virtual-dom/h");
 
 module.exports = function (data, utils) {
 	
-	var memberTypes = require("../helpers").memberTypes;
-	var newsType    = [{
-			value: "post",
-			description: "Post"
-		},{
-			value: "online",
-			description: "Online"
-		}
-	];
+	var memberTypes    = require("../helpers").memberTypes;
+	var newsType       = require("../helpers").newsType;
 
 	return ([
 		renderPersonalInfo(data),
@@ -2194,13 +2196,14 @@ module.exports = function (data, utils) {
 			]),
 			h("p", [
 				h("span.info", "News: "),
-				h("select", renderOptionsSelected(newsType, (member.onlineMember ? "online" : "post"), "Select news"))
+				h("select.input-width", renderOptionsSelected(newsType, (member.onlineMember ? "online" : "post"), "Select news"))
 			]),
 			h("p", [
 				h("span.info", "Status: "),
 				h("input#edit-member-status", {
 					type: "text",
-					value: member.status || ""
+					value: member.status || "",
+					disabled: true
 				})
 			]),
 			// deletedInfo(member)
@@ -2290,41 +2293,48 @@ module.exports = function (data, utils) {
 			h("h2", "Membership info"),
 			h("p", [
 				h("span.info", "Membership type: "),
-				h("select", renderOptionsSelected(memberTypes, member.membershipType, "Membership type"))
+				h("select.input-width", renderOptionsSelected(memberTypes, (member.membershipType || ""), "Membership type"))
 			]),
 			h("p", [
 				h("span.info", "Date joined: "),
 				h("input#edit-member-date-joined", {
 					type: "text",
-					value: utils.moment(member.dateJoined).format("DD-MM-YYYY") || ""
+					value: (member.dateJoined ? utils.moment(member.dateJoined).format("DD-MM-YYYY") : "")
 				})
 			]),
 			h("p", [
 				h("span.info", "Life payment date: "),
 				h("input#edit-member-life-payment-date", {
 					type: "text",
-					value: utils.moment(member.lifePaymentDate).format("DD-MM-YYYY") || ""
+					value: (member.lifePaymentDate ? utils.moment(member.lifePaymentDate).format("DD-MM-YYYY") : "")
+				})
+			]),
+			h("p", [
+				h("span.info", "Registered: "),
+				h("input#edit-member-status-online", {
+					type: "checkbox",
+					checked: member.onlineMember
+				})
+			]),
+			h("p", [
+				h("span.info", "Gift aid: "),
+				h("input#edit-member-gift-aid-signed", {
+					type: "checkbox",
+					checked: member.giftAidSigned
 				})
 			]),
 			h("p", [
 				h("span.info", "Date GAD Signed: "),
 				h("input#edit-member-date-gift-aid-signed", {
 					type: "text",
-					value: utils.moment(member.dateGiftAidSigned).format("DD-MM-YYYY") || ""
+					value: (member.dateGiftAidSigned ? utils.moment(member.dateGiftAidSigned).format("DD-MM-YYYY") : "")
 				})
 			]),
-			// h("p", [
-			// 	h("span.info", "Date GAD Signed: "),
-			// 	h("input#edit-member-date-gift-aid-signed", {
-			// 		type: "text",
-			// 		value: utils.moment(member.dateGiftAidSigned).format("DD-MM-YYYY") || ""
-			// 	})
-			// ]),
 			h("p", [
 				h("span.info", "Due date: "),
 				h("input#edit-member-due-date", {
 					type: "text",
-					value: utils.moment(member.dueDate).format("DD-MMM") || ""
+					value: (member.dueDate ? utils.moment(member.dueDate).format("DD-MMM") : "")
 				})
 			]),
 			h("p", [
@@ -2334,12 +2344,6 @@ module.exports = function (data, utils) {
 					value: member.membershipNotes || ""
 				})
 			]),
-
-
-			// renderGiftAid(member),
-			// renderDateGiftAidCancelled(member),
-			// check("Standing order: ", member.standingOrder),
-			// renderRegistered(member),
 		]);
 	}
 
@@ -2370,7 +2374,6 @@ module.exports = function (data, utils) {
 			})
 		);
 	}
-
 };
 },{"../helpers":42,"virtual-dom/h":3}],45:[function(require,module,exports){
 "use strict";

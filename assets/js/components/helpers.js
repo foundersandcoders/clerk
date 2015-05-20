@@ -21,3 +21,12 @@ var memberTypes = module.exports.memberTypes = [{
 		description: "Corporate Annual"
 	}
 ];
+
+var newsType = module.exports.newsType = [{
+		value: "post",
+		description: "Post"
+	},{
+		value: "online",
+		description: "Online"
+	}
+];
