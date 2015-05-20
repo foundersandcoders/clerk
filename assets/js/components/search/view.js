@@ -2,12 +2,12 @@
 
 var h = require("virtual-dom/h");
 
-module.exports = function (data) {
+module.exports = function (data, moment) {
 	console.log("ddd",data);
 	return h("div.search-table-section-member", [
 		h("div.search-table-section-member-header", [
 			h("div.col-5", [
-				h("p", "Membership number")
+				h("p", "ID")
 			]),
 			h("div.col-1", [
 				h("p", "Name")
@@ -34,6 +34,7 @@ module.exports = function (data) {
 
 		return data.map(function (result){
 
+      console.log("RESULT", result.lastSubscription);
 			return h("a", {href: "/members/" + result.id}, [
 				h("div.row", [
 					h("div.col-5", [
@@ -52,12 +53,22 @@ module.exports = function (data) {
 						h("p", result.membershipType)
 					]),
 					h("div.col-5", [
-						h("p", result.subscriptionAmount)
-					])
+					  lastSub(result.lastSubscription)
+          ])
 				])
 			]);
 		});
 	}
+
+  function lastSub (payment) {
+
+    console.log("PAYMENT: ", payment);
+    if (payment) {
+      return h("p", moment(payment.date).format("DD MMM YYYY") + " - £" + payment.total);
+    } else {
+      return h("p", "");
+    }
+  }
 
 	function decide (data) {
 

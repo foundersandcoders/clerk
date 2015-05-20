@@ -78,7 +78,7 @@ module.exports = function (data, utils) {
 			]),
 			h("p", [
 				h("span.info", "News: "),
-				h("select#edit-member-news-type.input-width", renderOptionsSelected(newsType, (member.onlineMember ? "online" : "post"), "Select news"))
+				h("select#edit-member-news-type.input-width", renderOptionsSelected(newsType, member.newsType, "Select news"))
 			]),
 			h("p", [
 				h("span.info", "Status: "),

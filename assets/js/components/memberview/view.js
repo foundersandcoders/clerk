@@ -20,18 +20,11 @@ module.exports = function (data, utils) {
 			check("Primary email: ", member.primaryEmail),
 			check("Secondary email: ", member.secondaryEmail),
       		check("Bounced email: ", member.emailBounced),
-      		h("p", [
-				h("span.info", "News: "),
-				renderOnlineStatus(member)
-			]),
+      		check("News: ", member.newsType),
       		check("Status: ", member.status),
 			deletedInfo(member)
 		]);
 	}
-
-  	function renderOnlineStatus (member) {
-		return h("span#view-member-news", (member.onlineMember) ? "Online" : "Post");
-  	}
 
 	function renderAddressInfo (member) {
 

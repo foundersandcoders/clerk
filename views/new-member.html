@@ -166,7 +166,7 @@
                 <div class="couterContainer">
                     <h3>Date joined</h3>
                 </div>
-                <input id="add-member-data-joined" class="short" type="date" name="dateJoined">
+                <input id="add-member-data-joined" class="short" type="text" name="dateJoined">
             </div>
         </div>
 
@@ -175,7 +175,7 @@
                 <div class="couterContainer">
                     <h3>Date life membership paid</h3>
                 </div>
-                <input id="add-member-life-payment-date" class="short" type="date" name="lifePaymentDate">
+                <input id="add-member-life-payment-date" class="short" type="text" name="lifePaymentDate">
             </div>
         </div>
 
@@ -184,7 +184,7 @@
                 <div class="couterContainer">
                     <h3>Due membership date</h3>
                 </div>
-                <input id="membership-due-date" class="short" type="date" name="dueDate" value="2015-01-01">
+                <input id="membership-due-date" class="short" type="text" name="dueDate" value="2015-01-01">
             </div>
         </div>
 
@@ -210,7 +210,7 @@
                 <input 
                     id="add-member-date-gift-aid-signed" 
                     class="short" 
-                    type="date" 
+                    type="text" 
                     name="dateGiftAidSigned"
                 >
             </div>
@@ -224,7 +224,7 @@
                 <input 
                     id="add-member-date-gift-cancelled"
                     class="short" 
-                    type="date" 
+                    type="text" 
                     name="dateGiftAidCancelled"
                 >
             </div>
@@ -236,10 +236,14 @@
 
         <div class="innerSectionContainer">
             <div class="inner-section-divider-medium">
-                 <div class="checkbox">
-                    <input id="check4" type="checkbox" name="onlineMember" value="true">
-                    <label for="check4"><h3 class="left">News online</h3></label>
+                <div class="couterContainer">
+                    <h3>News type</h3>
                 </div>
+                <select name="newsType" class="short" style="color:#ccc;">
+                    <option class="meta" value="" disabled="" selected="">Click to select one</option>
+                    <option value="post">Post</option>
+                    <option value="online">Online</option>
+                </select>
             </div>
         </div>
 

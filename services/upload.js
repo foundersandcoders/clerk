@@ -55,7 +55,7 @@ module.exports = function () {
 					var chargeHeader  = {"index":{"_index":"clerk","_type":"charges"}};
 
 
-					if(donation.total && donation.total.toString() !== "0"){
+					if(payment.total && payment.total.toString() !== "0"){
 						connection.write(JSON.stringify(paymentHeader) + "\n");
 						connection.write(JSON.stringify(payment) + "\n");
 					}
