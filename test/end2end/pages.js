@@ -70,13 +70,13 @@ var ViewMember = module.exports.ViewMember = function () {
 
 	var page = "view";
 
-	this.id        = element(by.id(page + "-member-id"));
-	this.fullName  = element(by.id(page + "-member-name"));
-	this.news      = element(by.id(page + "-member-news"));
-	this.status    = element(by.id(page + "-member-status"));
+	this.id        = element(by.id(page + "-member-id-"));
+	this.fullName  = element(by.id(page + "-member-name-"));
+	this.news      = element(by.id(page + "-member-news-"));
+	this.status    = element(by.id(page + "-member-status-"));
 
-	this.address1  = element(by.id(page + "-member-address1"));
-	this.address2  = element(by.id(page + "-member-address2"));
+	this.address1  = element(by.id(page + "-member-address-line"));
+	this.address2  = element(by.id(page + "-member-town-or"));
 	this.address3  = element(by.id(page + "-member-address3"));
 	this.address4  = element(by.id(page + "-member-address4"));
 	this.county    = element(by.id(page + "-member-county"));
@@ -87,8 +87,8 @@ var ViewMember = module.exports.ViewMember = function () {
 	this.registered           = element(by.id(page + "-member-status-online"));
 	this.mobilePhone          = element(by.id(page + "-member-mobile-phone"));
 	this.workPhone            = element(by.id(page + "-member-work-phone"));
-	this.email1               = element(by.id(page + "-member-primary-email"));
-	this.email2               = element(by.id(page + "-member-secondary-email"));
+	this.primaryEmail         = element(by.id(page + "-member-primary-email"));
+	this.secondaryEmail       = element(by.id(page + "-member-secondary-email"));
 	this.dateJoined           = element(by.id(page + "-member-date-joined"));
 	this.lifePaymentDate      = element(by.id(page + "-member-life-payment-date"));
 	this.membershipDue        = element(by.id(page + "-membership-due-date"));

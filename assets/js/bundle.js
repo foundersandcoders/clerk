@@ -2684,7 +2684,7 @@ module.exports = function (data, utils) {
 		return h("div.col-1", [
 			h("h2", "Personal info"),
      		check("Name: ", fullName.call(member)),
-      		check("Member: ", member.id),
+      		check("ID: ", member.id),
 			check("Primary email: ", member.primaryEmail),
 			check("Secondary email: ", member.secondaryEmail),
       		check("Bounced email: ", member.emailBounced),
@@ -2701,7 +2701,7 @@ module.exports = function (data, utils) {
 			checkSingle("Address line: ", member.address1),
 			checkSingle("Town or City: ", member.address2),
 			checkSingle("County: ", member.county),
-			checkSingle("Postcoe: ", member.postcode),
+			checkSingle("Postcode: ", member.postcode),
 			checkSingle("Deliverer: ", member.deliverer),
 			check("Home phone: ", member.homePhone),
 			check("Work phone: ", member.workPhone),

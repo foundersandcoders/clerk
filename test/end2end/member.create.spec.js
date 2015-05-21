@@ -45,7 +45,7 @@ describe("Create member: ", function(){
 		memberAdd.dateJoined.sendKeys(memberMock.dateJoined);
 		memberAdd.giftAidSigned.click();
 		memberAdd.giftAidSignedDate.sendKeys(memberMock.giftAidSignedDate);
-		element(by.cssContainingText("option", memberMock.newsType));
+		element(by.cssContainingText("option", memberMock.newsType)).click();
 		memberAdd.notes.sendKeys(memberMock.notes);
 
 		memberAdd.createButton.click();
@@ -53,14 +53,64 @@ describe("Create member: ", function(){
 		expect(browser.getCurrentUrl()).toContain(params.service.clerk + '/members/' + memberMock.id);
 	});
 	// TODO: check a member with all the attributes
-	// it("should see the correct values", function () {
-	// 	browser.ignoreSynchronization = true;
-	// 	expect(browser.getCurrentUrl()).toContain(params.service.clerk + '/members/' + memberMock.id);
+	it("should see the correct values", function () {
+		browser.ignoreSynchronization = true;
+		expect(browser.getCurrentUrl()).toContain(params.service.clerk + '/members/' + memberMock.id);
 
-	// 	expect(memberView.id.getText()).toBe(memberMock.id);
-	// 	expect(memberView.fullName.getText()).toBe(memberMock.fullName);
-	// 	expect(memberView.status.getText()).toBe(memberMock.status);
-	// 	expect(memberView.dateJoined.getText()).toBe(memberMock.dateJoined);
-	// 	expect(memberView.registered.getText()).toBe(memberMock.registered);
-	// });
+		stop();
+
+		// profile
+		expect(memberView.fullName.getText()).toBe(memberMock.fullName);
+		expect(memberView.id.getText()).toBe(memberMock.id);
+		expect(memberView.primaryEmail.getText()).toBe(memberMock.primaryEmail);
+		expect(memberView.secondaryEmail.getText()).toBe(memberMock.secondaryEmail);
+		expect(memberView.status.getText()).toBe(memberMock.status);
+		expect(memberView.newsType.getText()).toBe(memberMock.newsType);
+
+		// address
+		expect(memberView.address1)
+
+
+		expect(memberView.dateJoined.getText()).toBe(memberMock.dateJoined);
+		// expect(memberView.registered.getText()).toBe(memberMock.registered);
+	});
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

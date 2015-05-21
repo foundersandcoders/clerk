@@ -27,6 +27,7 @@ var member = module.exports.member = function (id, firstName, lastName, status, 
 	that.dateJoined        = "12-12-2012";
 	that.giftAidSignedDate = "12-12-2014";
 	that.notes             = "Nice dude.";
+	that.newsType          = "Post";
 
 	that.fullName  = that.title + " " + that.firstName + " " + that.initials + " " + that.lastName;
 
