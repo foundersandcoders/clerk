@@ -41,12 +41,6 @@ describe("Create payment: ", function(){
     paymentControls.paymentAmount.sendKeys(paymentMock.total);
     paymentControls.paymentNote.sendKeys(paymentMock.notes);
     paymentControls.paymentSubmit.click();
-
-	// expect(viewPayment.dateS.getText()).toBe("21-05-2015");
-	// expect(viewPayment.paymentS.getText()).toBe(paymentMock.total);
-	// expect(viewPayment.balanceDueS.getText()).toBe(String(0-Number(paymentMock.total)));
-	// expect(viewPayment.referenceS.getText()).toBe(paymentMock.listReference);
-	// expect(viewPayment.noteS.getText()).toBe(paymentMock.notes);
   });
 
   it("shoudl work?", function (){

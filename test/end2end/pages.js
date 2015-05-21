@@ -72,29 +72,34 @@ var ViewMember = module.exports.ViewMember = function () {
 
 	this.id        = element(by.id(page + "-member-id-"));
 	this.fullName  = element(by.id(page + "-member-name-"));
-	this.news      = element(by.id(page + "-member-news-"));
+	this.newsType  = element(by.id(page + "-member-news-"));
 	this.status    = element(by.id(page + "-member-status-"));
+	this.primaryEmail   = element(by.id(page + "-member-primary-email"));
+	this.secondaryEmail = element(by.id(page + "-member-secondary-email"));
 
 	this.address1  = element(by.id(page + "-member-address-line"));
 	this.address2  = element(by.id(page + "-member-town-or"));
 	this.address3  = element(by.id(page + "-member-address3"));
 	this.address4  = element(by.id(page + "-member-address4"));
-	this.county    = element(by.id(page + "-member-county"));
-	this.postcode  = element(by.id(page + "-member-postcode"));
+	this.county    = element(by.id(page + "-member-county-"));
+	this.postcode  = element(by.id(page + "-member-postcode-"));
 	this.deliverer = element(by.id(page + "-member-deliverer"));
-	this.homePhone = element(by.id(page + "-member-home-phone"));
 
+	this.homePhone = element(by.id(page + "-member-home-phone"));
+	this.workPhone = element(by.id(page + "-member-work-phone"));
+	this.mobilePhone = element(by.id(page + "-member-mobile-phone"));
+
+	this.dateJoined           = element(by.id(page + "-member-date-joined"));
+	this.membershipType       = element(by.id(page + "-member-membership-type"));
+	this.giftAidSignedDate    = element(by.id(page + "-member-gad-signed"));
+	this.standingOrder        = element(by.id(page + "-member-standing-order"));
+	this.notes                = element(by.id(page + "-member-notes-"));
 	this.registered           = element(by.id(page + "-member-status-online"));
+	this.membershipDueDate    = element(by.id(page + "-member-due-date"));
 	this.mobilePhone          = element(by.id(page + "-member-mobile-phone"));
 	this.workPhone            = element(by.id(page + "-member-work-phone"));
-	this.primaryEmail         = element(by.id(page + "-member-primary-email"));
-	this.secondaryEmail       = element(by.id(page + "-member-secondary-email"));
-	this.dateJoined           = element(by.id(page + "-member-date-joined"));
 	this.lifePaymentDate      = element(by.id(page + "-member-life-payment-date"));
-	this.membershipDue        = element(by.id(page + "-membership-due-date"));
-	this.giftAidSignedDate    = element(by.id(page + "-member-date-gift-aid-signed"));
 	this.giftAidCancelledDate = element(by.id(page + "-member-date-gift-cancelled"));
-	this.notes                = element(by.id(page + "-member-membership-notes"));
 };
 
 var EditMember = module.exports.EditMember = function () {

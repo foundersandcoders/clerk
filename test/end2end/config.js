@@ -10,8 +10,8 @@ exports.config = {
 		"./signup.spec.js",
 		// './signin.spec.js',
 		// "./admin.home.spec.js",
-		// "./member.create.spec.js",
-    	"./payments.spec.js"
+		"./member.create.spec.js",
+    	// "./payments.spec.js"
 	],
 	params: {
 		admin: {

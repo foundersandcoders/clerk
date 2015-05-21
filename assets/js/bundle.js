@@ -2690,7 +2690,7 @@ module.exports = function (data, utils) {
 			check("Primary email: ", member.primaryEmail),
 			check("Secondary email: ", member.secondaryEmail),
       		check("Bounced email: ", member.emailBounced),
-      		check("News: ", member.newsType),
+      		check("News: ", (member.newsType === "post" ? "Post" : "Online")),
       		check("Status: ", member.status),
 			deletedInfo(member)
 		]);
@@ -2700,11 +2700,11 @@ module.exports = function (data, utils) {
 
 		return h("div.col-2", [
 			h("h2", "Address info"),
-			checkSingle("Address line: ", member.address1),
-			checkSingle("Town or City: ", member.address2),
-			checkSingle("County: ", member.county),
-			checkSingle("Postcode: ", member.postcode),
-			checkSingle("Deliverer: ", member.deliverer),
+			check("Address line: ", member.address1),
+			check("Town or City: ", member.address2),
+			check("County: ", member.county),
+			check("Postcode: ", member.postcode),
+			check("Deliverer: ", member.deliverer),
 			check("Home phone: ", member.homePhone),
 			check("Work phone: ", member.workPhone),
 			check("Mobile phone: ", member.mobilePhone)
@@ -2723,7 +2723,7 @@ module.exports = function (data, utils) {
 			renderDateGiftAidCancelled(member),
 			check("Standing order: ", (member.standingOrder) ? "Yes" : "No" ),
 			check("Notes: ", member.notes),
-			renderRegistered(member),
+			check("Status online: ", (member.registered ? "Registered" : "Unregistered")),
 			check("Due date: ", utils.moment(member.dueDate).format("DD-MMM"))
 		]);
 	}

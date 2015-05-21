@@ -26,8 +26,11 @@ function member (id, firstName, lastName, status, date, registered) {
 	that.membershipType    = "Annual Double";
 	that.dateJoined        = "12-12-2012";
 	that.giftAidSignedDate = "12-12-2014";
+	that.standingOrder     = "No";
 	that.notes             = "Nice dude.";
+	that.registered        = registered || "Unregistered";
 	that.newsType          = "Post";
+	that.membershipDueDate = "01-Jan";
 
 	that.fullName  = that.title + " " + that.firstName + " " + that.initials + " " + that.lastName;
 
