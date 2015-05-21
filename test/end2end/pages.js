@@ -143,7 +143,7 @@ var PaymentMember = module.exports.PaymentMember = function () {
 	this.dateS        = element(by.id("member-payment-date"));
 	this.descriptionS = element(by.id("member-payment-description"));
 	this.chargeS      = element(by.id("member-payment-charges"));
-	this.paymentS     = element(by.id("member-balance-due"));
+	this.paymentS     = element(by.id("member-payment-payments"));
 	this.balanceDueS  = element(by.id("member-payment-balance-due"));
 	this.referenceS   = element(by.id("member-payment-reference"));
 	this.noteS        = element(by.id("member-payment-notes"));
@@ -171,5 +171,6 @@ var MemberPaymentsControls = module.exports.MemberPaymentsControls = function ()
 	this.paymentType      = element(by.id("member-controls-payment-type"));
 	this.paymentReference = element(by.id("member-controls-payment-reference"));
 	this.paymentAmount    = element(by.id("member-controls-payment-amount"));
-	this.paymentNote      = element(by.id("member-controls-payment-note"));
+	this.paymentNote      = element(by.id("member-controls-payment-notes"));
+	this.paymentSubmit    = element(by.id("member-controls-payment-enter"));
 };

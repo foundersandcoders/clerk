@@ -1648,7 +1648,7 @@ var view = require("./view");
 
 
 module.exports = function (utils, state) {
-	
+
 	var that = {};
 
 	that.render = function () {
@@ -1661,13 +1661,13 @@ module.exports = function (utils, state) {
 		try {
 
 			var payload = {
-				memberId:   document.querySelector("#member-id").textContent,
-				date:       document.querySelector("#date-payment").value,
-				type:       document.querySelector("#type-payment").value,
-				reference:  document.querySelector("#reference-payment").value,
-				total:      document.querySelector("#amount-payment").value,
-				notes:      document.querySelector("#notes-payment").value,
-	      		collection: "payments"
+				memberId:      document.querySelector("#member-id").textContent,
+				date:          document.querySelector("#member-controls-payment-date").value,
+				type:          document.querySelector("#member-controls-payment-type").value,
+				listReference: document.querySelector("#member-controls-payment-reference").value,
+				total:         document.querySelector("#member-controls-payment-amount").value,
+				notes:         document.querySelector("#member-controls-payment-notes").value,
+        collection:    "payments"
 			};
 		} catch (e) {
 			console.log("addpayment post: ", e);
@@ -1692,6 +1692,7 @@ function _createOptions (payload) {
 		json: payload
 	};
 }
+
 },{"./view":35}],35:[function(require,module,exports){
 "use strict";
 
@@ -1701,19 +1702,19 @@ module.exports = function render (fn) {
 
 	var inputs = [{
 		placeholder: "Payment date",
-		id: "date-payment"
+		id: "payment-date"
 	}, {
 		placeholder: "Type",
-		id: "type-payment"
+		id: "payment-type"
 	}, {
 		placeholder: "Reference",
-		id: "reference-payment"
+		id: "payment-reference"
 	}, {
 		placeholder: "Amount £",
-		id: "amount-payment"
+		id: "payment-amount"
 	}, {
 		placeholder: "Notes",
-		id: "notes-payment"
+		id: "payment-notes"
 	}];
 
 	return h("div.container", renderInputs(inputs));
@@ -1724,19 +1725,20 @@ module.exports = function render (fn) {
 
 			var cl = (elm.placeholder === "Notes") ? "input-two" : "input-one";
 
-			return h("input." + cl + "#" + elm.id, {
+			return h("input." + cl + "#member-controls-" + elm.id, {
 				placeholder: elm.placeholder
 			});
 		});
 
 		return inputs.concat([
 			h("button.button-two.button-a", "Close"),
-			h("button.button-one.button-b", {
+			h("button.button-one.button-b#member-controls-payment-enter", {
 				onclick: fn
 			}, "Enter payment")
 		]);
 	}
 }
+
 },{"virtual-dom/h":3}],36:[function(require,module,exports){
 "use strict";
 
