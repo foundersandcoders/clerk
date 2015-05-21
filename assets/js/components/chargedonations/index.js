@@ -20,8 +20,8 @@ module.exports = function (utils, state) {
 				date: 		 utils.moment(),
 				memberId:    document.querySelector("#member-id").textContent,
 				description: "Donation",
-				total:       document.querySelector("#donation-amount").value,
-				notes:       document.querySelector("#donation-notes").value,
+				total:       document.querySelector("#member-controls-donation-amount").value,
+				notes:       document.querySelector("#member-controls-donation-notes").value,
 				collection:  "charges"
 			};
 		} catch (e) {

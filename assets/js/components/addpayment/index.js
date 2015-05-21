@@ -17,10 +17,12 @@ module.exports = function (utils, state) {
 
 		try {
 
+      var type = document.querySelector("#member-controls-payment-type").value;
 			var payload = {
 				memberId:      document.querySelector("#member-id").textContent,
+        description:   "Payment by " + type,
 				date:          document.querySelector("#member-controls-payment-date").value,
-				type:          document.querySelector("#member-controls-payment-type").value,
+				type:          type,
 				listReference: document.querySelector("#member-controls-payment-reference").value,
 				total:         document.querySelector("#member-controls-payment-amount").value,
 				notes:         document.querySelector("#member-controls-payment-notes").value,

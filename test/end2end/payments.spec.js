@@ -13,9 +13,11 @@ describe("Create payment: ", function(){
 	var paymentControls  = new MemberPaymentsControls();
   var paymentMock = Mocks.payment({});
   var viewPayment = new ViewPayments();
+  var donationMock = Mocks.donation();
+  var subMock = Mocks.sub();
 
 	// create member
-  it("should be able to fill all inputs and create a member.", function (){
+  it("create a member", function (){
 		browser.ignoreSynchronization = true;
 		browser.driver.get(params.service.clerk + "/addmember");
 
@@ -31,7 +33,7 @@ describe("Create payment: ", function(){
 	});
 
   // create payments
-  it("should see the correct values", function () {
+  it("enter payment details", function () {
 	browser.ignoreSynchronization = true;
 	expect(browser.getCurrentUrl()).toContain(params.service.clerk + '/members/' + memberMock.id);
 
@@ -42,26 +44,72 @@ describe("Create payment: ", function(){
     paymentControls.paymentNote.sendKeys(paymentMock.notes);
     paymentControls.paymentSubmit.click();
 
-	// expect(viewPayment.dateS.getText()).toBe("21-05-2015");
-	// expect(viewPayment.paymentS.getText()).toBe(paymentMock.total);
-	// expect(viewPayment.balanceDueS.getText()).toBe(String(0-Number(paymentMock.total)));
-	// expect(viewPayment.referenceS.getText()).toBe(paymentMock.listReference);
-	// expect(viewPayment.noteS.getText()).toBe(paymentMock.notes);
   });
 
-  it("shoudl work?", function (){
-	browser.ignoreSynchronization = true;
-	expect(browser.getCurrentUrl()).toContain(params.service.clerk + '/members/' + memberMock.id);
+  it("check payment has appeared", function (){
+
+    browser.ignoreSynchronization = true;
+    expect(browser.getCurrentUrl()).toContain(params.service.clerk + '/members/' + memberMock.id);
 
     browser.refresh();
     browser.sleep(1000);
     browser.refresh();
-	browser.sleep(1000);
+    browser.sleep(1000);
 
-	expect(viewPayment.dateS.getText()).toBe("08-11-2013");
-	expect(viewPayment.paymentS.getText()).toBe(paymentMock.total.toString());
-	expect(viewPayment.balanceDueS.getText()).toBe(String(0-Number(paymentMock.total)));
-	expect(viewPayment.referenceS.getText()).toBe(paymentMock.listReference);
-	expect(viewPayment.noteS.getText()).toBe(paymentMock.notes);
+    expect(viewPayment.dateS.first().getText()).toBe("08-11-2013");
+    expect(viewPayment.paymentS.first().getText()).toBe(paymentMock.total.toString());
+    expect(viewPayment.balanceDueS.first().getText()).toBe(String(0-Number(paymentMock.total)));
+    expect(viewPayment.referenceS.first().getText()).toBe(paymentMock.listReference);
+    expect(viewPayment.descriptionS.first().getText()).toBe("Payment by " + paymentMock.type);
+    expect(viewPayment.noteS.first().getText()).toBe(paymentMock.notes);
   });
+
+  it("enter donation details", function () {
+    browser.ignoreSynchronization = true;
+    expect(browser.getCurrentUrl()).toContain(params.service.clerk + '/members/' + memberMock.id);
+
+    paymentControls.donationAmount.sendKeys(donationMock.amount);
+    paymentControls.donationNote.sendKeys(donationMock.notes);
+    paymentControls.donationPay.click();
+  });
+
+  it("check donation has appeared", function () {
+
+    browser.ignoreSynchronization = true;
+    expect(browser.getCurrentUrl()).toContain(params.service.clerk + '/members/' + memberMock.id);
+
+    browser.refresh();
+    browser.sleep(2000);
+    browser.refresh();
+    browser.sleep(2000);
+
+    expect(viewPayment.chargeS.first().getText()).toBe(donationMock.amount);
+    expect(viewPayment.descriptionS.first().getText()).toBe("Donation");
+    expect(viewPayment.balanceDueS.first().getText()).toBe(String(0-Number(paymentMock.total) + Number(donationMock.amount)));
+    expect(viewPayment.noteS.first().getText()).toBe(donationMock.notes);
+  });
+
+  it("enter subscription details", function () {
+    browser.ignoreSynchronization = true;
+    expect(browser.getCurrentUrl()).toContain(params.service.clerk + '/members/' + memberMock.id);
+
+    paymentControls.subAmount.sendKeys(subMock.amount);
+    paymentControls.subBtn.click();
+  });
+
+  it("check subscription has appeared", function () {
+
+    browser.ignoreSynchronization = true;
+    expect(browser.getCurrentUrl()).toContain(params.service.clerk + '/members/' + memberMock.id);
+
+    browser.refresh();
+    browser.sleep(2000);
+    browser.refresh();
+    browser.sleep(2000);
+
+    expect(viewPayment.chargeS.first().getText()).toBe(subMock.amount);
+    expect(viewPayment.descriptionS.first().getText()).toBe("Subscription");
+    expect(viewPayment.balanceDueS.first().getText()).toBe(String(0-Number(paymentMock.total) + Number(donationMock.amount) + Number(subMock.amount)));
+  });
+
 });

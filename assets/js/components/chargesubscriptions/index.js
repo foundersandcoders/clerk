@@ -23,7 +23,7 @@ module.exports = function (utils, state) {
        			collection:  "charges"
 			};
 
-			var value = document.querySelector("#subscription-amount").value;
+			var value = document.querySelector("#member-controls-subscription-amount").value;
 
 			payload.total       = (type === "charge") ? value          : String(0 - Number(value));
 			payload.description = (type === "charge") ? "Subscription" : "Subscription refund";
