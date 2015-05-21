@@ -97,7 +97,7 @@ module.exports = function (data, utils) {
 			h("h2", "Address info"),
 			h("p", [
 				h("span.info", "Address line: "),
-				h("input#edit-member-address1", {
+				h("input#edit-member-address-line", {
 					type: "text",
 					value: member.address1 || "",
 					placeholder: "House name/number and street, P.O. box, company name, c/o"
@@ -113,7 +113,7 @@ module.exports = function (data, utils) {
 			// ]),
 			h("p", [
 				h("span.info", "Town/City: "),
-				h("input#edit-member-address2", {
+				h("input#edit-member-town-or-city", {
 					type: "text",
 					value: member.address2 || ""
 				})

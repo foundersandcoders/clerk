@@ -2330,7 +2330,7 @@ module.exports = function (data, utils) {
 			h("h2", "Address info"),
 			h("p", [
 				h("span.info", "Address line: "),
-				h("input#edit-member-address1", {
+				h("input#edit-member-address-line", {
 					type: "text",
 					value: member.address1 || "",
 					placeholder: "House name/number and street, P.O. box, company name, c/o"
@@ -2346,7 +2346,7 @@ module.exports = function (data, utils) {
 			// ]),
 			h("p", [
 				h("span.info", "Town/City: "),
-				h("input#edit-member-address2", {
+				h("input#edit-member-town-or-city", {
 					type: "text",
 					value: member.address2 || ""
 				})
@@ -2901,16 +2901,16 @@ module.exports = function (toggleFn, putFn, mode) {
 	function whichMode () {
 		if (mode === "edit") {
 			return [
-				h("button.button-two.m-l-15",{
+				h("button#edit-member-cancel.button-two.m-l-15",{
 					onclick: toggleFn
 				}, "Cancel"),
-				h("button.button-two.m-l-15",{
+				h("button#edit-member-save.button-two.m-l-15",{
 					onclick: putFn
 				}, "Save")
 			]
 		} else {
 			return [
-				h("button.button-two.m-l-15",{
+				h("button#edit-member-mode.button-two.m-l-15",{
 					onclick: toggleFn
 				}, "Edit")
 			]

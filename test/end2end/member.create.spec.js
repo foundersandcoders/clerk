@@ -78,7 +78,7 @@ describe("Create member: ", function(){
 	});
 
 	it("should see the correct values for membership info", function () {
-		
+
 		browser.ignoreSynchronization = true;
 		expect(browser.getCurrentUrl()).toContain(params.service.clerk + '/members/' + memberMock.id);
 

@@ -14,16 +14,16 @@ module.exports = function (toggleFn, putFn, mode) {
 	function whichMode () {
 		if (mode === "edit") {
 			return [
-				h("button.button-two.m-l-15",{
+				h("button#edit-member-cancel.button-two.m-l-15",{
 					onclick: toggleFn
 				}, "Cancel"),
-				h("button.button-two.m-l-15",{
+				h("button#edit-member-save.button-two.m-l-15",{
 					onclick: putFn
 				}, "Save")
 			]
 		} else {
 			return [
-				h("button.button-two.m-l-15",{
+				h("button#edit-member-mode.button-two.m-l-15",{
 					onclick: toggleFn
 				}, "Edit")
 			]

@@ -106,24 +106,28 @@ var EditMember = module.exports.EditMember = function () {
 
 	var page = "edit-member";
 
+	this.mode         = element(by.id(page + "-mode"));
+	this.modeSave     = element(by.id(page + "-save"));
+	this.modeCancel   = element(by.id(page + "-cancel"));
+
 	// Personal info
-	this.id           = element(by.id(page + "-id"));
-	this.title        = element(by.id(page + "-title"));
-	this.initials     = element(by.id(page + "-initials"));
-	this.firstName    = element(by.id(page + "-first-name"));
-	this.lastName     = element(by.id(page + "-last-name"));
-	this.email1       = element(by.id(page + "-primary-email"));
-	this.email2       = element(by.id(page + "-secondary-email"));
-	this.news         = element(by.id(page + "-method-news-receive"));
-	this.status       = element(by.id(page + "-status"));
-	this.reasonDel    = element(by.id(page + "-deletion-reason"));
-	this.delationDate = element(by.id(page + "-deletion-date"));
+	this.id             = element(by.id(page + "-id"));
+	this.title          = element(by.id(page + "-title"));
+	this.initials       = element(by.id(page + "-initials"));
+	this.firstName      = element(by.id(page + "-first-name"));
+	this.lastName       = element(by.id(page + "-last-name"));
+	this.primaryEmail   = element(by.id(page + "-primary-email"));
+	this.secondaryEmail = element(by.id(page + "-secondary-email"));
+	this.news           = element(by.id(page + "-news-type"));
+	this.status         = element(by.id(page + "-status"));
+	// this.reasonDel    = element(by.id(page + "-deletion-reason"));
+	// this.delationDate = element(by.id(page + "-deletion-date"));
 
 	// address info
-	this.address1    = element(by.id(page + "-address1"));
-	this.address2    = element(by.id(page + "-address2"));
-	this.address3    = element(by.id(page + "-address3"));
-	this.address4    = element(by.id(page + "-address4"));
+	this.address1    = element(by.id(page + "-address-line"));
+	this.address2    = element(by.id(page + "-town-or-city"));
+	// this.address3    = element(by.id(page + "-address3"));
+	// this.address4    = element(by.id(page + "-address4"));
 	this.county      = element(by.id(page + "-county"));
 	this.postcode    = element(by.id(page + "-postcode"));
 	this.deliverer   = element(by.id(page + "-deliverer"));
