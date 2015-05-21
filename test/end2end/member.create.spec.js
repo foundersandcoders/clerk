@@ -30,8 +30,6 @@ describe("Create member: ", function(){
 		browser.ignoreSynchronization = true;
 		expect(browser.getCurrentUrl()).toContain(params.service.clerk + '/members/' + memberMock.id);
 
-		stop();
-
 		expect(memberView.id.getText()).toBe(memberMock.id);
 		expect(memberView.fullName.getText()).toBe(memberMock.fullName);
 		expect(memberView.status.getText()).toBe(memberMock.status);

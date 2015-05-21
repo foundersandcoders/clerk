@@ -1,6 +1,6 @@
 var moment = require("moment");
 
-var member = function (id, firstName, lastName, status, date, registered) {
+function member (id, firstName, lastName, status, date, registered) {
 
 	var that = {};
 
@@ -20,4 +20,20 @@ var member = function (id, firstName, lastName, status, date, registered) {
 	return that;
 };
 
+
+function payment (prot) {
+
+  var prot = prot || {};
+  var that = {};
+
+  that.date          = prot.date          || "11/08/2013";
+  that.type          = prot.type          || "CASH";
+  that.listReference = prot.listReference || "INV1234";
+  that.total         = prot.total         || 25;
+  that.notes         = prot.notes         || "Payment for membership";
+
+  return that;
+}
+
 module.exports.member = member;
+module.exports.payment = payment;

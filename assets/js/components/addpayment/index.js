@@ -5,7 +5,7 @@ var view = require("./view");
 
 
 module.exports = function (utils, state) {
-	
+
 	var that = {};
 
 	that.render = function () {
@@ -18,13 +18,13 @@ module.exports = function (utils, state) {
 		try {
 
 			var payload = {
-				memberId:   document.querySelector("#member-id").textContent,
-				date:       document.querySelector("#date-payment").value,
-				type:       document.querySelector("#type-payment").value,
-				reference:  document.querySelector("#reference-payment").value,
-				total:      document.querySelector("#amount-payment").value,
-				notes:      document.querySelector("#notes-payment").value,
-	      		collection: "payments"
+				memberId:      document.querySelector("#member-id").textContent,
+				date:          document.querySelector("#member-controls-payment-date").value,
+				type:          document.querySelector("#member-controls-payment-type").value,
+				listReference: document.querySelector("#member-controls-payment-reference").value,
+				total:         document.querySelector("#member-controls-payment-amount").value,
+				notes:         document.querySelector("#member-controls-payment-notes").value,
+        collection:    "payments"
 			};
 		} catch (e) {
 			console.log("addpayment post: ", e);
