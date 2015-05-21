@@ -247,7 +247,7 @@ module.exports = function (fn) {
 			h("button.button-two.left.small-font#member-controls-subscription-pay", {
 				onclick: fn("charge")
 			}, "Advanced Sub"),
-			h("button.button-two.right", {
+			h("button.button-two.right#member-controls-subscription-refund", {
 				onclick: fn("refund")
 			}, "Refund")
 		])

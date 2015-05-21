@@ -112,4 +112,27 @@ describe("Create payment: ", function(){
     expect(viewPayment.balanceDueS.first().getText()).toBe(String(0-Number(paymentMock.total) + Number(donationMock.amount) + Number(subMock.amount)));
   });
 
+  it("enter subscription details", function () {
+    browser.ignoreSynchronization = true;
+    expect(browser.getCurrentUrl()).toContain(params.service.clerk + '/members/' + memberMock.id);
+
+    paymentControls.subAmount.sendKeys(subMock.amount);
+    paymentControls.subRefundBtn.click();
+  });
+
+  it("check subscription has appeared", function () {
+
+    browser.ignoreSynchronization = true;
+    expect(browser.getCurrentUrl()).toContain(params.service.clerk + '/members/' + memberMock.id);
+
+    browser.refresh();
+    browser.sleep(2000);
+    browser.refresh();
+    browser.sleep(2000);
+
+    expect(viewPayment.chargeS.first().getText()).toBe(String(0-Number(subMock.amount)));
+    expect(viewPayment.descriptionS.first().getText()).toBe("Subscription refund");
+    expect(viewPayment.balanceDueS.first().getText()).toBe(String((0-Number(paymentMock.total)) + Number(donationMock.amount) + (Number(subMock.amount) - Number(subMock.amount))));
+  });
+
 });
