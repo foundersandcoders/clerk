@@ -52,5 +52,27 @@ function payment (prot) {
   return that;
 }
 
-module.exports.member = member;
-module.exports.payment = payment;
+function donation (prot) {
+
+  var prot = prot || {};
+  var that = {};
+
+  that.amount = prot.amount || "10";
+  that.notes  = prot.notes  || "donation yo";
+
+  return that;
+}
+
+function sub (amount) {
+
+  var that = {};
+
+  that.amount = amount || "20";
+
+  return that;
+}
+
+module.exports.member   = member;
+module.exports.payment  = payment;
+module.exports.donation = donation;
+module.exports.sub      = sub;

@@ -149,14 +149,14 @@ var EditMember = module.exports.EditMember = function () {
 
 var PaymentMember = module.exports.PaymentMember = function () {
 
-	this.dateS        = element(by.id("member-payment-date"));
-	this.descriptionS = element(by.id("member-payment-description"));
-	this.chargeS      = element(by.id("member-payment-charges"));
-	this.paymentS     = element(by.id("member-payment-payments"));
-	this.balanceDueS  = element(by.id("member-payment-balance-due"));
-	this.referenceS   = element(by.id("member-payment-reference"));
-	this.noteS        = element(by.id("member-payment-notes"));
-	this.deleteS      = element(by.id("member-payment-delete"));
+	this.dateS        = element.all(by.id("member-payment-date"));
+	this.descriptionS = element.all(by.id("member-payment-description"));
+	this.chargeS      = element.all(by.id("member-payment-charges"));
+	this.paymentS     = element.all(by.id("member-payment-payments"));
+	this.balanceDueS  = element.all(by.id("member-payment-balance-due"));
+	this.referenceS   = element.all(by.id("member-payment-reference"));
+	this.noteS        = element.all(by.id("member-payment-notes"));
+	this.deleteS      = element.all(by.id("member-payment-delete"));
 };
 
 var MemberPaymentsControls = module.exports.MemberPaymentsControls = function () {
@@ -167,12 +167,12 @@ var MemberPaymentsControls = module.exports.MemberPaymentsControls = function ()
 
 	// subscriptions
 	this.subAmount       = element(by.id("member-controls-subscription-amount"));
-	this.subBtn          = element(by.id("member-controls-subscription-pay-btn"));
-	this.subRefundBtn    = element(by.id("member-controls-subscription-refund-btn"));
+	this.subBtn          = element(by.id("member-controls-subscription-pay"));
+	this.subRefundBtn    = element(by.id("member-controls-subscription-refund"));
 
 	// donation
 	this.donationAmount  = element(by.id("member-controls-donation-amount"));
-	this.donationNote    = element(by.id("member-controls-donation-note"));
+  this.donationNote    = element(by.id("member-controls-donation-notes"));
 	this.donationPay     = element(by.id("member-controls-donation-pay"));
 
 	// payment

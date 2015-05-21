@@ -1660,10 +1660,12 @@ module.exports = function (utils, state) {
 
 		try {
 
+      var type = document.querySelector("#member-controls-payment-type").value;
 			var payload = {
 				memberId:      document.querySelector("#member-id").textContent,
+        description:   "Payment by " + type,
 				date:          document.querySelector("#member-controls-payment-date").value,
-				type:          document.querySelector("#member-controls-payment-type").value,
+				type:          type,
 				listReference: document.querySelector("#member-controls-payment-reference").value,
 				total:         document.querySelector("#member-controls-payment-amount").value,
 				notes:         document.querySelector("#member-controls-payment-notes").value,
@@ -1762,8 +1764,8 @@ module.exports = function (utils, state) {
 				date: 		 utils.moment(),
 				memberId:    document.querySelector("#member-id").textContent,
 				description: "Donation",
-				total:       document.querySelector("#donation-amount").value,
-				notes:       document.querySelector("#donation-notes").value,
+				total:       document.querySelector("#member-controls-donation-amount").value,
+				notes:       document.querySelector("#member-controls-donation-notes").value,
 				collection:  "charges"
 			};
 		} catch (e) {
@@ -1800,18 +1802,19 @@ module.exports = function (fn) {
 	return h("div.container-1", [
 		h("p", "Add donation"),
 		h("div.gbp", [
-			h("input.input-three#donation-amount", {
+			h("input.input-three#member-controls-donation-amount", {
 				placeholder: "Amount"
 			})
 		]),
-		h("input.input-four#donation-notes", {
+		h("input.input-four#member-controls-donation-notes", {
 			placeholder: "Optional note"
 		}),
-		h("button.button-two.right.full-width.margin-top-10", {
+		h("button.button-two.right.full-width.margin-top-10#member-controls-donation-pay", {
 			onclick: fn
 		}, "Add")
 	]);
 };
+
 },{"virtual-dom/h":3}],38:[function(require,module,exports){
 "use strict";
 
@@ -1838,7 +1841,7 @@ module.exports = function (utils, state) {
        			collection:  "charges"
 			};
 
-			var value = document.querySelector("#subscription-amount").value;
+			var value = document.querySelector("#member-controls-subscription-amount").value;
 
 			payload.total       = (type === "charge") ? value          : String(0 - Number(value));
 			payload.description = (type === "charge") ? "Subscription" : "Subscription refund";
@@ -1877,21 +1880,22 @@ module.exports = function (fn) {
 		]),
 		h("div.body-ctrl", [
 			h("div.gbp", [
-				h("input.input-three#subscription-amount", {
+				h("input.input-three#member-controls-subscription-amount", {
 					placeholder: "Amount"
 				})
 			]),
 		]),
 		h("div.container-2", [
-			h("button.button-two.left.small-font", {
+			h("button.button-two.left.small-font#member-controls-subscription-pay", {
 				onclick: fn("charge")
 			}, "Advanced Sub"),
-			h("button.button-two.right", {
+			h("button.button-two.right#member-controls-subscription-refund", {
 				onclick: fn("refund")
 			}, "Refund")
 		])
 	])
 };
+
 },{"virtual-dom/h":3}],40:[function(require,module,exports){
 "use strict";
 

@@ -10,16 +10,16 @@ module.exports = function (fn) {
 		]),
 		h("div.body-ctrl", [
 			h("div.gbp", [
-				h("input.input-three#subscription-amount", {
+				h("input.input-three#member-controls-subscription-amount", {
 					placeholder: "Amount"
 				})
 			]),
 		]),
 		h("div.container-2", [
-			h("button.button-two.left.small-font", {
+			h("button.button-two.left.small-font#member-controls-subscription-pay", {
 				onclick: fn("charge")
 			}, "Advanced Sub"),
-			h("button.button-two.right", {
+			h("button.button-two.right#member-controls-subscription-refund", {
 				onclick: fn("refund")
 			}, "Refund")
 		])
