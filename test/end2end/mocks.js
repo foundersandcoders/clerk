@@ -1,36 +1,38 @@
 var moment = require("moment");
 
-function member (id, firstName, lastName, status, date, registered) {
+function member (proto) {
 
+	var proto = proto || {};
 	var that = {};
 
-	that.id             = (id        || Math.round(Math.random()*1000000)).toString();
-	that.firstName      = firstName || "Besart";
-	that.lastName       = lastName  || "Hoxhaj";
-	that.initials       = "B J H";
-	that.title          = "Mr.";
-	that.primaryEmail   = "primary@email.com";
-	that.secondaryEmail = "secondary@email.com";
-	that.status         = status || "active";
+	that.id             = proto.id || "87654321";
+	that.firstName      = proto.firstName || "Besart";
+	that.lastName       = proto.lastName ||  "Hoxhaj";
+	that.initials       = proto.initials || "B J H";
+	that.title          = proto.title || "Mr.";
+	that.primaryEmail   = proto.primaryEmail || "primary@email.com";
+	that.secondaryEmail = proto.secondaryEmail || "secondary@email.com";
+	that.status         = proto.status ||  "active";
+	that.newsType          = proto.newsType || "Post";
 
-	that.address1       = "Virtual Road D3";
-	that.address2       = "Mercury";
-	that.county         = "Bobland";
-	that.postcode       = "314159";
-	that.deliverer      = "";
+	that.address1       = proto.address1 || "Virtual Road D3";
+	that.address2       = proto.address2 || "Mercury";
+	that.county         = proto.county || "Bobland";
+	that.postcode       = proto.postcode || "314159";
+	that.deliverer      = proto.deliverer || "";
 
-	that.homePhone      = "1111-2222-3333";
-	that.workPhone      = "2222-1111-3333";
-	that.mobilePhone    = "3333-1111-2222";
+	that.homePhone      = proto.homePhone || "1111-2222-3333";
+	that.workPhone      = proto.workPhone || "2222-1111-3333";
+	that.mobilePhone    = proto.mobilePhone || "3333-1111-2222";
 
-	that.membershipType    = "Annual Double";
-	that.dateJoined        = "12-12-2012";
-	that.giftAidSignedDate = "12-12-2014";
-	that.standingOrder     = "No";
-	that.notes             = "Nice dude.";
-	that.registered        = registered || "Unregistered";
-	that.newsType          = "Post";
-	that.membershipDueDate = "01-Jan";
+	that.membershipType    = proto.membershipType || "Annual Double";
+	that.dateJoined        = proto.dateJoined || "12-12-2012";
+	that.giftAidSignedDate = proto.giftAidSignedDate || "12-12-2014";
+	that.standingOrder     = proto.standingOrder || "No";
+	that.notes             = proto.notes || "Nice dude.";
+	that.registered        = proto.registered || "Unregistered";
+	that.giftAidSigned     = proto.giftAidSigned || false;
+	that.membershipDueDate = proto.membershipDueDate || "01-Jan";
 
 	that.fullName  = that.title + " " + that.firstName + " " + that.initials + " " + that.lastName;
 

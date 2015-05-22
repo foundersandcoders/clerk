@@ -6,22 +6,22 @@ module.exports = function (data, moment) {
 	console.log("ddd",data);
 	return h("div.search-table-section-member", [
 		h("div.search-table-section-member-header", [
-			h("div.col-5", [
+			h("div.col-1", [
 				h("p", "ID")
 			]),
-			h("div.col-1", [
+			h("div.col-2", [
 				h("p", "Name")
 			]),
-			h("div.col-2", [
+			h("div.col-3", [
 				h("p", "Title")
 			]),
-			h("div.col-3", [
+			h("div.col-4", [
 				h("p", "Initials")
 			]),
-			h("div.col-4", [
+			h("div.col-5", [
 				h("p", "Subscription")
 			]),
-			h("div.col-5", [
+			h("div.col-6", [
 				h("p", "Payment")
 			])
 		]),
@@ -34,25 +34,26 @@ module.exports = function (data, moment) {
 
 		return data.map(function (result){
 
-      console.log("RESULT", result.lastSubscription);
+		console.log("RESULT", result);
+
 			return h("a", {href: "/members/" + result.id}, [
 				h("div.row", [
-					h("div.col-5", [
+					h("div.col-1", [
 						h("p", result.id)
 					]),
-					h("div.col-1", [
+					h("div.col-2", [
 						h("p", result.lastName + " " + result.firstName)
 					]),
-					h("div.col-2", [
+					h("div.col-3", [
 						h("p", result.title)
 					]),
-					h("div.col-3", [
+					h("div.col-4", [
 						h("p", result.initials)
 					]),
-					h("div.col-4", [
-						h("p", result.membershipType)
-					]),
 					h("div.col-5", [
+						h("p", replaceNice.call(null, result.membershipType || ""))
+					]),
+					h("div.col-6", [
 					  lastSub(result.lastSubscription)
           ])
 				])
@@ -84,3 +85,11 @@ module.exports = function (data, moment) {
 		return h("p", "No results");
 	}
 };
+
+
+function replaceNice (string) {
+
+	return string.replace("-", " ").split(" ").map(function (elm){
+		return elm.charAt(0).toUpperCase() + elm.slice(1);
+	}).join(" ");
+}

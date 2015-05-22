@@ -5,10 +5,9 @@ var addPaymentComponent         = require("../components/addpayment/index.js");
 var chargeDonationComponent     = require("../components/chargedonations/index.js");
 var chargeSubscriptionComponent = require("../components/chargesubscriptions/index.js");
 var displayPaymentsComponent    = require("../components/displaypayments/index.js");
-var memberViewComponent         = require("../components/memberview/index.js");
-var memberEditComponent         = require("../components/memberedit/index.js");
-var memberStatusComponent       = require("../components/memberstatus/index.js");
-var modeControlComponent        = require("../components/modecontrol/index.js");
+var memberViewComponent         = require("../components/member.view.component.js").index;
+var memberEditComponent         = require("../components/member.edit.component.js").index;
+
 
 module.exports = function (utils) {
 
@@ -16,7 +15,7 @@ module.exports = function (utils) {
 		member:   utils.observ({}),
 		payments: utils.observ([]),
 		mode:     utils.observ("view"),
-    selected: utils.observ([])
+    	selected: utils.observ([])
 	});
 
 	state(function onchange () {
@@ -25,14 +24,17 @@ module.exports = function (utils) {
 		render();
 	});
 
+	state.toggleMode = function (){
+		var mode = (state.mode() === "edit") ? "view" : "edit";
+		state.mode.set(mode);
+	};
+
 	var addPayment         = addPaymentComponent(utils, state);
 	var chargeDonation     = chargeDonationComponent(utils, state);
 	var chargeSubscription = chargeSubscriptionComponent(utils, state);
 	var displayPayments    = displayPaymentsComponent(utils, state);
 	var memberView         = memberViewComponent(utils, state);
 	var memberEdit         = memberEditComponent(utils, state);
-	var memberStatus       = memberStatusComponent(utils, state);
-	var modeControl        = modeControlComponent(utils, state);
 
 	function view (h) {
 
@@ -40,19 +42,22 @@ module.exports = function (utils) {
 			h("div.overall-container", [
 				renderViewMode(),
 				h("div.actions-container", [
-					modeControl.render(),
-					memberStatus.render(),
+					// modeControl.render(),
+					// memberStatus.render(),
 					h("div.refund-section", [
 						chargeSubscription.render()
 					]),
 					h("div.add-donation-section", [
 						chargeDonation.render()
+					]),
+					h("div.enter-payment-section", [
+						addPayment.render()
 					])
 				])
 			]),
-			h("div.enter-payment-section", [
-				addPayment.render()
-			])
+			// h("div.enter-payment-section", [
+			// 	addPayment.render()
+			// ])
 		]);
 
 		function renderViewMode() {

@@ -15,7 +15,7 @@ module.exports = function (utils, state) {
 
 	that.getData = function () {
 
-		utils.request(_createOptions(), function (e, h, b) {
+		utils.request(utils.createOpts("GET"), function (e, h, b) {
 
 			var member = JSON.parse(b);
 			state.member.set(member);
@@ -26,17 +26,3 @@ module.exports = function (utils, state) {
 
 	return that;
 };
-
-function _createOptions () {
-
-	try{
-		var id = document.querySelector("#member-id").textContent;
-	} catch(e) {
-		console.log("Err _createOptions: ", e);
-	}
-
-	return {
-		method: "GET",
-		url: "/api/members/" + id
-	}
-}

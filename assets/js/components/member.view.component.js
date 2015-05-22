@@ -2,14 +2,43 @@
 
 var h = require("virtual-dom/h");
 
-module.exports = function (data, utils) {
 
-	var deletionReasons       = require("../helpers").deletionReasons;
-	var renderOptionsSelected = require("../helpers").renderOptionsSelected;
+module.exports = {
+	index: index,
+	view: view
+}
+
+function index (utils, state) {
+
+	var that = {};
+
+	that.render = function () {
+
+		return view(state.member(), state.toggleMode, utils);
+	};
+
+	that.getData = function () {
+
+		utils.request(utils.createOpts("GET"), function (e, h, b) {
+
+			var member = JSON.parse(b);
+			state.member.set(member);
+		});
+	};
+
+	that.getData();
+
+	return that;
+};
+
+
+function view (data, toggleFn, utils) {
 
 	return ([
 		h("div.member-info-controls", [
-			whichMode()
+			h("button#edit-member-mode.button-two.m-l-15.right.w-100",{
+				onclick: toggleFn
+			}, "Edit")
 		]),
 		h("div.member-info-content", [
 			renderPersonalInfo(data),
@@ -63,29 +92,6 @@ module.exports = function (data, utils) {
 			check("Status online: ", (member.registered ? "Registered" : "Unregistered")),
 			check("Due date: ", utils.moment(member.dueDate).format("DD-MMM"))
 		]);
-	}
-
-	function whichMode () {
-		// if (mode === "edit") {
-			return [
-				h("button#edit-member-save.button-two.m-l-15.w-100",{
-					// onclick: putFn
-				}, "Save"),
-				h("button#edit-member-cancel.button-two.m-l-15.w-100",{
-					// onclick: toggleFn
-				}, "Cancel"),
-				h("button.button-two.button-c.m-l-15.red.w-100", {
-					// onclick: deleteFn
-				}, "Delete"),
-				h("select#deletion-reason.w-200", renderOptionsSelected(deletionReasons, null, "Deletion reason")),
-			]
-		// } else {
-		// 	return [
-		// 		h("button#edit-member-mode.button-two.m-l-15.right.w-100",{
-		// 			// onclick: toggleFn
-		// 		}, "Edit")
-		// 	]
-		// }
 	}
 
 	function check (name, elm) {

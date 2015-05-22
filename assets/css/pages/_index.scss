@@ -1,3 +1,5 @@
+$color: #ededed;
+
 .full-screen-fixed {
 	bottom: 0;
 	left: 0;
@@ -10,7 +12,7 @@
 }
 
 .overall-container {
-	bottom: 70px;
+	bottom: 0;
 	position: fixed;
 	left: 0;
 	right: 0;
@@ -30,11 +32,14 @@
 }
 
 #member-info {
+	border-bottom: 1px solid #dbdbdb;
+	box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
 	width: 100%;
-	height: 40%;
+	flex: 1;
 	background-color: #fff;
 	margin: 10px;
 	display: flex;
+	flex-direction: column;
 	text-align: left;
 	padding: 20px;
 	overflow: scroll;
@@ -63,6 +68,7 @@
 	background-color: #fff;
 	margin: 10px;
 	display: flex;
+	flex-direction: column;
 	text-align: left;
 	padding: 20px;
 	overflow: scroll;
@@ -85,49 +91,28 @@
 	}
 }
 
-// .individual-section {
-// 	width: 100%;
-// 	height: 40%;
-// 	background-color: #fff;
-// 	margin: 10px;
-// 	display: flex;
-// 	text-align: left;
-// 	padding: 20px;
-// 	p {
-// 		font-size: 15px;
-// 		margin-bottom: 5px;
-// 		margin-top: 5px;
-// 	}
-// 	.col-1 {
-// 		width: 40%;
-// 		min-height: 100px;
-// 	}
-// 	.col-2 {
-// 		width: 40%;
-// 		min-height: 100px;
-// 	}
-// 	.col-3 {
-// 		width: 40%;
-// 		min-height: 100px;
-// 	}
-// }
+.member-info-controls {
+	display: flex;
+	flex-direction: row-reverse;
+	flex: 1;
+}
 
-$color: #ededed;
+.member-info-content {
+	display: flex;
+	flex-direction: row;
+	flex: 15;
+}
 
-// .table-section-individual {
-// 	width: 100%;
-// 	height: 60%;
-// 	background-color: #fff;
-// 	margin: 10px;
-// 	padding: 10px;
 #table-payments {
 	width: 100%;
-	height: 60%;
+	flex: 1;
 	background-color: #fff;
 	margin: 10px;
 	margin-top: 0;
 	padding: 10px;
 	overflow: scroll;
+	border-bottom: 1px solid #dbdbdb;
+	box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
 	.table-section-individual-header {
 		display: flex;
 		width: 100%;
@@ -139,27 +124,21 @@ $color: #ededed;
 		}
 		.col-1 {
 			flex: 3;
-			border-right: 1px solid $color;
 		}
 		.col-2 {
 			flex: 3;
-			border-right: 1px solid $color;
 		}
 		.col-3 {
 			flex: 2;
-			border-right: 1px solid $color;
 		}
 		.col-4 {
 			flex: 2;
-			border-right: 1px solid $color;
 		}
 		.col-5 {
 			flex: 2;
-			border-right: 1px solid $color;
 		}
 		.col-6 {
 			flex: 3;
-			border-right: 1px solid $color;
 		}
 		.col-7 {
 			flex: 1;
@@ -183,30 +162,25 @@ $color: #ededed;
 			}
 			.col-1 {
 				flex: 3;
-				border-right: 1px solid $color;
 			}
 			.col-2 {
 				flex: 3;
-				border-right: 1px solid $color;
 			}
 			.col-3 {
 				flex: 2;
-				border-right: 1px solid $color;
 			}
 			.col-4 {
 				flex: 2;
-				border-right: 1px solid $color;
 			}
 			.col-5 {
 				flex: 2;
-				border-right: 1px solid $color;
 			}
 			.col-6 {
 				flex: 3;
-				border-right: 1px solid $color;
 			}
 			.col-7 {
 				flex: 1;
+				cursor: pointer;
 			}
 		}
 	}
@@ -218,28 +192,30 @@ $color: #ededed;
 		width: 100%;
 		background-color: #fff;
 		padding: 10px;
+		border-bottom: 1px solid #dbdbdb;
+		box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
 		.search-table-section-member-header {
 			width: 100%;
 			display: flex;
 			height: 60px;
+			text-align: center;
 			.col-1 {
-				width: 30%;
-				border-right: 1px solid $color;
+				flex: 1.5;
 			}
 			.col-2 {
-				width: 10%;
-				border-right: 1px solid $color;
+				flex: 2.5;
 			}
 			.col-3 {
-				width: 10%;
-				border-right: 1px solid $color;
+				flex: 1;
 			}
 			.col-4 {
-				width: 20%;
-				border-right: 1px solid $color;
+				flex: 1;
 			}
 			.col-5 {
-				width: 40%;
+				flex: 2;
+			}
+			.col-6 {
+				flex: 3;
 			}
 		}
 		.search-table-section-member-rows {
@@ -254,33 +230,27 @@ $color: #ededed;
 				display: flex;
 				height: 35px;
 				line-height: 35px;
-				text-align: left;
+				text-align: center;
 				p {
 					font-size: 15px;
 				}
 				.col-1 {
-					padding-left: 8px;
-					width: 30%;
-					border-right: 1px solid $color;
+					flex: 1.5;
 				}
 				.col-2 {
-					padding-left: 8px;
-					width: 10%;
-					border-right: 1px solid $color;
+					flex: 2.5;
 				}
 				.col-3 {
-					padding-left: 8px;
-					width: 10%;
-					border-right: 1px solid $color;
+					flex: 1;
 				}
 				.col-4 {
-					padding-left: 8px;
-					width: 20%;
-					border-right: 1px solid $color;
+					flex: 1;
 				}
 				.col-5 {
-					padding-left: 8px;
-					width: 40%;
+					flex: 2;
+				}
+				.col-6 {
+					flex: 3;
 				}
 			}
 			.row:hover {
@@ -333,9 +303,13 @@ $color: #ededed;
 }
 
 .refund-section {
+	border-bottom: 1px solid #dbdbdb;
+	box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
 	background-color: #fff;
 	width: 100%;
 	margin: 5px;
+	margin-top: 10px;
+	flex: 1;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -350,6 +324,8 @@ $color: #ededed;
 }
 
 .add-donation-section {
+	border-bottom: 1px solid #dbdbdb;
+	box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
 	background-color: #fff;
 	width: 100%;
 	margin: 5px;
@@ -370,15 +346,26 @@ $color: #ededed;
 }
 
 .enter-payment-section {
-	bottom: 0;
+	border-bottom: 1px solid #dbdbdb;
+	box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
+	background-color: #fff;
 	width: 100%;
-	height: 70px;
-	background-color: #FFF;
-	position: fixed;
-	.container {
-		margin-top: 15px;
-		margin-left: 15px;
-		margin-right: 15px;
+	flex: 2;
+	margin-left: 5px;
+	margin-right: 5px;
+	margin-bottom: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	.container-1 {
+		display: flex;
+		flex-direction: column;
+		width: 80%;
+		margin: auto;
+		input {
+			width: 100%;
+			margin-bottom: 10px;
+		}
 	}
 }
 
@@ -461,14 +448,18 @@ div.gbp {
 	}
 }
 
-.refund-section {
-	flex: 1;
-}
-
 .add-donation-section {
 	flex: 1;
 }
 
 .button-c {
 	// color: red;
+}
+
+.mb10 {
+	margin-bottom: 10px;
+}
+
+.w-full {
+	width: 100%;
 }

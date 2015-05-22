@@ -29,9 +29,9 @@ module.exports = function (data, selected, selectFn, refreshFn, deleteFn, utils)
 				h("p", "Notes")
 			]),
 			h("div.col-7", [
-        h("button", {
-          onclick: deleteFn
-        },"Delete")
+				h("button#member-delete-payment.button-two.m-l-15.right.w-full.red",{
+					onclick: deleteFn
+				}, "Del.")
 			])
 		]),
 		h("div.table-section-individual-rows", renderRows(data))

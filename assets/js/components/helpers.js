@@ -1,5 +1,4 @@
 var h = require("virtual-dom/h");
-module.exports.renderOptionsSelected = renderOptionsSelected.bind(undefined, h);
 
 /**
  *	Renders a list of options with one selected;
@@ -8,6 +7,8 @@ module.exports.renderOptionsSelected = renderOptionsSelected.bind(undefined, h);
  *	@param {String} - value or description to be selected from options
  *	return {Object} - virtual dom object
 **/
+
+module.exports.renderOptionsSelected = renderOptionsSelected.bind(undefined, h);
 
 function renderOptionsSelected (h, options, selectedOption, placeholder) {
 
@@ -63,5 +64,32 @@ var newsType = module.exports.newsType = [{
 	},{
 		value: "online",
 		description: "Online"
+	}
+];
+
+var deletionReasons = module.exports.deletionReasons = [{
+		value:      "deceased",
+		description: "Deceased"
+	},{
+		value: "notResponding",
+		description: "Did not respond to reminders"
+	},{
+		value: "duplicate",
+		description: "Duplicate"
+	}, {
+		value: "dissatisfied",
+		description: "Expressed dissatisfaction"
+	},{
+		value: "mailReturned",
+		description: "Mail returned to us"
+	}, {
+		value: "moved",
+		description: "Moved away"
+	},{
+		value: "notifiedTermination",
+		description: "Notified termination"
+	}, {
+		value: "other",
+		description: "Other"
 	}
 ];

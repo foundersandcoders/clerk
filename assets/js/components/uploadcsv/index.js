@@ -8,16 +8,18 @@ module.exports = function (utils) {
 
 	var tree, resultsNode, initial = true;
 
+	var uploadDone = {done: false, status: ""};
+
 	function render () {
 
 		// abstract this into single shared function
 		if(initial){
-			tree        = view();
+			tree        = view(uploadDone);
 			resultsNode = utils.createElement(tree);
 			initial     = false;
 			return resultsNode;
 		} else {
-			var newResults = view();
+			var newResults = view(uploadDone);
 			var patches    = utils.diff(tree, newResults);
 			resultsNode    = utils.patch(resultsNode, patches);
 			tree           = resultsNode;
@@ -35,6 +37,7 @@ module.exports = function (utils) {
 		utils.upload(elemPay, {type: "text"}, function (err, file) {
 
 			console.log("file: ",file);
+			uploadDone = {done: false, status: ""};
 
 			var opts = {
 				method: "POST",
@@ -44,7 +47,10 @@ module.exports = function (utils) {
 
 			utils.request(opts, function (e, h, b){
 
-				console.log(b);
+				uploadDone = {done: true, status: ""};
+				uploadDone.status = e || b;
+
+				render(uploadDone);
 			});
 		});
 	}catch(e) {
@@ -57,6 +63,7 @@ module.exports = function (utils) {
 		utils.upload(elemMem, {type: "text"}, function (err, file) {
 
 			console.log("file: ",file);
+			uploadDone = {done: false, status: ""};
 
 			var opts = {
 				method: "POST",
@@ -66,7 +73,10 @@ module.exports = function (utils) {
 
 			utils.request(opts, function (e, h, b){
 
-				console.log(b);
+				uploadDone = {done: true, status: ""};
+				uploadDone.status = e || b;
+
+				render(uploadDone);
 			});
 		});
 	}catch(e){

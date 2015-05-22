@@ -1,6 +1,8 @@
 "use strict";
 
+
 var h = require("virtual-dom/h");
+
 
 module.exports = function (fn) {
 
@@ -16,9 +18,9 @@ module.exports = function (fn) {
 			]),
 		]),
 		h("div.container-2", [
-			h("button.button-two.left.small-font#member-controls-subscription-pay", {
+			h("button.button-two.left#member-controls-subscription-pay", {
 				onclick: fn("charge")
-			}, "Advanced Sub"),
+			}, "Pay"),
 			h("button.button-two.right#member-controls-subscription-refund", {
 				onclick: fn("refund")
 			}, "Refund")

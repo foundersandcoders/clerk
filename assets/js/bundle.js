@@ -209,7 +209,7 @@ if (typeof document !== 'undefined') {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"min-document":62}],9:[function(require,module,exports){
+},{"min-document":56}],9:[function(require,module,exports){
 "use strict";
 
 module.exports = function isObject(x) {
@@ -1649,27 +1649,26 @@ var view = require("./view");
 
 module.exports = function (utils, state) {
 
+	var $$ = utils.$$;
 	var that = {};
 
 	that.render = function () {
 
-		return view(that.postData);
+		return view(that.postData, utils);
 	};
 
 	that.postData = function (query) {
 
 		try {
-
-      var type = document.querySelector("#member-controls-payment-type").value;
 			var payload = {
-				memberId:      document.querySelector("#member-id").textContent,
-        description:   "Payment by " + type,
-				date:          document.querySelector("#member-controls-payment-date").value,
-				type:          type,
-				listReference: document.querySelector("#member-controls-payment-reference").value,
-				total:         document.querySelector("#member-controls-payment-amount").value,
-				notes:         document.querySelector("#member-controls-payment-notes").value,
-        collection:    "payments"
+				memberId:      $$("member-id").text(),
+				type:          $$("member-controls-membership-type").valSelect(),
+				date:          $$("member-controls-payment-date").value(),
+				listReference: $$("member-controls-payment-reference").value(),
+				total:         $$("member-controls-payment-amount").value(),
+				notes:         $$("member-controls-payment-notes").value(),
+        		description:   "Payment by " + $$("member-controls-membership-type").valSelect(),
+        		collection:    "payments"
 			};
 		} catch (e) {
 			console.log("addpayment post: ", e);
@@ -1700,14 +1699,25 @@ function _createOptions (payload) {
 
 var h = require("virtual-dom/h");
 
-module.exports = function render (fn) {
+module.exports = function render (fn, utils) {
+
+	var renderOptionsSelected = require("../helpers").renderOptionsSelected;
+
+	var paymentTypes = [
+		{value:"CHQ", description: "CHQ"},
+		{value:"CASH", description: "CASH"},
+		{value:"SOA", description: "SOA"},
+		{value:"SOR", description: "SOR"},
+		{value:"BACSA", description: "BACSA"},
+		{value:"BACSR", description: "BACSR"},
+		{value:"CAFA", description: "CAFA"},
+		{value:"CAFR", description: "CAFR"},
+		{value:"HO", description: "HO"}
+	];
 
 	var inputs = [{
 		placeholder: "Payment date",
 		id: "payment-date"
-	}, {
-		placeholder: "Type",
-		id: "payment-type"
 	}, {
 		placeholder: "Reference",
 		id: "payment-reference"
@@ -1719,7 +1729,11 @@ module.exports = function render (fn) {
 		id: "payment-notes"
 	}];
 
-	return h("div.container", renderInputs(inputs));
+	return h("div.container-1", [
+		h("p", "Enter payments"),
+		h("select#member-controls-membership-type.mb10", renderOptionsSelected(paymentTypes, "", "Select type")),
+		renderInputs(inputs)
+	]);
 
 	function renderInputs (content) {
 
@@ -1733,15 +1747,16 @@ module.exports = function render (fn) {
 		});
 
 		return inputs.concat([
-			h("button.button-two.button-a", "Close"),
-			h("button.button-one.button-b#member-controls-payment-enter", {
-				onclick: fn
-			}, "Enter payment")
+			h("div", [
+				h("button.button-two", "Close"),
+				h("button.button-one#member-controls-payment-enter.right", {
+					onclick: fn
+				}, "Enter")
+			])
 		]);
 	}
 }
-
-},{"virtual-dom/h":3}],36:[function(require,module,exports){
+},{"../helpers":42,"virtual-dom/h":3}],36:[function(require,module,exports){
 "use strict";
 
 
@@ -1870,7 +1885,9 @@ function _createOptions (payload) {
 },{"./view":39}],39:[function(require,module,exports){
 "use strict";
 
+
 var h = require("virtual-dom/h");
+
 
 module.exports = function (fn) {
 
@@ -1886,16 +1903,15 @@ module.exports = function (fn) {
 			]),
 		]),
 		h("div.container-2", [
-			h("button.button-two.left.small-font#member-controls-subscription-pay", {
+			h("button.button-two.left#member-controls-subscription-pay", {
 				onclick: fn("charge")
-			}, "Advanced Sub"),
+			}, "Pay"),
 			h("button.button-two.right#member-controls-subscription-refund", {
 				onclick: fn("refund")
 			}, "Refund")
 		])
 	])
 };
-
 },{"virtual-dom/h":3}],40:[function(require,module,exports){
 "use strict";
 
@@ -2037,7 +2053,7 @@ function _createOptions (item) {
 	}
 }
 
-},{"./view":41,"moment":66}],41:[function(require,module,exports){
+},{"./view":41,"moment":60}],41:[function(require,module,exports){
 "use strict";
 
 var h = require("virtual-dom/h");
@@ -2069,9 +2085,9 @@ module.exports = function (data, selected, selectFn, refreshFn, deleteFn, utils)
 				h("p", "Notes")
 			]),
 			h("div.col-7", [
-        h("button", {
-          onclick: deleteFn
-        },"Delete")
+				h("button#member-delete-payment.button-two.m-l-15.right.w-full.red",{
+					onclick: deleteFn
+				}, "Del.")
 			])
 		]),
 		h("div.table-section-individual-rows", renderRows(data))
@@ -2124,7 +2140,6 @@ module.exports = function (data, selected, selectFn, refreshFn, deleteFn, utils)
 
 },{"virtual-dom/h":3}],42:[function(require,module,exports){
 var h = require("virtual-dom/h");
-module.exports.renderOptionsSelected = renderOptionsSelected.bind(undefined, h);
 
 /**
  *	Renders a list of options with one selected;
@@ -2133,6 +2148,8 @@ module.exports.renderOptionsSelected = renderOptionsSelected.bind(undefined, h);
  *	@param {String} - value or description to be selected from options
  *	return {Object} - virtual dom object
 **/
+
+module.exports.renderOptionsSelected = renderOptionsSelected.bind(undefined, h);
 
 function renderOptionsSelected (h, options, selectedOption, placeholder) {
 
@@ -2190,66 +2207,192 @@ var newsType = module.exports.newsType = [{
 		description: "Online"
 	}
 ];
+
+var deletionReasons = module.exports.deletionReasons = [{
+		value:      "deceased",
+		description: "Deceased"
+	},{
+		value: "notResponding",
+		description: "Did not respond to reminders"
+	},{
+		value: "duplicate",
+		description: "Duplicate"
+	}, {
+		value: "dissatisfied",
+		description: "Expressed dissatisfaction"
+	},{
+		value: "mailReturned",
+		description: "Mail returned to us"
+	}, {
+		value: "moved",
+		description: "Moved away"
+	},{
+		value: "notifiedTermination",
+		description: "Notified termination"
+	}, {
+		value: "other",
+		description: "Other"
+	}
+];
 },{"virtual-dom/h":3}],43:[function(require,module,exports){
 "use strict";
 
+var h                     = require("virtual-dom/h");
+var memberTypes           = require("./helpers").memberTypes;
+var newsType              = require("./helpers").newsType;
+var renderOptionsSelected = require("./helpers").renderOptionsSelected;
+var deletionReasons		  = require("./helpers").deletionReasons;
 
-var view  = require("./view");
+
+module.exports = {
+	index: index,
+	view: view
+};
 
 
-module.exports = function (utils, state) {
+function index (utils, state) {
 
 	var that = {};
+	var $$   = utils.$$;
 
 	that.render = function () {
 
-		return view(state.member(), utils);
+		return view(that, state.member(), state.toggleMode, utils);
 	};
 
 	that.getData = function () {
 
-		utils.request(_createOptions(), function (e, h, b) {
+		utils.request(utils.createOpts("GET"), function (e, h, b) {
 
 			var member = JSON.parse(b);
 			state.member.set(member);
 		});
 	};
 
+	that.putData = function () {
+
+		try {
+			var payload = {
+				// info
+				title:          $$("edit-member-title").value(),
+				initials:       $$("edit-member-initials").value(),
+				firstName:      $$("edit-member-first-name").value(),
+				lastName:       $$("edit-member-last-name").value(),
+				primaryEmail:   $$("edit-member-primary-email").value(),
+				secondaryEmail: $$("edit-member-secondary-email").value(),
+				newsType:       $$("edit-member-news-type").valSelect(),
+				// address
+				address1:    $$("edit-member-address-line").value(),
+				address2:    $$("edit-member-town-or-city").value(),
+				county:      $$("edit-member-county").value(),
+				postcode:    $$("edit-member-postcode").value(),
+				homePhone:   $$("edit-member-home-phone").value(),
+				workPhone:   $$("edit-member-work-phone").value(),
+				mobilePhone: $$("edit-member-mobile-phone").value(),
+				// membership
+				membershipType:    $$("edit-member-membership-type").valSelect(),
+				dateJoined:        $$("edit-member-date-joined").value(),
+				lifePaymentDate:   $$("edit-member-life-payment-date").value(),
+				registered:        $$("edit-member-status-online").checkedValue(),
+				giftAidSigned:     $$("edit-member-gift-aid-signed").checkedValue(),
+				dateGiftAidSigned: $$("edit-member-date-gift-aid-signed").value(),
+				standingOrder:     $$("edit-member-standing-order").checkedValue(),
+				notes:             $$("edit-member-notes").value()
+			};
+		} catch (e) {
+			console.log("Error in updating details: ", e);
+		}
+
+		utils.request(utils.createOpts("PUT", payload), function (e, h, b) {
+
+			// check if b is object, if not, try and JSON.parse it.
+			state.member.set(b);
+			state.toggleMode();
+		});
+	};
+
+	that.deleteMember = function () {
+
+		var selectElm = document.querySelector("#deletion-reason");
+
+		var payload = {
+			deletionDate: utils.moment(),
+			deletionReason: selectElm.options[selectElm.selectedIndex].value,
+			status: "deleted"
+		};
+
+		utils.request(utils.createOpts("PUT", payload), function (e, h, b) {
+
+			var member = state.member();
+			member.status = b.status;
+			member.deletionReason = b.deletionReason;
+			member.deletionDate = b.deletionDate;
+			state.member.set(b);
+			state.toggleMode();
+		});
+	}
+
+	that.reactivate = function () {
+
+		var payload = {
+			deletionReason: [],
+			status: "active"
+		};
+
+		utils.request(utils.createOpts("PUT", payload), function (e, h, b) {
+
+			var member = state.member();
+			member.status = b.status;
+			state.member.set(member);
+			state.toggleMode();
+		});
+	}
+
 	that.getData();
 
 	return that;
 };
 
-function _createOptions () {
-
-	try{
-		var id = document.querySelector("#member-id").textContent;
-	} catch(e) {
-		console.log("Err _createOptions: ", e);
-	}
-
-	return {
-		method: "GET",
-		url: "/api/members/" + id
-	}
-}
-
-},{"./view":44}],44:[function(require,module,exports){
-"use strict";
-
-
-var h                     = require("virtual-dom/h");
-var memberTypes           = require("../helpers").memberTypes;
-var newsType              = require("../helpers").newsType;
-var renderOptionsSelected = require("../helpers").renderOptionsSelected;
-
-module.exports = function (data, utils) {
+function view (that, data, toggleFn, utils) {
 	
-	return ([
-		renderPersonalInfo(data),
-		renderAddressInfo(data),
-		renderMembership(data)
+	return ([		
+		h("div.member-info-controls", [
+			h("button#edit-member-save.button-two.m-l-15.w-100",{
+				onclick: that.putData
+			}, "Save"),
+			h("button#edit-member-cancel.button-two.m-l-15.w-100",{
+				onclick: toggleFn
+			}, "Cancel"),
+			renderStatus(data.status)
+		]),
+		h("div.member-info-content", [
+			renderPersonalInfo(data),
+			renderAddressInfo(data),
+			renderMembership(data)
+		])	
 	]);
+
+	function renderStatus (status) {
+
+		var active = ([
+			h("button.button-two.button-c.m-l-15.red.w-100", {
+				onclick: that.deleteMember
+			}, "Delete"),
+			h("select#deletion-reason.w-200", renderOptionsSelected(deletionReasons, null, "Deletion reason"))
+		]);
+
+		var deleted = ([
+			h("button.button-two.button-c.m-l-15.red", {
+				onclick: that.reactivate
+			},  "Reactivate")
+		]);
+
+		if(status === "active"){
+			return active;
+		}else{
+			return deleted;
+		}
+	}
 
 	function renderPersonalInfo (member) {
 
@@ -2305,14 +2448,14 @@ module.exports = function (data, utils) {
 					value: member.secondaryEmail || ""
 				})
 			]),
-			h("p", [
-				h("span.info", "Email bounced: "),
-				h("input#edit-member-email-bounced", {
-					type: "checkbox",
-					checked: member.emailBounced,
-					disabled: true
-				})
-			]),
+			// h("p", [
+			// 	h("span.info", "Email bounced: "),
+			// 	h("input#edit-member-email-bounced", {
+			// 		type: "checkbox",
+			// 		checked: member.emailBounced,
+			// 		disabled: true
+			// 	})
+			// ]),
 			h("p", [
 				h("span.info", "News: "),
 				h("select#edit-member-news-type.input-width", renderOptionsSelected(newsType, member.newsType, "Select news"))
@@ -2440,7 +2583,7 @@ module.exports = function (data, utils) {
 				h("span.info", "Registered: "),
 				h("input#edit-member-status-online", {
 					type: "checkbox",
-					checked: member.onlineMember
+					checked: member.registered
 				})
 			]),
 			h("p", [
@@ -2475,214 +2618,63 @@ module.exports = function (data, utils) {
 				h("span.info", "Notes: "),
 				h("input#edit-member-notes", {
 					type: "text",
-					value: member.membershipNotes || ""
+					value: member.notes || ""
 				})
 			]),
 		]);
 	}
 };
-},{"../helpers":42,"virtual-dom/h":3}],45:[function(require,module,exports){
+},{"./helpers":42,"virtual-dom/h":3}],44:[function(require,module,exports){
 "use strict";
 
+var h = require("virtual-dom/h");
 
-var view = require("./view");
 
+module.exports = {
+	index: index,
+	view: view
+}
 
-module.exports = function (utils, state) {
+function index (utils, state) {
 
 	var that = {};
 
 	that.render = function () {
 
-		return view(state.member().status, that.updateType, that.deleteMember, that.reactivate);
+		return view(state.member(), state.toggleMode, utils);
 	};
 
-	that.updateType = function () {
-		var selectElm = document.querySelector("select#member-type");
+	that.getData = function () {
 
-		var payload = {
-			membershipType: selectElm.options[selectElm.selectedIndex].value
-		};
+		utils.request(utils.createOpts("GET"), function (e, h, b) {
 
-		utils.request(_createOptions(payload), function (e, h, b) {
-
-			var member = state.member();
-			member.membershipType = b.membershipType;
+			var member = JSON.parse(b);
 			state.member.set(member);
 		});
-	}
+	};
 
-	that.deleteMember = function () {
-
-		var selectElm = document.querySelector("#deletion-reason");
-
-		var payload = {
-			deletionDate: utils.moment(),
-			deletionReason: selectElm.options[selectElm.selectedIndex].value,
-			status: "deleted"
-		};
-
-		utils.request(_createOptions(payload), function (e, h, b) {
-
-			var member = state.member();
-			member.status = b.status;
-			member.deletionReason = b.deletionReason;
-			member.deletionDate = b.deletionDate;
-			state.member.set(b);
-		});
-	}
-
-	that.reactivate = function () {
-
-		var payload = {
-			deletionReason: [],
-			status: "active"
-		};
-
-		utils.request(_createOptions(payload), function (e, h, b) {
-
-			var member = state.member();
-			member.status = b.status;
-			state.member.set(member);
-		});
-	}
-
-	function _createOptions (payload) {
-
-		try {
-			var id = document.querySelector("#member-id").textContent
-		} catch (e) {
-			console.log("Error id: ", e);
-		}
-
-		return {
-			method: "PUT",
-			url: "/api/members/" + id,
-			json: payload
-		};
-	}
+	that.getData();
 
 	return that;
 };
-},{"./view":46}],46:[function(require,module,exports){
-"use strict";
-
-var h = require("virtual-dom/h");
-
-module.exports = function (status, updateType, deleteFn, reactivateFn) {
-
-	var deletionReasons = [{
-			value:      "deceased",
-			description: "Deceased"
-		},{
-			value: "notResponding",
-			description: "Did not respond to reminders"
-		},{
-			value: "duplicate",
-			description: "Duplicate"
-		}, {
-			value: "dissatisfied",
-			description: "Expressed dissatisfaction"
-		},{
-			value: "mailReturned",
-			description: "Mail returned to us"
-		}, {
-			value: "moved",
-			description: "Moved away"
-		},{
-			value: "notifiedTermination",
-			description: "Notified termination"
-		}, {
-			value: "other",
-			description: "Other"
-		}
-	];
-
-	return h("div#status-controls", [
-		renderStatus(status)
-	]);
-
-	// function renderType () {
-	// 	return h("div.member-type-section", [
-	// 		h("div.title-ctrl", [
-	// 			h("p", "Change membership"),
-	// 		]),
-	// 		h("div.body-ctrl", [
-	// 			h("select#member-type", renderOptions("Change Type", memberTypes)),
-	// 			h("button.button-two.m-l-15",{
-	// 				onclick: updateType
-	// 			}, "Save")
-	// 		])
-	// 	])
-	// }
 
 
-	function renderStatus (status) {
+function view (data, toggleFn, utils) {
 
-		var active = h("div.delete-section", [
-			h("div.title-ctrl", [
-				h("p", "Delete member"),
-			]),
-			h("div.body-ctrl", [
-				h("select#deletion-reason", renderOptions("Deletion reason", deletionReasons)),
-				h("button.button-two.button-c.m-l-15.red", {
-					onclick: deleteFn
-				}, "Delete")
-			])
-		]);
-
-		var deleted = h("div.delete-section", [
-			h("div.title-ctrl", [
-				h("p", "Reactivate member"),
-			]),
-			h("div.body-ctrl", [
-				h("button.button-two.button-c.m-l-15.red", {
-					onclick: reactivateFn
-				},  "Reactivate")
-			])
-		]);
-
-		if(status === "active"){
-			return active;
-		}else{
-			return deleted;
-		}
-	}
-
-	function renderOptions(placeholder, reasons){
-
-		var options = [
-			h("option", {
-				value: "",
-				disabled: true,
-				selected: true
-			}, placeholder)
-		];
-
-		return options.concat(
-			reasons.map(function (elm){
-
-				return h("option", {
-					value: elm.value
-				}, elm.description)
-			})
-		);
-	}
-};
-},{"virtual-dom/h":3}],47:[function(require,module,exports){
-arguments[4][43][0].apply(exports,arguments)
-},{"./view":48,"dup":43}],48:[function(require,module,exports){
-"use strict";
-
-var h = require("virtual-dom/h");
-
-module.exports = function (data, utils) {
-
+	var deletionReasons       = require("../helpers").deletionReasons;
+	var renderOptionsSelected = require("../helpers").renderOptionsSelected;
 
 	return ([
-		renderPersonalInfo(data),
-		renderAddressInfo(data),
-		renderMembership(data)
+		h("div.member-info-controls", [
+			h("button#edit-member-mode.button-two.m-l-15.right.w-100",{
+				onclick: toggleFn
+			}, "Edit")
+		]),
+		h("div.member-info-content", [
+			renderPersonalInfo(data),
+			renderAddressInfo(data),
+			renderMembership(data)
+		])
 	]);
 
 	function renderPersonalInfo (member) {
@@ -2720,7 +2712,7 @@ module.exports = function (data, utils) {
 		return h("div.col-3", [
 			h("h2", "Membership info"),
       		check("Date joined: ", utils.moment(member.dateJoined).format("DD-MM-YYYY")),
-      		check("Membership type: ", member.membershipType),
+      		check("Membership type: ", replaceNice.call(null, (member.membershipType || ""))),
 			renderMembershipLife(member),
 			renderMembershipLifeChanged(member),
 			renderGiftAid(member),
@@ -2795,6 +2787,13 @@ module.exports = function (data, utils) {
 		return this.toLowerCase().replace(" ", "-").replace(":", "");
 	}
 
+	function replaceNice (string) {
+
+		return string.replace("-", " ").split(" ").map(function (elm){
+			return elm.charAt(0).toUpperCase() + elm.slice(1);
+		}).join(" ");
+	}
+
 	function fullName () {
 		var store = [];
 
@@ -2806,122 +2805,7 @@ module.exports = function (data, utils) {
 		return store.join(" ");
 	}
 };
-},{"virtual-dom/h":3}],49:[function(require,module,exports){
-"use strict";
-
-
-var view  = require("./view");
-
-
-module.exports = function (utils, state) {
-
-	var $$   = utils.$$;
-	var that = {};
-
-	that.render = function (member) {
-
-		return view(that.toggleMode, that.putData, state.mode());
-	};
-
-	that.putData = function () {
-
-		try {
-			var payload = {
-				// info
-				title:          $$("edit-member-title").value(),
-				initials:       $$("edit-member-initials").value(),
-				firstName:      $$("edit-member-first-name").value(),
-				lastName:       $$("edit-member-last-name").value(),
-				primaryEmail:   $$("edit-member-primary-email").value(),
-				secondaryEmail: $$("edit-member-secondary-email").value(),
-				newsType:           $$("edit-member-news-type").valSelect(),
-				// address
-				address1:       $$("edit-member-address1").value(),
-				address2:       $$("edit-member-address2").value(),
-				county:         $$("edit-member-county").value(),
-				postcode:       $$("edit-member-postcode").value(),
-				homePhone:      $$("edit-member-home-phone").value(),
-				workPhone:      $$("edit-member-work-phone").value(),
-				mobilePhone:    $$("edit-member-mobile-phone").value(),
-				// membership
-				membershipType:    $$("edit-member-membership-type").valSelect(),
-				dateJoined:        $$("edit-member-date-joined").value(),
-				lifePaymentDate:   $$("edit-member-life-payment-date").value(),
-				whatisthis:        $$("edit-member-status-online").checkedValue(),
-				giftAidSigned:     $$("edit-member-gift-aid-signed").checkedValue(),
-				dateGiftAidSigned: $$("edit-member-date-gift-aid-signed").value(),
-				standingOrder:     $$("edit-member-standing-order").checkedValue(),
-				notes:             $$("edit-member-notes").value()
-			};
-		} catch (e) {
-			console.log("Error in updating details: ", e);
-		}
-
-		utils.request(_createOptions(payload), function (e, h, b) {
-
-			// check if b is object, if not, try and JSON.parse it.
-			state.member.set(b);
-			that.toggleMode();
-		});
-	};
-
-	that.toggleMode = function () {
-
-		var mode = (state.mode() === "edit") ? "view" : "edit";
-		state.mode.set(mode);
-	}
-
-	return that;
-};
-
-function _createOptions (payload) {
-
-	try{
-		var id = document.querySelector("#member-id").textContent;
-	} catch(e) {
-		console.log("Err _createOptions: ", e);
-	}
-
-	return {
-		method: "PUT",
-		url: "/api/members/" + id,
-		json: payload
-	}
-}
-},{"./view":50}],50:[function(require,module,exports){
-"use strict";
-
-var h = require("virtual-dom/h");
-
-module.exports = function (toggleFn, putFn, mode) {	
-
-	return h("div.member-type-section", [
-		h("div.title-ctrl", [
-			h("p", "Mode"),
-		]),
-		h("div.body-ctrl", whichMode())
-	]);
-
-	function whichMode () {
-		if (mode === "edit") {
-			return [
-				h("button#edit-member-cancel.button-two.m-l-15",{
-					onclick: toggleFn
-				}, "Cancel"),
-				h("button#edit-member-save.button-two.m-l-15",{
-					onclick: putFn
-				}, "Save")
-			]
-		} else {
-			return [
-				h("button#edit-member-mode.button-two.m-l-15",{
-					onclick: toggleFn
-				}, "Edit")
-			]
-		}
-	}
-};
-},{"virtual-dom/h":3}],51:[function(require,module,exports){
+},{"../helpers":51,"virtual-dom/h":3}],45:[function(require,module,exports){
 "use strict";
 
 
@@ -3031,7 +2915,7 @@ function _createOptions (query) {
 	}
 }
 
-},{"./view":52}],52:[function(require,module,exports){
+},{"./view":46}],46:[function(require,module,exports){
 "use strict";
 
 var h = require("virtual-dom/h");
@@ -3058,7 +2942,7 @@ module.exports = function (fn) {
 		])
 	]);
 };
-},{"virtual-dom/h":3}],53:[function(require,module,exports){
+},{"virtual-dom/h":3}],47:[function(require,module,exports){
 "use strict";
 
 var view  = require("./view");
@@ -3080,7 +2964,7 @@ module.exports = function (utils, state) {
 	return that;
 };
 
-},{"./view":54}],54:[function(require,module,exports){
+},{"./view":48}],48:[function(require,module,exports){
 "use strict";
 
 var h = require("virtual-dom/h");
@@ -3089,22 +2973,22 @@ module.exports = function (data, moment) {
 	console.log("ddd",data);
 	return h("div.search-table-section-member", [
 		h("div.search-table-section-member-header", [
-			h("div.col-5", [
+			h("div.col-1", [
 				h("p", "ID")
 			]),
-			h("div.col-1", [
+			h("div.col-2", [
 				h("p", "Name")
 			]),
-			h("div.col-2", [
+			h("div.col-3", [
 				h("p", "Title")
 			]),
-			h("div.col-3", [
+			h("div.col-4", [
 				h("p", "Initials")
 			]),
-			h("div.col-4", [
+			h("div.col-5", [
 				h("p", "Subscription")
 			]),
-			h("div.col-5", [
+			h("div.col-6", [
 				h("p", "Payment")
 			])
 		]),
@@ -3117,25 +3001,26 @@ module.exports = function (data, moment) {
 
 		return data.map(function (result){
 
-      console.log("RESULT", result.lastSubscription);
+		console.log("RESULT", result);
+
 			return h("a", {href: "/members/" + result.id}, [
 				h("div.row", [
-					h("div.col-5", [
+					h("div.col-1", [
 						h("p", result.id)
 					]),
-					h("div.col-1", [
+					h("div.col-2", [
 						h("p", result.lastName + " " + result.firstName)
 					]),
-					h("div.col-2", [
+					h("div.col-3", [
 						h("p", result.title)
 					]),
-					h("div.col-3", [
+					h("div.col-4", [
 						h("p", result.initials)
 					]),
-					h("div.col-4", [
-						h("p", result.membershipType)
-					]),
 					h("div.col-5", [
+						h("p", replaceNice.call(null, result.membershipType || ""))
+					]),
+					h("div.col-6", [
 					  lastSub(result.lastSubscription)
           ])
 				])
@@ -3168,7 +3053,14 @@ module.exports = function (data, moment) {
 	}
 };
 
-},{"virtual-dom/h":3}],55:[function(require,module,exports){
+
+function replaceNice (string) {
+
+	return string.replace("-", " ").split(" ").map(function (elm){
+		return elm.charAt(0).toUpperCase() + elm.slice(1);
+	}).join(" ");
+}
+},{"virtual-dom/h":3}],49:[function(require,module,exports){
 "use strict";
 
 var view  = require("./view");
@@ -3179,16 +3071,18 @@ module.exports = function (utils) {
 
 	var tree, resultsNode, initial = true;
 
+	var uploadDone = {done: false, status: ""};
+
 	function render () {
 
 		// abstract this into single shared function
 		if(initial){
-			tree        = view();
+			tree        = view(uploadDone);
 			resultsNode = utils.createElement(tree);
 			initial     = false;
 			return resultsNode;
 		} else {
-			var newResults = view();
+			var newResults = view(uploadDone);
 			var patches    = utils.diff(tree, newResults);
 			resultsNode    = utils.patch(resultsNode, patches);
 			tree           = resultsNode;
@@ -3206,6 +3100,7 @@ module.exports = function (utils) {
 		utils.upload(elemPay, {type: "text"}, function (err, file) {
 
 			console.log("file: ",file);
+			uploadDone = {done: false, status: ""};
 
 			var opts = {
 				method: "POST",
@@ -3215,7 +3110,10 @@ module.exports = function (utils) {
 
 			utils.request(opts, function (e, h, b){
 
-				console.log(b);
+				uploadDone = {done: true, status: ""};
+				uploadDone.status = e || b;
+
+				render(uploadDone);
 			});
 		});
 	}catch(e) {
@@ -3228,6 +3126,7 @@ module.exports = function (utils) {
 		utils.upload(elemMem, {type: "text"}, function (err, file) {
 
 			console.log("file: ",file);
+			uploadDone = {done: false, status: ""};
 
 			var opts = {
 				method: "POST",
@@ -3237,7 +3136,10 @@ module.exports = function (utils) {
 
 			utils.request(opts, function (e, h, b){
 
-				console.log(b);
+				uploadDone = {done: true, status: ""};
+				uploadDone.status = e || b;
+
+				render(uploadDone);
 			});
 		});
 	}catch(e){
@@ -3246,31 +3148,49 @@ module.exports = function (utils) {
 
 	return;
 };
-},{"./view":56}],56:[function(require,module,exports){
+},{"./view":50}],50:[function(require,module,exports){
 "use strict";
 
 
 var h = require("virtual-dom/h");
 
 
-module.exports = function (fn) {
+module.exports = function (statusUpload) {
 
-	return h("div.uploads", [
-		h("div.fileUpload", [
-			h("span", "Upload members"),
-			h("input#upload-members.upload", {
-				type: "file"
-			})
+	return h("div.upload-component", [
+		h("div.upload", [
+			h("div.file-upload", [
+				h("span", "Upload members"),
+				h("input#upload-members.upload", {
+					type: "file"
+				})
+			]),
+			h("div.file-upload", [
+				h("span", "Upload payments"),
+				h("input#upload-payments.upload", {
+					type: "file"
+				})
+			]),
 		]),
-		h("div.fileUpload", [
-			h("span", "Upload payments"),
-			h("input#upload-payments.upload", {
-				type: "file"
-			})
-		])
-	]);
+		renderResult(statusUpload)
+	])
+
+	function renderResult (status) {
+
+		if(status.done){
+			if(status.status.split(" ")[0] === "Done"){
+				return h("div.result-upload", [
+					h("p", "Upload succesful")
+				]);
+			} else {
+				return h("div.result-upload", [
+					h("p", status)
+				]);
+			}
+		}
+	}
 }
-},{"virtual-dom/h":3}],57:[function(require,module,exports){
+},{"virtual-dom/h":3}],51:[function(require,module,exports){
 var $$ = module.exports.$$ = function (query) {
 
 	var that = {};
@@ -3329,21 +3249,37 @@ var $$ = module.exports.$$ = function (query) {
 	return that;
 };
 
-// var createOpts = module.exports.createOpts = function () {
 
-// 	try{
-// 		var id = $$() document.querySelector("#member-id").textContent;
-// 	} catch(e) {
-// 		console.log("Err _createOptions: ", e);
-// 	}
+var replaceNice = module.exports.replaceNice = function replaceNice (string) {
 
-// 	return {
-// 		method: "PUT",
-// 		url: "/api/members/" + id,
-// 		json: payload
-// 	}
-// };
-},{}],58:[function(require,module,exports){
+	return (string || "").replace("-", " ").split(" ").map(function (elm){
+		return elm.charAt(0).toUpperCase() + elm.slice(1);
+	}).join(" ");
+};
+
+
+var createOpts = module.exports.createOpts = function (method, payload) {
+
+	try{
+		var id = $$("member-id").text();
+	} catch(e) {
+		console.log("Err _createOptions: ", e);
+	}
+
+	if(method === "PUT"){
+		return {
+			method: method,
+			url: "/api/members/" + id,
+			json: payload
+		}
+	} else if (method === "GET") {
+		return {
+			method: method,
+			url: "/api/members/" + id,
+		}
+	}
+};
+},{}],52:[function(require,module,exports){
 ;(function () {
 	"use strict";
 
@@ -3360,18 +3296,20 @@ var $$ = module.exports.$$ = function (query) {
 		observS:       require("observ-struct"),
 		observA:       require("observ-array"),
 		h:             require("virtual-dom/h"),
-		$$:            require("./helpers").$$
+		$$:            require("./helpers").$$,
+		createOpts:    require("./helpers").createOpts,
+		replaceNice:   require("./helpers").replaceNice
 	};
 
 	try{
 		require("./pages/adminhome.js")(utils);
-		require("./pages/viewmember.js")(utils);
+		require("./pages/member.page.js")(utils);
 		require("./components/uploadcsv/index.js")(utils);
 	} catch (e){
 		console.log("Index: ", e)
 	}
 }());
-},{"./components/uploadcsv/index.js":55,"./helpers":57,"./pages/adminhome.js":59,"./pages/viewmember.js":60,"./services/request.js":61,"d-bap":63,"moment":66,"observ":81,"observ-array":72,"observ-struct":79,"torf":82,"upload-element":84,"virtual-dom/create-element":1,"virtual-dom/diff":2,"virtual-dom/h":3,"virtual-dom/patch":11}],59:[function(require,module,exports){
+},{"./components/uploadcsv/index.js":49,"./helpers":51,"./pages/adminhome.js":53,"./pages/member.page.js":54,"./services/request.js":55,"d-bap":57,"moment":60,"observ":75,"observ-array":66,"observ-struct":73,"torf":76,"upload-element":78,"virtual-dom/create-element":1,"virtual-dom/diff":2,"virtual-dom/h":3,"virtual-dom/patch":11}],53:[function(require,module,exports){
 "use strict";
 
 var searchResultsComponent = require("../components/search/index.js");
@@ -3424,7 +3362,7 @@ module.exports = function (utils) {
 		console.log("Search page err: ", e);
 	}
 };
-},{"../components/search-box/index.js":51,"../components/search/index.js":53}],60:[function(require,module,exports){
+},{"../components/search-box/index.js":45,"../components/search/index.js":47}],54:[function(require,module,exports){
 "use strict";
 
 
@@ -3432,10 +3370,9 @@ var addPaymentComponent         = require("../components/addpayment/index.js");
 var chargeDonationComponent     = require("../components/chargedonations/index.js");
 var chargeSubscriptionComponent = require("../components/chargesubscriptions/index.js");
 var displayPaymentsComponent    = require("../components/displaypayments/index.js");
-var memberViewComponent         = require("../components/memberview/index.js");
-var memberEditComponent         = require("../components/memberedit/index.js");
-var memberStatusComponent       = require("../components/memberstatus/index.js");
-var modeControlComponent        = require("../components/modecontrol/index.js");
+var memberViewComponent         = require("../components/member.view.component.js").index;
+var memberEditComponent         = require("../components/member.edit.component.js").index;
+
 
 module.exports = function (utils) {
 
@@ -3443,7 +3380,7 @@ module.exports = function (utils) {
 		member:   utils.observ({}),
 		payments: utils.observ([]),
 		mode:     utils.observ("view"),
-    selected: utils.observ([])
+    	selected: utils.observ([])
 	});
 
 	state(function onchange () {
@@ -3452,14 +3389,17 @@ module.exports = function (utils) {
 		render();
 	});
 
+	state.toggleMode = function (){
+		var mode = (state.mode() === "edit") ? "view" : "edit";
+		state.mode.set(mode);
+	};
+
 	var addPayment         = addPaymentComponent(utils, state);
 	var chargeDonation     = chargeDonationComponent(utils, state);
 	var chargeSubscription = chargeSubscriptionComponent(utils, state);
 	var displayPayments    = displayPaymentsComponent(utils, state);
 	var memberView         = memberViewComponent(utils, state);
 	var memberEdit         = memberEditComponent(utils, state);
-	var memberStatus       = memberStatusComponent(utils, state);
-	var modeControl        = modeControlComponent(utils, state);
 
 	function view (h) {
 
@@ -3467,19 +3407,22 @@ module.exports = function (utils) {
 			h("div.overall-container", [
 				renderViewMode(),
 				h("div.actions-container", [
-					modeControl.render(),
-					memberStatus.render(),
+					// modeControl.render(),
+					// memberStatus.render(),
 					h("div.refund-section", [
 						chargeSubscription.render()
 					]),
 					h("div.add-donation-section", [
 						chargeDonation.render()
+					]),
+					h("div.enter-payment-section", [
+						addPayment.render()
 					])
 				])
 			]),
-			h("div.enter-payment-section", [
-				addPayment.render()
-			])
+			// h("div.enter-payment-section", [
+			// 	addPayment.render()
+			// ])
 		]);
 
 		function renderViewMode() {
@@ -3527,15 +3470,15 @@ module.exports = function (utils) {
 	}
 };
 
-},{"../components/addpayment/index.js":34,"../components/chargedonations/index.js":36,"../components/chargesubscriptions/index.js":38,"../components/displaypayments/index.js":40,"../components/memberedit/index.js":43,"../components/memberstatus/index.js":45,"../components/memberview/index.js":47,"../components/modecontrol/index.js":49}],61:[function(require,module,exports){
+},{"../components/addpayment/index.js":34,"../components/chargedonations/index.js":36,"../components/chargesubscriptions/index.js":38,"../components/displaypayments/index.js":40,"../components/member.edit.component.js":43,"../components/member.view.component.js":44}],55:[function(require,module,exports){
 "use strict";
 
 var request = require("xhr");
 
 module.exports = request;
-},{"xhr":85}],62:[function(require,module,exports){
+},{"xhr":79}],56:[function(require,module,exports){
 
-},{}],63:[function(require,module,exports){
+},{}],57:[function(require,module,exports){
 "use strict";
 
 var is = require("torf");
@@ -3591,7 +3534,7 @@ function _clone (obj){
   return temp;
 }
 
-},{"torf":64}],64:[function(require,module,exports){
+},{"torf":58}],58:[function(require,module,exports){
 'use strict';
 
 
@@ -3665,7 +3608,7 @@ function checkEmail (email, regexp){
 		return false;
 	};
 };
-},{"is-number":65}],65:[function(require,module,exports){
+},{"is-number":59}],59:[function(require,module,exports){
 /*!
  * is-number <https://github.com/jonschlinkert/is-number>
  *
@@ -3681,7 +3624,7 @@ module.exports = function isNumber(n) {
     || n === 0;
 };
 
-},{}],66:[function(require,module,exports){
+},{}],60:[function(require,module,exports){
 //! moment.js
 //! version : 2.10.3
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
@@ -6793,7 +6736,7 @@ module.exports = function isNumber(n) {
     return _moment;
 
 }));
-},{}],67:[function(require,module,exports){
+},{}],61:[function(require,module,exports){
 var setNonEnumerable = require("./lib/set-non-enumerable.js");
 
 module.exports = addListener
@@ -6823,7 +6766,7 @@ function addListener(observArray, observ) {
     })
 }
 
-},{"./lib/set-non-enumerable.js":73}],68:[function(require,module,exports){
+},{"./lib/set-non-enumerable.js":67}],62:[function(require,module,exports){
 var addListener = require('./add-listener.js')
 
 module.exports = applyPatch
@@ -6861,7 +6804,7 @@ function unpack(value, index){
     return typeof value === "function" ? value() : value
 }
 
-},{"./add-listener.js":67}],69:[function(require,module,exports){
+},{"./add-listener.js":61}],63:[function(require,module,exports){
 var ObservArray = require("./index.js")
 
 var slice = Array.prototype.slice
@@ -6928,7 +6871,7 @@ function notImplemented() {
     throw new Error("Pull request welcome")
 }
 
-},{"./array-reverse.js":70,"./array-sort.js":71,"./index.js":72}],70:[function(require,module,exports){
+},{"./array-reverse.js":64,"./array-sort.js":65,"./index.js":66}],64:[function(require,module,exports){
 var applyPatch = require("./apply-patch.js")
 var setNonEnumerable = require('./lib/set-non-enumerable.js')
 
@@ -6963,7 +6906,7 @@ function fakeDiff(arr) {
     return _diff
 }
 
-},{"./apply-patch.js":68,"./lib/set-non-enumerable.js":73}],71:[function(require,module,exports){
+},{"./apply-patch.js":62,"./lib/set-non-enumerable.js":67}],65:[function(require,module,exports){
 var applyPatch = require("./apply-patch.js")
 var setNonEnumerable = require("./lib/set-non-enumerable.js")
 
@@ -7024,7 +6967,7 @@ function indexOf(n, h) {
     return -1
 }
 
-},{"./apply-patch.js":68,"./lib/set-non-enumerable.js":73}],72:[function(require,module,exports){
+},{"./apply-patch.js":62,"./lib/set-non-enumerable.js":67}],66:[function(require,module,exports){
 var Observ = require("observ")
 
 // circular dep between ArrayMethods & this file
@@ -7111,7 +7054,7 @@ function getLength() {
     return this._list.length
 }
 
-},{"./add-listener.js":67,"./array-methods.js":69,"./put.js":75,"./set.js":76,"./splice.js":77,"./transaction.js":78,"observ":81}],73:[function(require,module,exports){
+},{"./add-listener.js":61,"./array-methods.js":63,"./put.js":69,"./set.js":70,"./splice.js":71,"./transaction.js":72,"observ":75}],67:[function(require,module,exports){
 module.exports = setNonEnumerable;
 
 function setNonEnumerable(object, key, value) {
@@ -7123,7 +7066,7 @@ function setNonEnumerable(object, key, value) {
     });
 }
 
-},{}],74:[function(require,module,exports){
+},{}],68:[function(require,module,exports){
 function head (a) {
   return a[0]
 }
@@ -7426,7 +7369,7 @@ var exports = module.exports = function (deps, exports) {
 }
 exports(null, exports)
 
-},{}],75:[function(require,module,exports){
+},{}],69:[function(require,module,exports){
 var addListener = require("./add-listener.js")
 var setNonEnumerable = require("./lib/set-non-enumerable.js");
 
@@ -7465,7 +7408,7 @@ function put(index, value) {
     obs._observSet(valueList)
     return value
 }
-},{"./add-listener.js":67,"./lib/set-non-enumerable.js":73}],76:[function(require,module,exports){
+},{"./add-listener.js":61,"./lib/set-non-enumerable.js":67}],70:[function(require,module,exports){
 var applyPatch = require("./apply-patch.js")
 var setNonEnumerable = require("./lib/set-non-enumerable.js")
 var adiff = require("adiff")
@@ -7487,7 +7430,7 @@ function set(rawList) {
     return changes
 }
 
-},{"./apply-patch.js":68,"./lib/set-non-enumerable.js":73,"adiff":74}],77:[function(require,module,exports){
+},{"./apply-patch.js":62,"./lib/set-non-enumerable.js":67,"adiff":68}],71:[function(require,module,exports){
 var slice = Array.prototype.slice
 
 var addListener = require("./add-listener.js")
@@ -7539,7 +7482,7 @@ function splice(index, amount) {
     return removed
 }
 
-},{"./add-listener.js":67,"./lib/set-non-enumerable.js":73}],78:[function(require,module,exports){
+},{"./add-listener.js":61,"./lib/set-non-enumerable.js":67}],72:[function(require,module,exports){
 module.exports = transaction
 
 function transaction (func) {
@@ -7551,7 +7494,7 @@ function transaction (func) {
     }
 
 }
-},{}],79:[function(require,module,exports){
+},{}],73:[function(require,module,exports){
 var Observ = require("observ")
 var extend = require("xtend")
 
@@ -7661,7 +7604,7 @@ function ObservStruct(struct) {
     return obs
 }
 
-},{"observ":81,"xtend":80}],80:[function(require,module,exports){
+},{"observ":75,"xtend":74}],74:[function(require,module,exports){
 module.exports = extend
 
 function extend() {
@@ -7680,7 +7623,7 @@ function extend() {
     return target
 }
 
-},{}],81:[function(require,module,exports){
+},{}],75:[function(require,module,exports){
 module.exports = Observable
 
 function Observable(value) {
@@ -7709,11 +7652,11 @@ function Observable(value) {
     }
 }
 
-},{}],82:[function(require,module,exports){
-arguments[4][64][0].apply(exports,arguments)
-},{"dup":64,"is-number":83}],83:[function(require,module,exports){
-arguments[4][65][0].apply(exports,arguments)
-},{"dup":65}],84:[function(require,module,exports){
+},{}],76:[function(require,module,exports){
+arguments[4][58][0].apply(exports,arguments)
+},{"dup":58,"is-number":77}],77:[function(require,module,exports){
+arguments[4][59][0].apply(exports,arguments)
+},{"dup":59}],78:[function(require,module,exports){
 module.exports = function (elem, opts, cb) {
     if (typeof opts === 'function') {
         cb = opts;
@@ -7752,7 +7695,7 @@ module.exports = function (elem, opts, cb) {
     });
 };
 
-},{}],85:[function(require,module,exports){
+},{}],79:[function(require,module,exports){
 "use strict";
 var window = require("global/window")
 var once = require("once")
@@ -7924,7 +7867,7 @@ function createXHR(options, callback) {
 
 function noop() {}
 
-},{"global/window":86,"once":87,"parse-headers":91}],86:[function(require,module,exports){
+},{"global/window":80,"once":81,"parse-headers":85}],80:[function(require,module,exports){
 (function (global){
 if (typeof window !== "undefined") {
     module.exports = window;
@@ -7937,7 +7880,7 @@ if (typeof window !== "undefined") {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],87:[function(require,module,exports){
+},{}],81:[function(require,module,exports){
 module.exports = once
 
 once.proto = once(function () {
@@ -7958,7 +7901,7 @@ function once (fn) {
   }
 }
 
-},{}],88:[function(require,module,exports){
+},{}],82:[function(require,module,exports){
 var isFunction = require('is-function')
 
 module.exports = forEach
@@ -8006,7 +7949,7 @@ function forEachObject(object, iterator, context) {
     }
 }
 
-},{"is-function":89}],89:[function(require,module,exports){
+},{"is-function":83}],83:[function(require,module,exports){
 module.exports = isFunction
 
 var toString = Object.prototype.toString
@@ -8023,7 +7966,7 @@ function isFunction (fn) {
       fn === window.prompt))
 };
 
-},{}],90:[function(require,module,exports){
+},{}],84:[function(require,module,exports){
 
 exports = module.exports = trim;
 
@@ -8039,7 +7982,7 @@ exports.right = function(str){
   return str.replace(/\s*$/, '');
 };
 
-},{}],91:[function(require,module,exports){
+},{}],85:[function(require,module,exports){
 var trim = require('trim')
   , forEach = require('for-each')
   , isArray = function(arg) {
@@ -8071,4 +8014,4 @@ module.exports = function (headers) {
 
   return result
 }
-},{"for-each":88,"trim":90}]},{},[58]);
+},{"for-each":82,"trim":84}]},{},[52]);

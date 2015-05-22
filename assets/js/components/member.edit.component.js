@@ -1,18 +1,161 @@
 "use strict";
 
-
 var h                     = require("virtual-dom/h");
-var memberTypes           = require("../helpers").memberTypes;
-var newsType              = require("../helpers").newsType;
-var renderOptionsSelected = require("../helpers").renderOptionsSelected;
+var memberTypes           = require("./helpers").memberTypes;
+var newsType              = require("./helpers").newsType;
+var renderOptionsSelected = require("./helpers").renderOptionsSelected;
+var deletionReasons		  = require("./helpers").deletionReasons;
 
-module.exports = function (data, utils) {
+
+module.exports = {
+	index: index,
+	view: view
+};
+
+
+function index (utils, state) {
+
+	var that = {};
+	var $$   = utils.$$;
+
+	that.render = function () {
+
+		return view(that, state.member(), state.toggleMode, utils);
+	};
+
+	that.getData = function () {
+
+		utils.request(utils.createOpts("GET"), function (e, h, b) {
+
+			var member = JSON.parse(b);
+			state.member.set(member);
+		});
+	};
+
+	that.putData = function () {
+
+		try {
+			var payload = {
+				// info
+				title:          $$("edit-member-title").value(),
+				initials:       $$("edit-member-initials").value(),
+				firstName:      $$("edit-member-first-name").value(),
+				lastName:       $$("edit-member-last-name").value(),
+				primaryEmail:   $$("edit-member-primary-email").value(),
+				secondaryEmail: $$("edit-member-secondary-email").value(),
+				newsType:       $$("edit-member-news-type").valSelect(),
+				// address
+				address1:    $$("edit-member-address-line").value(),
+				address2:    $$("edit-member-town-or-city").value(),
+				county:      $$("edit-member-county").value(),
+				postcode:    $$("edit-member-postcode").value(),
+				homePhone:   $$("edit-member-home-phone").value(),
+				workPhone:   $$("edit-member-work-phone").value(),
+				mobilePhone: $$("edit-member-mobile-phone").value(),
+				// membership
+				membershipType:    $$("edit-member-membership-type").valSelect(),
+				dateJoined:        $$("edit-member-date-joined").value(),
+				lifePaymentDate:   $$("edit-member-life-payment-date").value(),
+				registered:        $$("edit-member-status-online").checkedValue(),
+				giftAidSigned:     $$("edit-member-gift-aid-signed").checkedValue(),
+				dateGiftAidSigned: $$("edit-member-date-gift-aid-signed").value(),
+				standingOrder:     $$("edit-member-standing-order").checkedValue(),
+				notes:             $$("edit-member-notes").value()
+			};
+		} catch (e) {
+			console.log("Error in updating details: ", e);
+		}
+
+		utils.request(utils.createOpts("PUT", payload), function (e, h, b) {
+
+			// check if b is object, if not, try and JSON.parse it.
+			state.member.set(b);
+			state.toggleMode();
+		});
+	};
+
+	that.deleteMember = function () {
+
+		var selectElm = document.querySelector("#deletion-reason");
+
+		var payload = {
+			deletionDate: utils.moment(),
+			deletionReason: selectElm.options[selectElm.selectedIndex].value,
+			status: "deleted"
+		};
+
+		utils.request(utils.createOpts("PUT", payload), function (e, h, b) {
+
+			var member = state.member();
+			member.status = b.status;
+			member.deletionReason = b.deletionReason;
+			member.deletionDate = b.deletionDate;
+			state.member.set(b);
+			state.toggleMode();
+		});
+	}
+
+	that.reactivate = function () {
+
+		var payload = {
+			deletionReason: [],
+			status: "active"
+		};
+
+		utils.request(utils.createOpts("PUT", payload), function (e, h, b) {
+
+			var member = state.member();
+			member.status = b.status;
+			state.member.set(member);
+			state.toggleMode();
+		});
+	}
+
+	that.getData();
+
+	return that;
+};
+
+function view (that, data, toggleFn, utils) {
 	
-	return ([
-		renderPersonalInfo(data),
-		renderAddressInfo(data),
-		renderMembership(data)
+	return ([		
+		h("div.member-info-controls", [
+			h("button#edit-member-save.button-two.m-l-15.w-100",{
+				onclick: that.putData
+			}, "Save"),
+			h("button#edit-member-cancel.button-two.m-l-15.w-100",{
+				onclick: toggleFn
+			}, "Cancel"),
+			renderStatus(data.status)
+		]),
+		h("div.member-info-content", [
+			renderPersonalInfo(data),
+			renderAddressInfo(data),
+			renderMembership(data)
+		])	
 	]);
+
+	function renderStatus (status) {
+
+		var active = ([
+			h("button.button-two.button-c.m-l-15.red.w-100", {
+				onclick: that.deleteMember
+			}, "Delete"),
+			h("select#deletion-reason.w-200", renderOptionsSelected(deletionReasons, null, "Deletion reason"))
+		]);
+
+		var deleted = ([
+			h("button.button-two.button-c.m-l-15.red", {
+				onclick: that.reactivate
+			},  "Reactivate")
+		]);
+
+		if(status === "active"){
+			return active;
+		}else{
+			return deleted;
+		}
+	}
 
 	function renderPersonalInfo (member) {
 

@@ -16,7 +16,7 @@ h2 {
 .info {
   font-weight: bold; }
 
-body, html, p, h1, h2, h3, h4, h5, h6, h7, h8, input[type="text"], a {
+body, html, p, h1, h2, h3, h4, h5, h6, h7, h8, input, button, div, a {
   font-family: 'Sorts Mill Goudy', serif; }
 
 button, .button-one, .button-two {
@@ -172,16 +172,27 @@ input[type=checkbox]:checked + label:before {
   text-align: center;
   line-height: 15px; }
 
-.fileUpload {
+.file-upload {
+  width: 35%;
   position: relative;
   overflow: hidden;
   margin: 10px;
-  border: 1px solid black;
-  border-radius: 5px;
+  border-radius: 2px;
   padding: 1em 2em;
-  background-color: #acc; }
+  background-color: #eee;
+  color: #999;
+  border: 1px solid #ccc;
+  height: 55px; }
+  .file-upload:hover {
+    background-color: #999;
+    color: #fff;
+    border: none; }
+  .file-upload:active {
+    background-color: #333;
+    color: #fff;
+    border: none; }
 
-.fileUpload input.upload {
+.file-upload input.upload {
   position: absolute;
   top: 0;
   right: 0;
@@ -194,6 +205,15 @@ input[type=checkbox]:checked + label:before {
 
 .input-width {
   width: 320px; }
+
+.right {
+  float: right; }
+
+.w-100 {
+  width: 100px; }
+
+.w-200 {
+  width: 200px; }
 
 nav {
   width: 100%;
@@ -264,6 +284,8 @@ nav {
   margin-top: 50px; }
 
 .new-member-container {
+  border-bottom: 1px solid #dbdbdb;
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
   background-color: #fff;
   width: 70%;
   margin: auto;
@@ -271,7 +293,8 @@ nav {
   padding: 30px;
   padding-bottom: 50px;
   overflow: hidden;
-  margin-bottom: 50px; }
+  margin-bottom: 50px;
+  margin-top: 1%; }
   .new-member-container h2 {
     margin-top: 40px; }
   .new-member-container h3 {
@@ -306,7 +329,7 @@ nav {
   text-align: center; }
 
 .overall-container {
-  bottom: 70px;
+  bottom: 0;
   position: fixed;
   left: 0;
   right: 0;
@@ -324,11 +347,14 @@ nav {
   padding-right: 15px; }
 
 #member-info {
+  border-bottom: 1px solid #dbdbdb;
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
   width: 100%;
-  height: 40%;
+  flex: 1;
   background-color: #fff;
   margin: 10px;
   display: flex;
+  flex-direction: column;
   text-align: left;
   padding: 20px;
   overflow: scroll; }
@@ -352,6 +378,7 @@ nav {
   background-color: #fff;
   margin: 10px;
   display: flex;
+  flex-direction: column;
   text-align: left;
   padding: 20px;
   overflow: scroll; }
@@ -369,14 +396,26 @@ nav {
     width: 40%;
     min-height: 100px; }
 
+.member-info-controls {
+  display: flex;
+  flex-direction: row-reverse;
+  flex: 1; }
+
+.member-info-content {
+  display: flex;
+  flex-direction: row;
+  flex: 15; }
+
 #table-payments {
   width: 100%;
-  height: 60%;
+  flex: 1;
   background-color: #fff;
   margin: 10px;
   margin-top: 0;
   padding: 10px;
-  overflow: scroll; }
+  overflow: scroll;
+  border-bottom: 1px solid #dbdbdb;
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1); }
   #table-payments .table-section-individual-header {
     display: flex;
     width: 100%;
@@ -386,23 +425,17 @@ nav {
       font-size: 16px;
       font-weight: bold; }
     #table-payments .table-section-individual-header .col-1 {
-      flex: 3;
-      border-right: 1px solid #ededed; }
+      flex: 3; }
     #table-payments .table-section-individual-header .col-2 {
-      flex: 3;
-      border-right: 1px solid #ededed; }
+      flex: 3; }
     #table-payments .table-section-individual-header .col-3 {
-      flex: 2;
-      border-right: 1px solid #ededed; }
+      flex: 2; }
     #table-payments .table-section-individual-header .col-4 {
-      flex: 2;
-      border-right: 1px solid #ededed; }
+      flex: 2; }
     #table-payments .table-section-individual-header .col-5 {
-      flex: 2;
-      border-right: 1px solid #ededed; }
+      flex: 2; }
     #table-payments .table-section-individual-header .col-6 {
-      flex: 3;
-      border-right: 1px solid #ededed; }
+      flex: 3; }
     #table-payments .table-section-individual-header .col-7 {
       flex: 1; }
   #table-payments .table-section-individual-rows {
@@ -419,50 +452,46 @@ nav {
         padding: 5px;
         text-align: center; }
       #table-payments .table-section-individual-rows .row .col-1 {
-        flex: 3;
-        border-right: 1px solid #ededed; }
+        flex: 3; }
       #table-payments .table-section-individual-rows .row .col-2 {
-        flex: 3;
-        border-right: 1px solid #ededed; }
+        flex: 3; }
       #table-payments .table-section-individual-rows .row .col-3 {
-        flex: 2;
-        border-right: 1px solid #ededed; }
+        flex: 2; }
       #table-payments .table-section-individual-rows .row .col-4 {
-        flex: 2;
-        border-right: 1px solid #ededed; }
+        flex: 2; }
       #table-payments .table-section-individual-rows .row .col-5 {
-        flex: 2;
-        border-right: 1px solid #ededed; }
+        flex: 2; }
       #table-payments .table-section-individual-rows .row .col-6 {
-        flex: 3;
-        border-right: 1px solid #ededed; }
+        flex: 3; }
       #table-payments .table-section-individual-rows .row .col-7 {
-        flex: 1; }
+        flex: 1;
+        cursor: pointer; }
 
 #search-result {
   max-width: 1000px; }
   #search-result .search-table-section-member {
     width: 100%;
     background-color: #fff;
-    padding: 10px; }
+    padding: 10px;
+    border-bottom: 1px solid #dbdbdb;
+    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1); }
     #search-result .search-table-section-member .search-table-section-member-header {
       width: 100%;
       display: flex;
-      height: 60px; }
+      height: 60px;
+      text-align: center; }
       #search-result .search-table-section-member .search-table-section-member-header .col-1 {
-        width: 30%;
-        border-right: 1px solid #ededed; }
+        flex: 1.5; }
       #search-result .search-table-section-member .search-table-section-member-header .col-2 {
-        width: 10%;
-        border-right: 1px solid #ededed; }
+        flex: 2.5; }
       #search-result .search-table-section-member .search-table-section-member-header .col-3 {
-        width: 10%;
-        border-right: 1px solid #ededed; }
+        flex: 1; }
       #search-result .search-table-section-member .search-table-section-member-header .col-4 {
-        width: 20%;
-        border-right: 1px solid #ededed; }
+        flex: 1; }
       #search-result .search-table-section-member .search-table-section-member-header .col-5 {
-        width: 40%; }
+        flex: 2; }
+      #search-result .search-table-section-member .search-table-section-member-header .col-6 {
+        flex: 3; }
     #search-result .search-table-section-member .search-table-section-member-rows {
       max-height: 300px;
       overflow-y: scroll; }
@@ -474,28 +503,21 @@ nav {
         display: flex;
         height: 35px;
         line-height: 35px;
-        text-align: left; }
+        text-align: center; }
         #search-result .search-table-section-member .search-table-section-member-rows .row p {
           font-size: 15px; }
         #search-result .search-table-section-member .search-table-section-member-rows .row .col-1 {
-          padding-left: 8px;
-          width: 30%;
-          border-right: 1px solid #ededed; }
+          flex: 1.5; }
         #search-result .search-table-section-member .search-table-section-member-rows .row .col-2 {
-          padding-left: 8px;
-          width: 10%;
-          border-right: 1px solid #ededed; }
+          flex: 2.5; }
         #search-result .search-table-section-member .search-table-section-member-rows .row .col-3 {
-          padding-left: 8px;
-          width: 10%;
-          border-right: 1px solid #ededed; }
+          flex: 1; }
         #search-result .search-table-section-member .search-table-section-member-rows .row .col-4 {
-          padding-left: 8px;
-          width: 20%;
-          border-right: 1px solid #ededed; }
+          flex: 1; }
         #search-result .search-table-section-member .search-table-section-member-rows .row .col-5 {
-          padding-left: 8px;
-          width: 40%; }
+          flex: 2; }
+        #search-result .search-table-section-member .search-table-section-member-rows .row .col-6 {
+          flex: 3; }
       #search-result .search-table-section-member .search-table-section-member-rows .row:hover {
         background-color: #eee; }
 
@@ -536,9 +558,13 @@ nav {
   justify-content: center; }
 
 .refund-section {
+  border-bottom: 1px solid #dbdbdb;
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
   background-color: #fff;
   width: 100%;
   margin: 5px;
+  margin-top: 10px;
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center; }
@@ -550,6 +576,8 @@ nav {
     margin: auto; }
 
 .add-donation-section {
+  border-bottom: 1px solid #dbdbdb;
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
   background-color: #fff;
   width: 100%;
   margin: 5px;
@@ -566,15 +594,25 @@ nav {
     margin-bottom: 10px; }
 
 .enter-payment-section {
-  bottom: 0;
+  border-bottom: 1px solid #dbdbdb;
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
   width: 100%;
-  height: 70px;
-  background-color: #FFF;
-  position: fixed; }
-  .enter-payment-section .container {
-    margin-top: 15px;
-    margin-left: 15px;
-    margin-right: 15px; }
+  flex: 2;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center; }
+  .enter-payment-section .container-1 {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    margin: auto; }
+    .enter-payment-section .container-1 input {
+      width: 100%;
+      margin-bottom: 10px; }
 
 .input-one {
   float: left;
@@ -634,11 +672,14 @@ div.gbp {
   #status-controls .delete-section {
     flex: 1; }
 
-.refund-section {
-  flex: 1; }
-
 .add-donation-section {
   flex: 1; }
+
+.mb10 {
+  margin-bottom: 10px; }
+
+.w-full {
+  width: 100%; }
 
 .overall-container-member {
   margin-top: 50px;
@@ -691,10 +732,23 @@ div.gbp {
 .content p {
   font-size: 20px; }
 
+.upload-container {
+  width: 750px;
+  margin: auto; }
+
+.upload-component {
+  display: flex;
+  flex-direction: column; }
+
+.upload {
+  display: flex;
+  justify-content: center; }
+
 * {
   margin: 0px;
   padding: 0px;
-  box-sizing: border-box; }
+  box-sizing: border-box;
+  font-family: "Sorts Mill Goudy", serif; }
 
 body {
   font-family: "Helvetica";
@@ -709,5 +763,17 @@ h1 {
 
 h3 {
   font-weight: 300; }
+
+input::-webkit-input-placeholder {
+  font-family: 'Sorts Mill Goudy', serif; }
+
+input:-ms-input-placeholder {
+  font-family: 'Sorts Mill Goudy', serif; }
+
+input:-moz-placeholder {
+  font-family: 'Sorts Mill Goudy', serif; }
+
+input::-moz-placeholder {
+  font-family: 'Sorts Mill Goudy', serif; }
 
 /*# sourceMappingURL=main.css.map */

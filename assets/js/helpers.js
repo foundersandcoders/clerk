@@ -56,17 +56,33 @@ var $$ = module.exports.$$ = function (query) {
 	return that;
 };
 
-// var createOpts = module.exports.createOpts = function () {
 
-// 	try{
-// 		var id = $$() document.querySelector("#member-id").textContent;
-// 	} catch(e) {
-// 		console.log("Err _createOptions: ", e);
-// 	}
+var replaceNice = module.exports.replaceNice = function replaceNice (string) {
 
-// 	return {
-// 		method: "PUT",
-// 		url: "/api/members/" + id,
-// 		json: payload
-// 	}
-// };
+	return (string || "").replace("-", " ").split(" ").map(function (elm){
+		return elm.charAt(0).toUpperCase() + elm.slice(1);
+	}).join(" ");
+};
+
+
+var createOpts = module.exports.createOpts = function (method, payload) {
+
+	try{
+		var id = $$("member-id").text();
+	} catch(e) {
+		console.log("Err _createOptions: ", e);
+	}
+
+	if(method === "PUT"){
+		return {
+			method: method,
+			url: "/api/members/" + id,
+			json: payload
+		}
+	} else if (method === "GET") {
+		return {
+			method: method,
+			url: "/api/members/" + id,
+		}
+	}
+};

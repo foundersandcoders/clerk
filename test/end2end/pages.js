@@ -144,7 +144,8 @@ var EditMember = module.exports.EditMember = function () {
 	this.giftAidSigned        = element(by.id(page + "-gift-aid-signed"));
 	this.giftAidSignedDate    = element(by.id(page + "-date-gift-aid-signed"));
 	this.giftAidCancelledDate = element(by.id(page + "-date-gift-cancelled"));
-	this.notes                = element(by.id(page + "-membership-notes"));
+	this.standingOrder        = element(by.id(page + "-standing-order"));
+	this.notes                = element(by.id(page + "-notes"));
 };
 
 var PaymentMember = module.exports.PaymentMember = function () {

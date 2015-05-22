@@ -9,7 +9,7 @@ var MemberPaymentsControls = browser.params.helpers.pages.MemberPaymentsControls
 
 describe("Create payment: ", function(){
 	var memberAdd   = new CreateMember();
-	var memberMock  = Mocks.member();
+	var memberMock  = Mocks.member({id: "4170239"});
 	var paymentControls  = new MemberPaymentsControls();
   var paymentMock = Mocks.payment({});
   var viewPayment = new ViewPayments();
@@ -37,13 +37,13 @@ describe("Create payment: ", function(){
 	browser.ignoreSynchronization = true;
 	expect(browser.getCurrentUrl()).toContain(params.service.clerk + '/members/' + memberMock.id);
 
+    element(by.cssContainingText("option", paymentMock.type)).click();
+
     paymentControls.paymentDate.sendKeys(paymentMock.date);
-    paymentControls.paymentType.sendKeys(paymentMock.type);
     paymentControls.paymentReference.sendKeys(paymentMock.listReference);
     paymentControls.paymentAmount.sendKeys(paymentMock.total);
     paymentControls.paymentNote.sendKeys(paymentMock.notes);
     paymentControls.paymentSubmit.click();
-
   });
 
   it("check payment has appeared", function (){

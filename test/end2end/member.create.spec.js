@@ -87,7 +87,6 @@ describe("Create member: ", function(){
 		expect(memberView.giftAidSignedDate.getText()).toBe(memberMock.giftAidSignedDate);
 		expect(memberView.standingOrder.getText()).toBe(memberMock.standingOrder);
 		expect(memberView.registered.getText()).toBe(memberMock.registered);
-		expect(memberView.registered.getText()).toBe(memberMock.registered);
 		expect(memberView.membershipDueDate.getText()).toBe(memberMock.membershipDueDate);
 	});
 });

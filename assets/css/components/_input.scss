@@ -116,16 +116,29 @@ input[type=checkbox]:checked + label:before {
     line-height: 15px;
 }
 
-.fileUpload {
+.file-upload {
+    width: 35%;
     position: relative;
     overflow: hidden;
     margin: 10px;
-    border: 1px solid black;
- 	border-radius: 5px;
+ 	border-radius: 2px;
  	padding: 1em 2em;
-  	background-color: #acc;
+    background-color: #eee;
+    color: #999;
+    border: 1px solid #ccc;
+    height: 55px;
+    &:hover {
+        background-color: #999;
+        color: #fff;
+        border: none;
+    }
+    &:active {
+        background-color: #333;
+        color: #fff;
+        border: none;
+    }
 }
-.fileUpload input.upload {
+.file-upload input.upload {
     position: absolute;
     top: 0;
     right: 0;
@@ -141,14 +154,14 @@ input[type=checkbox]:checked + label:before {
     width: 320px;
 }
 
-// @media (max-width: $tablet) {
-// 	input::-webkit-input-placeholder, input:-moz-placeholder, input::-moz-placeholder, input:-ms-input-placeholder {
-// 		font-size: $p-font-size-tablet;
-// 	}
-// }
+.right {
+    float: right;
+}
 
-// @media (max-width: $mobile) {
-// 	input::-webkit-input-placeholder, input:-moz-placeholder, input::-moz-placeholder, input:-ms-input-placeholder {
-// 		font-size: $p-font-size-mobile;
-// 	}
-// }
+.w-100 {
+    width: 100px;
+}
+
+.w-200 {
+    width: 200px;
+}

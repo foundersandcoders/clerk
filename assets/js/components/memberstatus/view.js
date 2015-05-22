@@ -52,7 +52,8 @@ module.exports = function (status, updateType, deleteFn, reactivateFn) {
 
 	function renderStatus (status) {
 
-		var active = h("div.delete-section", [
+		var active = 
+		h("div.delete-section", [
 			h("div.title-ctrl", [
 				h("p", "Delete member"),
 			]),

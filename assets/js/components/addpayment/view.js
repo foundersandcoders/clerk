@@ -2,14 +2,25 @@
 
 var h = require("virtual-dom/h");
 
-module.exports = function render (fn) {
+module.exports = function render (fn, utils) {
+
+	var renderOptionsSelected = require("../helpers").renderOptionsSelected;
+
+	var paymentTypes = [
+		{value:"CHQ", description: "CHQ"},
+		{value:"CASH", description: "CASH"},
+		{value:"SOA", description: "SOA"},
+		{value:"SOR", description: "SOR"},
+		{value:"BACSA", description: "BACSA"},
+		{value:"BACSR", description: "BACSR"},
+		{value:"CAFA", description: "CAFA"},
+		{value:"CAFR", description: "CAFR"},
+		{value:"HO", description: "HO"}
+	];
 
 	var inputs = [{
 		placeholder: "Payment date",
 		id: "payment-date"
-	}, {
-		placeholder: "Type",
-		id: "payment-type"
 	}, {
 		placeholder: "Reference",
 		id: "payment-reference"
@@ -21,7 +32,11 @@ module.exports = function render (fn) {
 		id: "payment-notes"
 	}];
 
-	return h("div.container", renderInputs(inputs));
+	return h("div.container-1", [
+		h("p", "Enter payments"),
+		h("select#member-controls-membership-type.mb10", renderOptionsSelected(paymentTypes, "", "Select type")),
+		renderInputs(inputs)
+	]);
 
 	function renderInputs (content) {
 
@@ -35,10 +50,12 @@ module.exports = function render (fn) {
 		});
 
 		return inputs.concat([
-			h("button.button-two.button-a", "Close"),
-			h("button.button-one.button-b#member-controls-payment-enter", {
-				onclick: fn
-			}, "Enter payment")
+			h("div", [
+				h("button.button-two", "Close"),
+				h("button.button-one#member-controls-payment-enter.right", {
+					onclick: fn
+				}, "Enter")
+			])
 		]);
 	}
 }

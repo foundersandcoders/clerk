@@ -6,27 +6,26 @@ var view = require("./view");
 
 module.exports = function (utils, state) {
 
+	var $$ = utils.$$;
 	var that = {};
 
 	that.render = function () {
 
-		return view(that.postData);
+		return view(that.postData, utils);
 	};
 
 	that.postData = function (query) {
 
 		try {
-
-      var type = document.querySelector("#member-controls-payment-type").value;
 			var payload = {
-				memberId:      document.querySelector("#member-id").textContent,
-        description:   "Payment by " + type,
-				date:          document.querySelector("#member-controls-payment-date").value,
-				type:          type,
-				listReference: document.querySelector("#member-controls-payment-reference").value,
-				total:         document.querySelector("#member-controls-payment-amount").value,
-				notes:         document.querySelector("#member-controls-payment-notes").value,
-        collection:    "payments"
+				memberId:      $$("member-id").text(),
+				type:          $$("member-controls-membership-type").valSelect(),
+				date:          $$("member-controls-payment-date").value(),
+				listReference: $$("member-controls-payment-reference").value(),
+				total:         $$("member-controls-payment-amount").value(),
+				notes:         $$("member-controls-payment-notes").value(),
+        		description:   "Payment by " + $$("member-controls-membership-type").valSelect(),
+        		collection:    "payments"
 			};
 		} catch (e) {
 			console.log("addpayment post: ", e);
