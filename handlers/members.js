@@ -1,7 +1,6 @@
 "use strict";
 
 var clean = require("d-bap");
-var debug = require("debug")('http');
 
 module.exports = function (members) {
 
