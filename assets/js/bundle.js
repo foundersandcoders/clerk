@@ -2114,10 +2114,10 @@ module.exports = function (data, selected, selectFn, refreshFn, deleteFn, utils)
 					h("p#member-payment-description", elm.description)
 				]),
 				h("div.col-3", [
-					h("p#member-payment-charges", (elm.collection === "charges") ? elm.total : "")
+					h("p#member-payment-charges", (elm.collection === "charges") ? elm.total.toString() : "")
 				]),
 				h("div.col-3", [
-					h("p#member-payment-payments", (elm.collection === "payments") ? elm.total : "")
+					h("p#member-payment-payments", (elm.collection === "payments") ? elm.total.toString() : "")
 				]),
 				h("div.col-4", [
 					h("p#member-payment-balance-due", elm.balanceDue)
@@ -2130,7 +2130,7 @@ module.exports = function (data, selected, selectFn, refreshFn, deleteFn, utils)
 				]),
 				h("div.col-7", [
 					h("p#member-payment-delete", {
-            onclick: selectFn(ref)
+            			onclick: selectFn(ref)
 					}, "x")
 				])
 			])
